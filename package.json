@@ -1,0 +1,8 @@
+{
+  "name": "laadpalen-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/timruiterkamp/laadpalen-app.git",
+  "author": "Tim <timruiterkamp@gmail.com>",
+  "license": "MIT"
+}
