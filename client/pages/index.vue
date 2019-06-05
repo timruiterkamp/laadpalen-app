@@ -6,7 +6,7 @@
         client
       </h1>
       <h2 class="subtitle">
-        Client laadpalen app
+        Laadpalen client app
       </h2>
       <div class="links">
         <a

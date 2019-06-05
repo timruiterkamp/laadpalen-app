@@ -1,7 +1,7 @@
 {
   "name": "client",
   "version": "1.0.0",
-  "description": "Client laadpalen app",
+  "description": "Laadpalen client app",
   "author": "Dennis Wegereef, Folkert-Jan van der Pol, Tim Ruiterkamp",
   "private": true,
   "scripts": {
