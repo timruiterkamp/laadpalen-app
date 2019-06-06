@@ -1,6 +1,7 @@
 $hoverDarkenAmount: 10%;
 
 .btn {
+  display: table;
   font-family: $font-body;
   text-decoration: none;
   padding: $padding-m $padding-xl;
