@@ -19,6 +19,7 @@ module.exports = {
     // if (!req.isAuth) {
     //   throw new Error("Not authenticated.");
     // }
+
     const issue = new IssueModel({
       title: args.issueInput.title,
       description: args.issueInput.description,
@@ -26,7 +27,7 @@ module.exports = {
       status: args.issueInput.status,
       polenumber: args.issueInput.polenumber,
       created: args.issueInput.date,
-      creator: req.userId,
+      creator: "5cf921362e18c62976b56934",
       image: args.issueInput.image
     });
 
@@ -41,13 +42,13 @@ module.exports = {
       image: string;
     };
 
-    let createdissue = {} as issueObject;
+    let createdIssue = {} as issueObject;
 
     return issue
       .save()
       .then((result: any) => {
-        createdissue = transformIssue(issue);
-        return User.findById(req.userId);
+        createdIssue = transformIssue(issue);
+        return User.findById("5cf921362e18c62976b56934");
       })
       .then((user: any) => {
         if (!user) {
@@ -57,7 +58,7 @@ module.exports = {
         return user.save();
       })
       .then((res: any) => {
-        return createdissue;
+        return createdIssue;
       })
       .catch((err: any) => {
         console.log(err);

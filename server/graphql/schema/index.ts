@@ -13,17 +13,15 @@ type Category {
   _id: ID!
   title: String!
   stakeholder: Stakeholder!
-  messages: [Message!]
+  issues: [Issue!]
 }
 
 type Message {
   _id: ID!
-  title: String!
-  description: String!
+  message: String!
   user: User!
   issue: Issue!
-  category: Category!
-  created: String!
+  createdAt: String!
 }
 
 type History {
@@ -64,7 +62,8 @@ type User {
   email: String!
   password: String
   createdIssues: [Issue!]
-  lastLoggedIn: String!
+  createdMessages: [Message!]
+  lastLoggedIn: String
 }
 
 type Laadpalen {
@@ -99,16 +98,28 @@ input StakeholderInput {
   title: String!
 }
 
+input CategoryInput {
+  title: String!
+}
+
+input MessageInput {
+  message: String!
+  createdAt: String!
+}
+
 type RootQuery {
   issues: [Issue!]!
   categories: [Category!]!
   stakeholders: [Stakeholder!]!
+  messages: [Message!]!
   login(email: String!, password: String!): AuthData!
 }
 
 type RootMutation {
   createIssue(issueInput: IssueInput): Issue
+  createCategory(categoryInput: CategoryInput): Category
   createUser(userInput: UserInput): User
+  createMessage(messageInput: MessageInput): Message
   createStakeholder(stakeholderInput: StakeholderInput): Stakeholder
 }
 schema {

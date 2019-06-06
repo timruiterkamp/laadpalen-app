@@ -15,9 +15,15 @@ const userSchema = new Schema({
       ref: "Event"
     }
   ],
+  createdMessages: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Message"
+    }
+  ],
   lastLoggedIn: {
     type: Date,
-    required: true
+    required: false
   }
 });
 

@@ -2,27 +2,23 @@ export {};
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const messageSchema = new Schema({
-  title: {
-    type: String,
-    required: true
-  },
-  description: {
+  message: {
     type: String,
     required: true
   },
   user: {
-    type: MongooseSchema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User"
   },
   issue: {
-    type: MongooseSchema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Issue"
   },
   category: {
-    type: MongooseSchema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Category"
   },
-  created: {
+  createdAt: {
     type: Date,
     required: true
   }

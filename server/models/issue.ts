@@ -5,6 +5,10 @@ const issueSchema = new MongooseSchema({
     type: String,
     required: true
   },
+  description: {
+    type: String,
+    required: false
+  },
   category: {
     type: MongooseSchema.Types.ObjectId,
     ref: "Category"
@@ -15,15 +19,15 @@ const issueSchema = new MongooseSchema({
   },
   status: {
     type: String,
-    required: true
+    required: false
   },
   polenumber: {
     type: Number,
-    required: true
+    required: false
   },
   created: {
     type: Date,
-    required: true
+    required: false
   },
   confirmed: {
     type: MongooseSchema.Types.ObjectId,
@@ -39,7 +43,7 @@ const issueSchema = new MongooseSchema({
   },
   image: {
     type: String,
-    required: true
+    required: false
   },
   creator: {
     type: MongooseSchema.Types.ObjectId,

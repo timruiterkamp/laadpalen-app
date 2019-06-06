@@ -7,12 +7,12 @@ const categorySchema = new Schema({
     required: true
   },
   stakeholder: {
-    type: MongooseSchema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "Stakeholder"
   },
-  messages: {
-    type: MongooseSchema.Types.ObjectId,
-    ref: "Message"
+  issues: {
+    type: Schema.Types.ObjectId,
+    ref: "Issue"
   }
 });
 
