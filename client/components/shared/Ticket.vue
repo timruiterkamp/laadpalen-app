@@ -46,6 +46,8 @@
   @import '~/assets/css/config/main.scss';
 
   .ticket {
+
+    margin: $margin-s 0;
     padding: $padding-m;
     background-color: $color-white;
     border-radius: $rounding-s;
