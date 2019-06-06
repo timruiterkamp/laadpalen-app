@@ -1,4 +1,4 @@
-$hoverDarkenAmount: 5%;
+$hoverDarkenAmount: 10%;
 
 .btn {
   font-family: $font-body;
@@ -9,7 +9,7 @@ $hoverDarkenAmount: 5%;
   color: $color-white;
   margin: $margin-s;
   box-shadow: $shadow-s;
-  transition: all 0.3s;
+  transition: background 1.3s;
   &:hover {
     color: $color-white;
   }
@@ -20,13 +20,13 @@ $hoverDarkenAmount: 5%;
     }
   }
   &--secondary {
-    @include radial-gradient($color-secondary);
+    @include linear-gradient($color-secondary);
     &:hover {
       @include linear-gradient(darken($color-secondary, $hoverDarkenAmount));
     }
   }
   &--tertiary {
-    @include radial-gradient($color-tertiary);
+    @include linear-gradient($color-tertiary);
     &:hover {
       @include linear-gradient(darken($color-tertiary, $hoverDarkenAmount));
     }
