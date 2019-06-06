@@ -1,0 +1,34 @@
+$hoverDarkenAmount: 5%;
+
+.btn {
+  font-family: $font-body;
+  text-decoration: none;
+  padding: $padding-m $padding-xl;
+  border-radius: $rounding-s;
+  background-color: $color-grey-dark;
+  color: $color-white;
+  margin: $margin-s;
+  box-shadow: $shadow-s;
+  transition: all 0.3s;
+  &:hover {
+    color: $color-white;
+  }
+  &--primary {
+    @include linear-gradient($color-primary);
+    &:hover {
+      @include linear-gradient(darken($color-primary, $hoverDarkenAmount));
+    }
+  }
+  &--secondary {
+    @include radial-gradient($color-secondary);
+    &:hover {
+      @include linear-gradient(darken($color-secondary, $hoverDarkenAmount));
+    }
+  }
+  &--tertiary {
+    @include radial-gradient($color-tertiary);
+    &:hover {
+      @include linear-gradient(darken($color-tertiary, $hoverDarkenAmount));
+    }
+  }
+}

@@ -1,0 +1,41 @@
+h1,
+h2,
+h3,
+h4 {
+  color: $color-grey-dark;
+  font-family: $font-headings;
+}
+h1 {
+  font-size: 2.6rem;
+  margin-bottom: $margin-l;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: $margin-m;
+}
+
+h3 {
+  font-size: 1.6rem;
+  margin-bottom: $margin-m;
+}
+
+h4 {
+  font-size: 1.2rem;
+  margin-bottom: $margin-m;
+}
+
+p {
+  color: $color-grey-dark;
+  font-family: $font-body;
+  line-height: 1.4;
+  margin-bottom: $margin-m;
+}
+
+a {
+  color: $color-primary;
+  transition: color 0.3s;
+  &:hover {
+    color: darken($color-primary, 20%);
+  }
+}

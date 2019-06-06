@@ -1,0 +1,11 @@
+@mixin radial-gradient($color) {
+  background-image: radial-gradient(
+    farthest-corner at 0% 100%,
+    $color 0%,
+    lighten($color, 10%) 120%
+  );
+}
+
+@mixin linear-gradient($color) {
+  background: linear-gradient(to top right, $color, lighten($color, 10%));
+}
