@@ -4,21 +4,12 @@ const app: express.Application = express();
 const graphqlHTTP = require("express-graphql");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 const graphqlSchema = require("./graphql/schema/index");
 const graphqlResolvers = require("./graphql/resolvers/index");
 import { RequestController } from "./requests/requests";
 const isAuth = require("./middleware/is-auth");
-
-// interface EventObject {
-//   _id: string;
-//   title: string;
-//   description: string;
-//   price: number;
-//   date: string;
-// }
-// const events: EventObject[] = [];
 
 // Use middleware to set the default Content-Type
 app.use(function(req, res, next) {

@@ -1,21 +1,21 @@
 const User = require("../../models/user");
-const EventModel = require("../../models/event");
+const IssueModel = require("../../models/issue");
 const { dateToString } = require("../../helpers/date");
 
-const transformEvent = (event: any) => {
+const transformIssue = (issue: any) => {
+  console.log(issue.created);
   return {
-    ...event._doc,
-    _id: event.id,
-    date: dateToString(event._doc.date),
-    creator: user.bind(this, event.creator)
+    ...issue._doc,
+    _id: issue.id,
+    creator: user.bind(this, issue.creator)
   };
 };
 
-const events = (eventIds: string) => {
-  return EventModel.find({ _id: { $in: eventIds } })
-    .then((events: any) => {
-      return events.map((event: any) => {
-        return transformEvent(event);
+const issues = (issueIds: string) => {
+  return IssueModel.find({ _id: { $in: issueIds } })
+    .then((issues: any) => {
+      return issues.map((issue: any) => {
+        return transformIssue(issue);
       });
     })
     .catch((err: string) => {
@@ -28,7 +28,7 @@ const user = (userId: string) => {
       return {
         ...user._doc,
         _id: user.id,
-        createdIssues: events.bind(this, user._doc.createdIssues)
+        createdIssues: issues.bind(this, user._doc.createdIssues)
       };
     })
     .catch((err: string) => {
@@ -36,5 +36,5 @@ const user = (userId: string) => {
     });
 };
 
-exports.transformEvent = transformEvent;
-// exports.events = events;
+exports.transformIssue = transformIssue;
+// exports.issues = issues;

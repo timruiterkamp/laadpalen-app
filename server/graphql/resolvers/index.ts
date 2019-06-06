@@ -1,8 +1,10 @@
 const authResolver = require("./auth");
-const eventResolver = require("./events");
+const issueResolver = require("./issues");
+const stakeholderResolver = require("./stakeholder");
 
 const rootResolver = {
   ...authResolver,
-  ...eventResolver
+  ...issueResolver,
+  ...stakeholderResolver
 };
 module.exports = rootResolver;

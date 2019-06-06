@@ -1,20 +1,77 @@
 const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
-type Event {
+type UserConfirm {
+  _id: ID!
+  user: User!
+  issue: Issue!
+  count: Int!
+  date: String!
+}
+
+type Category {
+  _id: ID!
+  title: String!
+  stakeholder: Stakeholder!
+  messages: [Message!]
+}
+
+type Message {
   _id: ID!
   title: String!
   description: String!
-  price: Float!
+  user: User!
+  issue: Issue!
+  category: Category!
+  created: String!
+}
+
+type History {
+  _id: ID!
+  issue: Issue!
+  user: User!
+  stakeholder: Stakeholder! 
   date: String!
+  messages: [Message!]
+}
+
+type Stakeholder {
+  _id: ID!
+  title: String!
+  users: [User!]
+  issues: [Issue!]
+}
+
+type Issue {
+  _id: ID!
+  title: String!
+  description: String!
   creator: User!
+  category: Category!
+  location: String,
+  status: String
+  polenumber: Int!
+  created: String!
+  confirmed: [UserConfirm!],
+  messages: [Message!],
+  history: [History!],
+  image: String
+  stakeholder: Stakeholder!
 }
 
 type User {
   _id: ID!
   email: String!
   password: String
-  createdIssues: [Event!]
+  createdIssues: [Issue!]
+  lastLoggedIn: String!
+}
+
+type Laadpalen {
+  _id: ID!
+  address: String!
+  latlong: String!
+  power: Int!
 }
 
 type AuthData {
@@ -23,11 +80,14 @@ type AuthData {
   tokenExpiration: Int!
 }
 
-input EventInput {
+input IssueInput {
   title: String!
   description: String!
-  price: Float!
-  date: String!
+  location: String!
+  status: String
+  polenumber: Int
+  created: String!
+  image: String
 }
 
 input UserInput {
@@ -35,14 +95,21 @@ input UserInput {
   password: String!
 }
 
+input StakeholderInput {
+  title: String!
+}
+
 type RootQuery {
-  events: [Event!]!
+  issues: [Issue!]!
+  categories: [Category!]!
+  stakeholders: [Stakeholder!]!
   login(email: String!, password: String!): AuthData!
 }
 
 type RootMutation {
-  createEvent(eventInput: EventInput): Event
+  createIssue(issueInput: IssueInput): Issue
   createUser(userInput: UserInput): User
+  createStakeholder(stakeholderInput: StakeholderInput): Stakeholder
 }
 schema {
   query: RootQuery

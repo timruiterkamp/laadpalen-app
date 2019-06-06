@@ -14,7 +14,11 @@ const userSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: "Event"
     }
-  ]
+  ],
+  lastLoggedIn: {
+    type: Date,
+    required: true
+  }
 });
 
 module.exports = mongoose.model("User", userSchema);
