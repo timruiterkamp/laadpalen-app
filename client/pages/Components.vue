@@ -33,22 +33,41 @@
     <div class="divider">
     </div>
 
-    <button class="btn btn--primary" @click="logPopup">Toggle popup</button>
+    <div class="button-holder">
+      <button class="btn btn--primary" @click="showTooltipOne">Toggle top popup</button>
+      <button class="btn btn--primary" @click="showTooltipTwo">Toggle left popup</button>
+      <button class="btn btn--primary" @click="showTooltipThree">Toggle bottom popup</button>
+      <button class="btn btn--primary" @click="showTooltipFour">Toggle right popup</button>
+    </div>
 
-    <Popup ref="modal">This is popup content</Popup>
+
+    <Tooltip ref="tooltip1" placement="top">
+      <p>Since this is a top aligned tooltip (most common) i decided to put a lot of content in it so we can see how it works on small screen sizes.</p>
+    </Tooltip>
+    <Tooltip ref="tooltip2" placement="right">
+      <h3>This is title</h3>
+      <p>This is tooltip content</p>
+    </Tooltip>
+    <Tooltip ref="tooltip3" placement="bottom">
+      <h3>This is a very long tooltip title</h3>
+      <p>With a lenghty size of tooltip content for all your tooltip content needs</p>
+    </Tooltip>
+    <Tooltip ref="tooltip4" placement="left">
+      This is tooltip content
+    </Tooltip>
   </main>
 </template>
 
 <script>
 import Ticket from '~/components/shared/Ticket.vue'
 import Toggle from '~/components/dashboard/Toggle.vue'
-import Popup from '~/components/shared/Popup.vue'
+import Tooltip from '~/components/shared/Tooltip.vue'
 
 export default {
   components: {
     Ticket,
     Toggle,
-    Popup
+    Tooltip
   },
   data() {
     return {
@@ -57,8 +76,17 @@ export default {
     }
   },
   methods: {
-    logPopup(e) {
-      this.$refs.modal.show(e)
+    showTooltipOne(e) {
+      this.$refs.tooltip1.show(e)
+    },
+    showTooltipTwo(e) {
+      this.$refs.tooltip2.show(e)
+    },
+    showTooltipThree(e) {
+      this.$refs.tooltip3.show(e)
+    },
+    showTooltipFour(e) {
+      this.$refs.tooltip4.show(e)
     }
   }
 }
@@ -75,5 +103,12 @@ export default {
     background-color: #f2f2f2;
     display: block;
     content: "";
+  }
+  .button-holder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
   }
 </style>
