@@ -5,12 +5,15 @@ $hoverDarkenAmount: 10%;
   font-family: $font-body;
   text-decoration: none;
   padding: $padding-m $padding-xl;
+  border: none;
   border-radius: $rounding-s;
   background-color: $color-grey-dark;
   color: $color-white;
   margin: $margin-s;
   box-shadow: $shadow-s;
   transition: background 1.3s;
+  cursor: pointer;
+  font-size: 1em;
   &:hover {
     color: $color-white;
   }
