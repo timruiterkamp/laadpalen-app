@@ -29,21 +29,36 @@
 
     <Toggle :checked.sync="filter1">Toggled: {{filter1}}</Toggle>
     <Toggle :checked.sync="filter2">Toggled: {{filter2}}</Toggle>
+
+    <div class="divider">
+    </div>
+
+    <button class="btn btn--primary" @click="logPopup">Toggle popup</button>
+
+    <Popup ref="modal">This is popup content</Popup>
   </main>
 </template>
 
 <script>
 import Ticket from '~/components/shared/Ticket.vue'
 import Toggle from '~/components/dashboard/Toggle.vue'
+import Popup from '~/components/shared/Popup.vue'
+
 export default {
   components: {
     Ticket,
-    Toggle
+    Toggle,
+    Popup
   },
   data() {
     return {
       filter1: true,
       filter2: false
+    }
+  },
+  methods: {
+    logPopup(e) {
+      this.$refs.modal.show(e)
     }
   }
 }
