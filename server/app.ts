@@ -34,7 +34,6 @@ app.get("/api/laadpalen", async (req, res) => {
   const data = await ApiController.laadpalen(
     "https://www.oplaadpalen.nl/api/maplist/clusterset?box=52.35351489560789,4.871848199417968,52.368636728344434,4.943259332230468&zoom=15&accessType=public,company&available=available,charging&power=fast,normal"
   );
-  console.log(data);
   res.send(JSON.stringify(data));
 });
 
@@ -49,4 +48,6 @@ mongoose
   .then(() => {
     app.listen(port);
   })
-  .catch((err: any) => console.log(err));
+  .catch((err: any) => {
+    throw err;
+  });

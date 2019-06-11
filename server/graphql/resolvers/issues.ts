@@ -27,7 +27,7 @@ module.exports = {
       status: args.issueInput.status,
       polenumber: args.issueInput.polenumber,
       created: args.issueInput.date,
-      creator: "5cf921362e18c62976b56934",
+      creator: req.userId,
       image: args.issueInput.image
     });
 
@@ -48,7 +48,7 @@ module.exports = {
       .save()
       .then((result: any) => {
         createdIssue = transformIssue(issue);
-        return User.findById("5cf921362e18c62976b56934");
+        return User.findById(req.userId);
       })
       .then((user: any) => {
         if (!user) {
@@ -61,7 +61,6 @@ module.exports = {
         return createdIssue;
       })
       .catch((err: any) => {
-        console.log(err);
         throw err;
       });
   }

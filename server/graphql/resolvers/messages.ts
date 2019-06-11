@@ -19,7 +19,9 @@ module.exports = {
     const message = new MessageModel({
       message: args.messageInput.message,
       createdAt: args.messageInput.createdAt,
-      user: "5cf921362e18c62976b56934"
+      user: req.userId,
+      issues: args.messageInput.issueId,
+      categories: args.messageInput.categoryId
     });
 
     type messageObject = {
@@ -34,16 +36,14 @@ module.exports = {
       .save()
       .then((result: any) => {
         createdMessage = transformMessage(message);
-        return User.findById("5cf921362e18c62976b56934");
+        return User.findById(req.userId);
       })
       .then((user: any) => {
-        console.log(user);
-        User.findById("5cf921362e18c62976b56934");
+        User.findById(req.userId);
 
         if (!user) {
           throw new Error("User not found.");
         }
-        console.log("komt hier: " + user, message);
         user.createdMessages.push(message);
         return user.save();
       })

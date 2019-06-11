@@ -5,6 +5,8 @@ export class RequestController {
     return axios
       .get(url)
       .then((response: any) => response.data)
-      .catch((err: any) => console.log(err));
+      .catch((err: any) => {
+        throw err;
+      });
   }
 }

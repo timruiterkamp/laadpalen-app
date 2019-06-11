@@ -13,6 +13,10 @@ const categorySchema = new Schema({
   issues: {
     type: Schema.Types.ObjectId,
     ref: "Issue"
+  },
+  messages: {
+    type: Schema.Types.ObjectId,
+    ref: "Message"
   }
 });
 

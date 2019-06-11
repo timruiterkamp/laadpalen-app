@@ -29,8 +29,8 @@
     "typescript": "^3.5.1"
   },
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpileOnly ./server/app.ts",
-    "prod": "tsc && node ./server/app.js",
+    "dev": "ts-node-dev --respawn --transpileOnly ./app.ts",
+    "prod": "tsc && node ./app.js",
     "tsc": "tsc"
   }
 }

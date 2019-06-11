@@ -20,7 +20,8 @@ type Message {
   _id: ID!
   message: String!
   user: User!
-  issue: Issue!
+  issues: Issue!
+  categories: Category!
   createdAt: String!
 }
 
@@ -105,6 +106,8 @@ input CategoryInput {
 input MessageInput {
   message: String!
   createdAt: String!
+  issueId: String!
+  categoryId: String!
 }
 
 type RootQuery {

@@ -1,10 +1,11 @@
 const User = require("../../models/user");
 const IssueModel = require("../../models/issue");
 const MessageModel = require("../../models/message");
+const CategoryModel = require("../../models/category");
+
 const { dateToString } = require("../../helpers/date");
 
 const transformIssue = (issue: any) => {
-  console.log(issue.created);
   return {
     ...issue._doc,
     _id: issue.id,
@@ -17,7 +18,17 @@ const transformMessage = (message: any) => {
   return {
     ...message._doc,
     _id: message.id,
-    user: user.bind(this, message.user)
+    user: user.bind(this, message.user),
+    issues: issues.bind(this, message.issues),
+    categories: categories.bind(this, message.categories)
+  };
+};
+
+const transformCategory = (category: any) => {
+  return {
+    ...category._doc,
+    _id: category.id,
+    message: messages.bind(this, category.messageId)
   };
 };
 
@@ -26,6 +37,18 @@ const issues = (issueIds: string) => {
     .then((issues: any) => {
       return issues.map((issue: any) => {
         return transformIssue(issue);
+      });
+    })
+    .catch((err: string) => {
+      throw err;
+    });
+};
+
+const categories = (categoryIds: string) => {
+  return CategoryModel.find({ _id: { $in: categoryIds } })
+    .then((categories: any) => {
+      return categories.map((category: any) => {
+        return transformCategory(category);
       });
     })
     .catch((err: string) => {
@@ -48,7 +71,6 @@ const messages = (messageIds: string) => {
 const user = (userId: string) => {
   return User.findById(userId)
     .then((user: any) => {
-      console.log(user);
       return {
         ...user._doc,
         _id: user.id,
@@ -63,4 +85,5 @@ const user = (userId: string) => {
 
 exports.transformIssue = transformIssue;
 exports.transformMessage = transformMessage;
+exports.transformCategory = transformCategory;
 // exports.issues = issues;
