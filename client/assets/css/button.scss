@@ -1,4 +1,4 @@
-$hoverDarkenAmount: 10%;
+$hoverDarkenAmount: 3%;
 
 .btn {
   display: table;
@@ -10,32 +10,51 @@ $hoverDarkenAmount: 10%;
   background-color: $color-grey-dark;
   color: $color-white;
   margin: $margin-s;
-  transition: background 1.3s;
+  transition: background .2s, box-shadow .2s, transform .2s;
   cursor: pointer;
   font-size: 1em;
   @include shadow(1.5rem);
+  @include linear-gradient(darken($color-grey-dark, $hoverDarkenAmount));
   &:hover {
+    color: $color-white;
+    transform: translateY(-2px);
+  }
+  &:focus {
+    @include linear-gradient(darken($color-grey-dark, $hoverDarkenAmount * 2));
+    outline: none;
     color: $color-white;
   }
   &--primary {
     @include linear-gradient($color-primary);
-    @include shadow(1rem, $color-primary, .5);
+    @include shadow(.5rem, $color-primary, .7);
     &:hover {
       @include linear-gradient(darken($color-primary, $hoverDarkenAmount));
+      @include shadow(1.25rem, $color-primary, .4);
+    }
+    &:focus {
+      @include linear-gradient(darken($color-primary, $hoverDarkenAmount * 2.5));
     }
   }
   &--secondary {
     @include linear-gradient($color-secondary);
-    @include shadow(1rem, $color-secondary, .5);
+    @include shadow(.5rem, $color-secondary, .7);
     &:hover {
       @include linear-gradient(darken($color-secondary, $hoverDarkenAmount));
+      @include shadow(1.25rem, $color-secondary, .4);
+    }
+    &:focus {
+      @include linear-gradient(darken($color-secondary, $hoverDarkenAmount * 2.5));
     }
   }
   &--tertiary {
     @include linear-gradient($color-tertiary);
-    @include shadow(1rem, $color-tertiary, .5);
+    @include shadow(.5rem, $color-tertiary, .7);
     &:hover {
       @include linear-gradient(darken($color-tertiary, $hoverDarkenAmount));
+      @include shadow(1.25rem, $color-tertiary, .4);
+    }
+    &:focus {
+      @include linear-gradient(darken($color-tertiary, $hoverDarkenAmount * 2.5));
     }
   }
 }
