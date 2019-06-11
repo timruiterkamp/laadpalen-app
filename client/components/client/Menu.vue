@@ -39,7 +39,7 @@ export default {}
 $widthHeight: 24px;
 
 .menu {
-  height: 6rem;
+  height: 5rem;
   width: 100%;
   position: fixed;
   display: flex;
@@ -57,7 +57,7 @@ $widthHeight: 24px;
     justify-content: center;
     cursor: pointer;
     padding: 0 5%;
-    transition: background-color 0.3s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
     color: $color-white;
     text-decoration: none;
     font-family: $font-body;
@@ -75,8 +75,9 @@ $widthHeight: 24px;
       margin-bottom: $margin-xs / 2;
     }
     &-text {
+      white-space: nowrap;
+      font-size: 0.8rem;
       font-weight: bold;
-      line-break: unset;
     }
   }
 }
