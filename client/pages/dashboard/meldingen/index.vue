@@ -1,7 +1,6 @@
 <template>
   <div class="d-container">
-    <h2>Overzicht</h2>
-    <img src="https://unsplash.it/800/200" alt="">
+    <h2>Meldingen</h2>
   </div>
 </template>
 <script>
