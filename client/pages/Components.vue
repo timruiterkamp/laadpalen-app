@@ -126,6 +126,6 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 4rem 2rem;
+  padding: 4rem 1rem;
 }
 </style>
