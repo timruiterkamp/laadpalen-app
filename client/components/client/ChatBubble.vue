@@ -1,11 +1,11 @@
 <template>
-  <div class="chat-bubble" :class="'chat-bubble--' + context">
-    <div class="chat-bubble--bubble">
-      <p class="chat-bubble--text">
+  <div class="chat-bubble" :class="'chat-bubble__' + context">
+    <div class="chat-bubble__bubble">
+      <p class="chat-bubble__text">
         <slot></slot>
       </p>
     </div>
-    <span class="chat-bubble--time">{{time}}</span>
+    <span class="chat-bubble__time">{{time}}</span>
   </div>
 </template>
 
@@ -30,41 +30,41 @@ export default {
 .chat-bubble {
   display: flex;
   flex-direction: column;
-  &--bubble {
+  &__bubble {
     padding: $padding-m;
     max-width: 80%;
     margin-bottom: $margin-xs;
     box-shadow: $shadow-m;
   }
-  &--text {
+  &__text {
     margin: 0;
   }
-  &--time {
+  &__time {
     margin-bottom: $padding-l;
     font-size: 0.9rem;
   }
-  &--operator {
+  &__operator {
     .chat-bubble {
-      &--bubble {
+      &__bubble {
         border-radius: $rounding-s $rounding-s $rounding-s 0;
         background-color: $color-white;
       }
-      &--text {
+      &__text {
         color: $color-grey-dark;
       }
     }
   }
-  &--user {
+  &__user {
     .chat-bubble {
-      &--bubble {
+      &__bubble {
         border-radius: $rounding-s $rounding-s 0 $rounding-s;
         align-self: flex-end;
         @include linear-gradient($color-primary);
       }
-      &--text {
+      &__text {
         color: $color-white;
       }
-      &--time {
+      &__time {
         align-self: flex-end;
       }
     }
