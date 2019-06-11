@@ -1,5 +1,5 @@
 <template>
-  <div ref="tooltip" class="tooltip" :class="visible ? 'visible' : ''">
+  <div ref="tooltip" class="tooltip" :class="classes">
     <div x-arrow></div>
     <slot></slot>
   </div>
@@ -13,11 +13,24 @@
       placement: {
         type: String,
         default: 'top'
+      },
+      status: {
+        type: String,
+        default: 'default'
       }
     },
     data() {
       return {
         visible: false
+      }
+    },
+    computed: {
+      classes() {
+        let classes = 'tooltip--' + this.status
+        if (this.visible) {
+          classes += ' visible'
+        }
+        return classes
       }
     },
     methods: {
@@ -29,6 +42,9 @@
       },
       toggle() {
         this.visible = !this.visible
+      },
+      hide() {
+        this.visible = false
       }
     }
   }
@@ -40,9 +56,7 @@
   .tooltip {
     padding: $padding-m;
     border-radius: $rounding-s;
-    background-color: $color-grey-dark;
     color: $color-white;
-    @include shadow($size: 2rem, $alpha: .15);
     opacity: 0;
     transition: opacity .3s;
     pointer-events: none;
@@ -51,6 +65,22 @@
     position: absolute;
     top: 0;
     left: 0;
+    &--default {
+      background-color: $color-grey-dark;
+      @include shadow($size: 2rem, $alpha: .15);
+    }
+    &--primary {
+      background-color: $color-primary;
+      @include shadow(2rem, $color-primary, .5);
+    }
+    &--secondary {
+      background-color: $color-secondary;
+      @include shadow(2rem, $color-secondary, .5);
+    }
+    &--tertiary {
+      background-color: $color-tertiary;
+      @include shadow(2rem, $color-tertiary, .5);
+    }
     &.visible {
       opacity: 1;
       pointer-events: all;

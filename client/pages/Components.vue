@@ -75,6 +75,8 @@
       <p>With a lenghty size of tooltip content for all your tooltip content needs</p>
     </Tooltip>
     <Tooltip ref="tooltip4" placement="left">This is tooltip content</Tooltip>
+
+    <Atlas height="30rem" />
   </main>
 </template>
 
@@ -82,12 +84,14 @@
 import Ticket from '~/components/shared/Ticket.vue'
 import Toggle from '~/components/dashboard/Toggle.vue'
 import Tooltip from '~/components/shared/Tooltip.vue'
+import Atlas from '~/components/shared/Atlas.vue'
 
 export default {
   components: {
     Ticket,
     Toggle,
-    Tooltip
+    Tooltip,
+    Atlas
   },
   data() {
     return {
