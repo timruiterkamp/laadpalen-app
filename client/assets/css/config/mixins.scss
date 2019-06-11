@@ -9,3 +9,7 @@
 @mixin linear-gradient($color) {
   background: linear-gradient(to top right, $color, lighten($color, 10%));
 }
+
+@mixin shadow($size: 1rem, $color: #000, $alpha: 0.08) {
+  box-shadow: 0 $size 1rem (($size / 2) * -1) rgba($color, $alpha);
+}

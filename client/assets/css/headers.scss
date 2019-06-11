@@ -1,3 +1,8 @@
+body {
+  font-family: $font-body;
+  color: $color-grey-dark;
+}
+
 h1,
 h2,
 h3,
@@ -34,9 +39,14 @@ p {
 
 a {
   color: $color-primary;
-  transition: color 0.3s;
+  transition: color .3s, text-decoration .3s;
   &:hover {
     color: darken($color-primary, 20%);
+  }
+  &:focus {
+    color: darken($color-primary, 20%);
+    outline: none;
+    text-decoration: none;
   }
 }
 

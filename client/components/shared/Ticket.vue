@@ -51,7 +51,7 @@
     padding: $padding-m;
     background-color: $color-white;
     border-radius: $rounding-s;
-    box-shadow: $shadow-m;
+    @include shadow(1rem);
     display: block;
     max-width: 40rem;
     @media screen and (min-width: 40rem) {
