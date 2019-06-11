@@ -1,5 +1,19 @@
 <template>
   <main>
+    <div class="divider"></div>
+    <div class="divider"></div>
+
+    <a href="#" class="btn btn--primary" @mouseover="showModal1">This is a button</a>
+
+    <Modal ref="modal1">
+      <h1>hello</h1>
+    </Modal>
+
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+
     <Accordion :title="'Laadpaal'" :options="laadpaalOptions"/>
     <Accordion :title="'Laadpaal'" :options="laadpaalOptions"/>
     <Accordion :title="'Laadpaal'" :options="laadpaalOptions"/>
@@ -33,13 +47,15 @@ import BigHeader from '~/components/client/BigHeader.vue'
 import ChatBubble from '~/components/client/ChatBubble.vue'
 import Accordion from '~/components/client/Accordion.vue'
 import Menu from '~/components/client/Menu.vue'
+import Modal from '~/components/shared/Modal.vue'
 
 export default {
   components: {
     BigHeader,
     ChatBubble,
     Accordion,
-    Menu
+    Menu,
+    Modal
   },
   data() {
     return {
@@ -65,6 +81,11 @@ export default {
           slug: 'laadpaal/anders'
         }
       ]
+    }
+  },
+  methods: {
+    showModal1(e) {
+      this.$refs.modal1.show(e)
     }
   }
 }
