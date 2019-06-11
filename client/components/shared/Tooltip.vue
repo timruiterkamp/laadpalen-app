@@ -47,8 +47,10 @@
     transition: opacity .3s;
     pointer-events: none;
     max-width: 90%;
-    position: absolute;
     font-size: .875rem;
+    position: absolute;
+    top: 0;
+    left: 0;
     &.visible {
       opacity: 1;
       pointer-events: all;
