@@ -23,6 +23,8 @@
     </ChatBubble>
 
     <div class="divider"></div>
+
+    <Menu/>
   </main>
 </template>
 
@@ -30,12 +32,14 @@
 import BigHeader from '~/components/client/BigHeader.vue'
 import ChatBubble from '~/components/client/ChatBubble.vue'
 import Accordion from '~/components/client/Accordion.vue'
+import Menu from '~/components/client/Menu.vue'
 
 export default {
   components: {
     BigHeader,
     ChatBubble,
-    Accordion
+    Accordion,
+    Menu
   },
   data() {
     return {
