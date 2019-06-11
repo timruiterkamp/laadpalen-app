@@ -84,3 +84,7 @@ dist
 
 # Service worker
 sw.*
+
+
+# config.js
+modules/config.js
