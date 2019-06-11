@@ -34,7 +34,6 @@ export default {
     padding: $padding-m;
     max-width: 80%;
     margin-bottom: $margin-xs;
-    box-shadow: $shadow-m;
   }
   &__text {
     margin: 0;
@@ -48,6 +47,7 @@ export default {
       &__bubble {
         border-radius: $rounding-s $rounding-s $rounding-s 0;
         background-color: $color-white;
+        @include shadow(1rem);
       }
       &__text {
         color: $color-grey-dark;
@@ -60,6 +60,7 @@ export default {
         border-radius: $rounding-s $rounding-s 0 $rounding-s;
         align-self: flex-end;
         @include linear-gradient($color-primary);
+        @include shadow(1rem, $color-primary, .5);
       }
       &__text {
         color: $color-white;

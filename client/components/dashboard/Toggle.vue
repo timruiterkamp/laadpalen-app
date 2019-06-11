@@ -42,12 +42,13 @@ export default {
 }
 .toggle {
   border-radius: $rounding-s;
-  box-shadow: $shadow-m;
+  @include shadow(1rem);
   position: relative;
   margin: $margin-s 0;
   display: table;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  background-color: $color-white;
   &__input {
     opacity: 0;
     display: none;

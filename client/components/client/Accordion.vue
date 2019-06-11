@@ -87,7 +87,7 @@ $widthHeight: 24px;
     padding: $padding-m $padding-l;
     border-radius: $rounding-s;
     @include linear-gradient($color-grey-dark);
-    box-shadow: $shadow-m;
+    @include shadow(1.5rem);
     display: flex;
     justify-content: space-between;
     cursor: pointer;

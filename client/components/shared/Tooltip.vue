@@ -42,7 +42,7 @@
     border-radius: $rounding-s;
     background-color: $color-grey-dark;
     color: $color-white;
-    box-shadow: 0px 1.5rem 1rem rgba(0,0,0,0.08);
+    @include shadow($size: 2rem, $alpha: .15);
     opacity: 0;
     transition: opacity .3s;
     pointer-events: none;

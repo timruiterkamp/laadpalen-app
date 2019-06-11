@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="components-holder">
     <h1>Header one</h1>
     <h2>Header two</h2>
     <h3>Header three</h3>
@@ -112,9 +112,14 @@ export default {
 }
 </script>
 
-<style langs="scss">
+<style lang="scss">
+@import '~/assets/css/config/main.scss';
+
 main {
   padding: 2rem 1rem;
+}
+.components-holder {
+  background-color: $color-grey-low;
 }
 .button-holder {
   display: flex;
