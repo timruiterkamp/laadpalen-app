@@ -3,7 +3,7 @@
     <div class="divider"></div>
     <div class="divider"></div>
 
-    <a href="#" class="btn btn--primary" @mouseover="showModal1">This is a button</a>
+    <a href="#" class="btn btn--primary" @click="showModal1">This is a button</a>
 
     <Modal ref="modal1">
       <h1>hello</h1>

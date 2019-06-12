@@ -1,6 +1,7 @@
 <template>
   <transition name="modal">
     <div v-if="visible" class="modal">
+      <div @click="show" class="modal__background"></div>
       <div class="modal__inner">
         <div class="modal__inner-close" @click="show">
           <svg class="modal__inner-icon">
@@ -25,6 +26,10 @@ export default {
   methods: {
     show(e) {
       this.visible = !this.visible
+
+      this.visble
+        ? (document.body.style.overflowY = 'scroll')
+        : (document.body.style.overflowY = 'hidden')
     }
   }
 }
@@ -35,17 +40,27 @@ export default {
 $widthHeight: 2.5rem;
 
 .modal {
-  top: 0;
-  left: 0;
-  z-index: 99;
-  position: fixed;
-  height: 100vh;
-  width: 100%;
-  background-color: rgba($color-grey-dark, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: opacity 0.2s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 2;
+
+  &__background {
+    top: 0;
+    left: 0;
+    z-index: 99;
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba($color-grey-dark, 0.8);
+    z-index: 5;
+  }
 
   &__inner {
     background-color: $color-white;
@@ -56,6 +71,7 @@ $widthHeight: 2.5rem;
     position: relative;
     padding: $padding-m;
     transition: transform 0.5s, opacity 0.3s;
+    z-index: 9;
 
     &-close {
       position: absolute;
