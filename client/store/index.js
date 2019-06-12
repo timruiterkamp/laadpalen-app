@@ -5,7 +5,9 @@ export const getters = {
 }
 
 export const mutations = {
-
+  SET_STAKEHOLDER(state, value) {
+    state.stakeholder = value
+  }
 }
 
 export const state = () => ( {

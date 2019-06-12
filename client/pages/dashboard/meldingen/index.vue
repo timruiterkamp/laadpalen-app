@@ -1,6 +1,7 @@
 <template>
   <div class="d-container">
     <h2>Meldingen</h2>
+    {{stakeholder}}
     <div class="d-tickets">
       <div class="d-tickets__column">
         <h3>Open</h3>
@@ -90,6 +91,9 @@ export default {
     closedList() {
       return this.closed.sort((ticketA, ticketB) => new Date(ticketB.created) - new Date(ticketA.created))
     },
+    stakeholder() {
+      return this.$store.getters.GET_STAKEHOLDER
+    }
   }
 }
 
