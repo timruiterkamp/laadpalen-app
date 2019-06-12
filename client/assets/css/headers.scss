@@ -27,7 +27,7 @@ h3 {
 
 h4 {
   font-size: 1.2rem;
-  margin-bottom: $margin-s;
+  margin-bottom: $margin-l;
 }
 
 p {
@@ -39,7 +39,7 @@ p {
 
 a {
   color: $color-primary;
-  transition: color .3s, text-decoration .3s;
+  transition: color 0.3s, text-decoration 0.3s;
   &:hover {
     color: darken($color-primary, 20%);
   }
