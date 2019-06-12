@@ -15,11 +15,16 @@ module.exports = {
         throw err;
       });
   },
+  updateIssue: (issueId: string) => {
+    return IssueModel.findById(issueId)
+      .then((issue: any) => {
+        return transformIssue(issue);
+      })
+      .catch((err: string) => {
+        throw err;
+      });
+  },
   createIssue: (args: any, req: any) => {
-    // if (!req.isAuth) {
-    //   throw new Error("Not authenticated.");
-    // }
-
     const issue = new IssueModel({
       title: args.issueInput.title,
       description: args.issueInput.description,
@@ -28,7 +33,8 @@ module.exports = {
       polenumber: args.issueInput.polenumber,
       created: args.issueInput.date,
       creator: req.userId,
-      image: args.issueInput.image
+      image: args.issueInput.image,
+      stakeholders: args.issueInput.stakeholderId
     });
 
     type issueObject = {
@@ -40,6 +46,7 @@ module.exports = {
       created: string;
       creator: string;
       image: string;
+      stakeholders: string;
     };
 
     let createdIssue = {} as issueObject;

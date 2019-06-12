@@ -1,15 +1,13 @@
 export {};
 const StakeholderModel = require("../../models/stakeholder");
+const { transformStakeholder } = require("./merge");
 
 module.exports = {
   stakeholders: () => {
     return StakeholderModel.find()
       .then((stakeholders: any) => {
         return stakeholders.map((stakeholder: any) => {
-          return {
-            ...stakeholder._doc,
-            _id: stakeholder.id
-          };
+          return transformStakeholder(stakeholder);
         });
       })
       .catch((err: string) => {

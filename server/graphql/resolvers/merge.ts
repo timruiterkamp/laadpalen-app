@@ -2,6 +2,7 @@ const User = require("../../models/user");
 const IssueModel = require("../../models/issue");
 const MessageModel = require("../../models/message");
 const CategoryModel = require("../../models/category");
+const StakeholderModel = require("../../models/stakeholder");
 
 const { dateToString } = require("../../helpers/date");
 
@@ -9,12 +10,13 @@ const transformIssue = (issue: any) => {
   return {
     ...issue._doc,
     _id: issue.id,
-    creator: user.bind(this, issue.creator)
+    creator: user.bind(this, issue.creator),
+    messages: messages.bind(this, issue._doc.messages),
+    stakeholders: stakeholder.bind(this, issue.stakeholder)
   };
 };
 
 const transformMessage = (message: any) => {
-  console.log(message);
   return {
     ...message._doc,
     _id: message.id,
@@ -29,6 +31,13 @@ const transformCategory = (category: any) => {
     ...category._doc,
     _id: category.id,
     message: messages.bind(this, category.messageId)
+  };
+};
+
+const transformStakeholder = (stakeholder: any) => {
+  return {
+    ...stakeholder._doc,
+    _id: stakeholder.id
   };
 };
 
@@ -49,6 +58,18 @@ const categories = (categoryIds: string) => {
     .then((categories: any) => {
       return categories.map((category: any) => {
         return transformCategory(category);
+      });
+    })
+    .catch((err: string) => {
+      throw err;
+    });
+};
+
+const stakeholder = (stakeholderIds: string) => {
+  return StakeholderModel.find({ _id: { $in: stakeholderIds } })
+    .then((stakeholders: any) => {
+      return stakeholders.map((stakeholder: any) => {
+        return transformStakeholder(stakeholder);
       });
     })
     .catch((err: string) => {
@@ -86,4 +107,5 @@ const user = (userId: string) => {
 exports.transformIssue = transformIssue;
 exports.transformMessage = transformMessage;
 exports.transformCategory = transformCategory;
+exports.transformStakeholder = transformStakeholder;
 // exports.issues = issues;

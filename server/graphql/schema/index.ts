@@ -1,14 +1,6 @@
 const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
-type UserConfirm {
-  _id: ID!
-  user: User!
-  issue: Issue!
-  count: Int!
-  date: String!
-}
-
 type Category {
   _id: ID!
   title: String!
@@ -51,11 +43,11 @@ type Issue {
   status: String
   polenumber: Int!
   created: String!
-  confirmed: [UserConfirm!],
   messages: [Message!],
   history: [History!],
   image: String
-  stakeholder: Stakeholder!
+  stakeholders: Stakeholder!
+  confirmed: Int
 }
 
 type User {
@@ -88,6 +80,8 @@ input IssueInput {
   polenumber: Int
   created: String!
   image: String
+  confirmed: Int
+  stakeholderId: String! 
 }
 
 input UserInput {
@@ -107,7 +101,7 @@ input MessageInput {
   message: String!
   createdAt: String!
   issueId: String!
-  categoryId: String!
+  categoryId: String
 }
 
 type RootQuery {
@@ -124,6 +118,7 @@ type RootMutation {
   createUser(userInput: UserInput): User
   createMessage(messageInput: MessageInput): Message
   createStakeholder(stakeholderInput: StakeholderInput): Stakeholder
+  updateIssue(issueId: ID!): Issue
 }
 schema {
   query: RootQuery

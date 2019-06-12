@@ -10,10 +10,12 @@ const stakeholderSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User"
   },
-  issue: {
-    type: Schema.Types.ObjectId,
-    ref: "Issue"
-  }
+  issues: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Issue"
+    }
+  ]
 });
 
 module.exports = mongoose.model("Stakeholder", stakeholderSchema);

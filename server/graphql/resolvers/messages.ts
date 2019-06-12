@@ -2,6 +2,7 @@ export {};
 const MessageModel = require("../../models/message");
 const { transformMessage } = require("./merge");
 const User = require("../../models/user");
+const Issue = require("../../models/issue");
 
 module.exports = {
   messages: () => {
@@ -39,13 +40,22 @@ module.exports = {
         return User.findById(req.userId);
       })
       .then((user: any) => {
-        User.findById(req.userId);
-
         if (!user) {
           throw new Error("User not found.");
         }
+
         user.createdMessages.push(message);
         return user.save();
+      })
+      .then((res: any) => {
+        return Issue.findById(args.messageInput.issueId);
+      })
+      .then((issue: any) => {
+        if (!issue) {
+          throw new Error("Issue not found");
+        }
+        issue.messages.push(message);
+        issue.save();
       })
       .then((res: any) => {
         return createdMessage;

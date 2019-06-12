@@ -44,7 +44,7 @@ module.exports = {
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       "cFokTdiILPLcmTdw4mn1",
-      { expiresIn: "1h" }
+      { expiresIn: "12h" }
     );
     return { userId: user.id, token: token, tokenExpiration: 1 };
   }

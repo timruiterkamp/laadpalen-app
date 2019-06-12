@@ -30,13 +30,15 @@ const issueSchema = new MongooseSchema({
     required: false
   },
   confirmed: {
-    type: MongooseSchema.Types.ObjectId,
-    ref: "Confirmed"
+    type: Number,
+    required: false
   },
-  messages: {
-    type: MongooseSchema.Types.ObjectId,
-    ref: "Message"
-  },
+  messages: [
+    {
+      type: MongooseSchema.Types.ObjectId,
+      ref: "Message"
+    }
+  ],
   history: {
     type: MongooseSchema.Types.ObjectId,
     ref: "History"
@@ -49,7 +51,7 @@ const issueSchema = new MongooseSchema({
     type: MongooseSchema.Types.ObjectId,
     ref: "User"
   },
-  stakeholder: {
+  stakeholders: {
     type: MongooseSchema.Types.ObjectId,
     ref: "Stakeholder"
   }
