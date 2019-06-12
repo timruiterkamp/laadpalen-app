@@ -48,6 +48,7 @@ $widthHeight: 24px;
   justify-content: space-around;
   left: 0;
   bottom: 0;
+  padding: 0;
   @include linear-gradient($color-primary);
 
   &__item {

@@ -76,7 +76,7 @@
     </Tooltip>
     <Tooltip ref="tooltip4" placement="left">This is tooltip content</Tooltip>
 
-    <Atlas height="30rem" />
+    <Atlas height="30rem"/>
   </main>
 </template>
 
