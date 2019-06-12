@@ -28,7 +28,7 @@ export default {
   }
   .d-container {
     padding: $padding-xl * 3 $padding-m $padding-l;
-    max-width: 60rem;
+    // max-width: 60rem;
     @media screen and (min-width: 40rem) {
       padding: $padding-xl * 3 $padding-l $padding-l;
     }
