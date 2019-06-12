@@ -42,6 +42,7 @@
     @include shadow($size: .5rem, $alpha: .1);
     display: flex;
     flex-direction: row;
+    z-index: 1;
     @media screen and (min-width: 60rem) {
       max-width: 12.5rem;
       height: 100%;
