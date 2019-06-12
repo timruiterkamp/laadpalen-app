@@ -10,9 +10,6 @@
         <li class="d-nav__list-item"><nuxt-link @click.native="toggleNav" class="d-nav__link" to="/dashboard/inzichten">Inzichten</nuxt-link></li>
       </ul>
     </nav>
-    <!-- <div class="d-header__bottom">
-      <button id="d-header__btn" class="btn btn--primary">minimize sidebar</button>
-    </div> -->
     <button class="d-header__menu-toggle" @click="toggleNav">{{nav_open ? 'sluit' : 'menu'}}</button>
     <div class="nav-bg" @click="toggleNav">
     </div>
@@ -45,6 +42,7 @@
     @include shadow($size: .5rem, $alpha: .1);
     display: flex;
     flex-direction: row;
+    z-index: 1;
     @media screen and (min-width: 60rem) {
       max-width: 12.5rem;
       height: 100%;
@@ -103,16 +101,6 @@
       pointer-events: none;
       transition: opacity .5s;
     }
-    // #d-header__btn {
-    //   margin: 0;
-    //   border-radius: 0;
-    //   box-shadow: none;
-    //   font-size: .875rem;
-    //   width: 100%;
-    //   &:hover {
-    //     transform: translateY(0)
-    //   }
-    // }
     &.nav-open {
       .d-nav {
         transform: translateX(100vw);
@@ -150,9 +138,6 @@
     &__list {
       list-style: none;
       padding: 0;
-    }
-    &__list-item {
-
     }
     &__link {
       display: block;

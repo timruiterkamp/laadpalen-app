@@ -1,11 +1,11 @@
 <template>
   <div class="big-header">
-    <h2 class="big-header__title">
+    <h3 class="big-header__title">
       <span class="bold">Hey {{name}}</span>
       Welk probleem wil je melden?
-    </h2>
+    </h3>
 
-    <div class="big-header__wave">
+    <!-- <div class="big-header__wave">
       <div class="svg-container">
         <svg viewBox="0 0 286.33 149.3">
           <path
@@ -13,7 +13,7 @@
           ></path>
         </svg>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -32,22 +32,24 @@ export default {
 @import '~/assets/css/config/main.scss';
 
 .big-header {
-  min-height: 20rem;
+  min-height: 14rem;
   display: block;
-  // @include linear-gradient($color-primary);
+  @include linear-gradient($color-primary);
   padding: $padding-xl * 2 $padding-s 0 $padding-l;
+  @include shadow(1rem);
+
   &__wave {
     z-index: -1;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-
     height: 300px;
   }
 
   &__title {
     color: $color-white;
+    font-weight: 100;
     span {
       display: block;
     }

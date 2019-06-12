@@ -26,9 +26,15 @@ export default {
       padding-left: 12.5rem;
     }
   }
+  .d-hr {
+    background: none;
+    border: none;
+    height: 2px;
+    background-color: $color-grey-medium;
+  }
   .d-container {
     padding: $padding-xl * 3 $padding-m $padding-l;
-    max-width: 60rem;
+    // max-width: 60rem;
     @media screen and (min-width: 40rem) {
       padding: $padding-xl * 3 $padding-l $padding-l;
     }

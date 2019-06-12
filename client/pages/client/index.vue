@@ -1,45 +1,27 @@
 <template>
-  <main>
-    <Accordion :title="'Laadpaal'" :options="laadpaalOptions"/>
-    <Accordion :title="'Laadpaal'" :options="laadpaalOptions"/>
-    <Accordion :title="'Laadpaal'" :options="laadpaalOptions"/>
-    <Accordion :title="'Laadpaal'" :options="laadpaalOptions"/>
+  <div class="c-home">
+    <BigHeader name="Folkert"/>
 
-    <div class="divider"></div>
-    <!-- <BigHeader :name="'Folkert'"/> -->
-    <ChatBubble :time="'12:39 vandaag'" :context="'operator'">
-      Goedemorgen! Wat vervelend dat een niet elektrisch voertuig geparkeerd staat.
-      <span
-        class="bold"
-      >Kunt u laten zien waar het is?</span>
-    </ChatBubble>
+    <div class="c-home__content">
+      <h4 class="c-home__title">Mijn probleem heeft te maken met:</h4>
 
-    <ChatBubble :time="'14:30 vandaag'" :context="'user'">
-      Het adres van de laadpaal is:
-      <span class="bold">
-        Nieuwe Herenstraat 32
-        1033 SE Amsterdam
-      </span>
-    </ChatBubble>
-
-    <div class="divider"></div>
-
-    <Menu/>
-  </main>
+      <Accordion :title="'Laadpaal'" :options="laadpaalOptions"/>
+      <Accordion :title="'Mijn betaalpas'" :options="paymentOptions"/>
+      <Accordion :title="'Parkeerplekken'" :options="parkingOptions"/>
+      <Accordion :title="'Overig'" :options="other"/>
+    </div>
+  </div>
 </template>
 
 <script>
 import BigHeader from '~/components/client/BigHeader.vue'
-import ChatBubble from '~/components/client/ChatBubble.vue'
 import Accordion from '~/components/client/Accordion.vue'
-import Menu from '~/components/client/Menu.vue'
 
 export default {
+  layout: 'client',
   components: {
     BigHeader,
-    ChatBubble,
-    Accordion,
-    Menu
+    Accordion
   },
   data() {
     return {
@@ -64,18 +46,48 @@ export default {
           title: 'Anders',
           slug: 'laadpaal/anders'
         }
+      ],
+      paymentOptions: [
+        {
+          title: 'Werkt niet',
+          slug: 'laadpaal-werkt-niet'
+        }
+      ],
+      parkingOptions: [
+        {
+          title: 'Er staat iemand in de weg',
+          slug: 'laadpaal-werkt-niet'
+        },
+        {
+          title: 'Auto staat te lang geparkeerd',
+          slug: 'laadpaal-werkt-niet'
+        }
+      ],
+      other: [
+        {
+          title: 'Ruimteschip ofzo heel raar dit',
+          slug: 'laadpaal-werkt-niet'
+        },
+        {
+          title: 'Start chat',
+          slug: 'laadpaal-werkt-niet'
+        }
       ]
     }
   }
 }
 </script>
 
-<style lang='scss' scoped>
-@import '~assets/css/config/main.scss';
+<style lang="scss" scoped>
+@import '~/assets/css/config/main.scss';
 
-main {
-  padding: $padding-m;
-  background-color: $color-grey-low;
+.c-home {
+  &__content {
+    padding: $padding-m;
+  }
+  &__title {
+    font-weight: 100;
+    text-align: center;
+  }
 }
 </style>
-

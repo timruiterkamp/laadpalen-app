@@ -61,9 +61,10 @@ export default {
 
   }
   &__content {
-    padding: $padding-m $padding-l;
-    padding-left: $padding-m * 3.25 + $padding-l;
+    padding: $padding-s * 1.25 $padding-m;
+    padding-left: $padding-m * 3 + $padding-m;
     display: block;
+    font-size: 1rem;
   }
   &__input-icon {
     cursor: pointer;
@@ -71,7 +72,7 @@ export default {
     justify-content: center;
     align-items: center;
     position: absolute;
-    width: $padding-m * 3.25;
+    width: $padding-m * 3;
     border-radius: $rounding-s 0 0 $rounding-s;
     height: 100%;
     top: 0;
@@ -79,6 +80,9 @@ export default {
     content: "";
     color: $color-white;
     @include linear-gradient($color-grey-medium);
+    svg {
+      width: 20px;
+    }
 
   }
   &--checked {
