@@ -18,7 +18,7 @@ const historySchema = new Schema({
     type: MongooseSchema.Types.ObjectId,
     ref: "Issue"
   },
-  stakeholder: {
+  stakeholders: {
     type: MongooseSchema.Types.ObjectId,
     ref: "Stakeholder"
   },

@@ -4,7 +4,7 @@ module.exports = buildSchema(`
 type Category {
   _id: ID!
   title: String!
-  stakeholder: Stakeholder!
+  stakeholders: Stakeholder!
   issues: [Issue!]
 }
 
@@ -21,7 +21,7 @@ type History {
   _id: ID!
   issue: Issue!
   user: User!
-  stakeholder: Stakeholder! 
+  stakeholders: Stakeholder! 
   date: String!
   messages: [Message!]
 }

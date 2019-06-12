@@ -6,7 +6,7 @@ const categorySchema = new Schema({
     type: String,
     required: true
   },
-  stakeholder: {
+  stakeholders: {
     type: Schema.Types.ObjectId,
     ref: "Stakeholder"
   },

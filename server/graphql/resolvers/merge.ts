@@ -12,7 +12,7 @@ const transformIssue = (issue: any) => {
     _id: issue.id,
     creator: user.bind(this, issue.creator),
     messages: messages.bind(this, issue._doc.messages),
-    stakeholders: stakeholder.bind(this, issue.stakeholder)
+    stakeholders: stakeholder.bind(this, issue.stakeholders)
   };
 };
 
@@ -66,11 +66,9 @@ const categories = (categoryIds: string) => {
 };
 
 const stakeholder = (stakeholderIds: string) => {
-  return StakeholderModel.find({ _id: { $in: stakeholderIds } })
-    .then((stakeholders: any) => {
-      return stakeholders.map((stakeholder: any) => {
-        return transformStakeholder(stakeholder);
-      });
+  return StakeholderModel.findById(stakeholderIds)
+    .then((stakeholder: any) => {
+      return transformStakeholder(stakeholder);
     })
     .catch((err: string) => {
       throw err;
