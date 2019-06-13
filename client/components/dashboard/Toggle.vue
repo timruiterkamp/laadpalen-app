@@ -49,6 +49,13 @@ export default {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   background-color: $color-white;
+  &:hover {
+    .toggle__input-icon {
+      svg {
+        transform: scale(1.2);
+      }
+    }
+  }
   &__input {
     opacity: 0;
     display: none;
@@ -79,9 +86,11 @@ export default {
     left: 0;
     content: "";
     color: $color-white;
+    transition: all .3s;
     @include linear-gradient($color-grey-medium);
     svg {
       width: 20px;
+      transition: inherit;
     }
 
   }
