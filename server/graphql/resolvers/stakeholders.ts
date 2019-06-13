@@ -4,11 +4,9 @@ const { transformStakeholder } = require("./merge");
 
 module.exports = {
   stakeholders: () => {
-    console.log("wordt aangevraagd");
     return StakeholderModel.find()
       .then((stakeholders: any) => {
         return stakeholders.map((stakeholder: any) => {
-          console.log(transformStakeholder(stakeholder));
           return transformStakeholder(stakeholder);
         });
       })
