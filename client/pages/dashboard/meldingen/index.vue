@@ -8,12 +8,12 @@
         <TicketList :list="openList" group="tickets" status="open" @change="update" />
       </div>
       <div class="d-tickets__column">
-        <h3>Working</h3>
+        <h3 class="d-tickets__column-title">Working</h3>
         <hr class="d-hr">
         <TicketList :list="workingList" group="tickets" status="working" @change="update" />
       </div>
       <div class="d-tickets__column">
-        <h3>Closed</h3>
+        <h3 class="d-tickets__column-title">Closed</h3>
         <hr class="d-hr">
         <TicketList :list="closedList" group="tickets" status="closed" @change="update" />
       </div>
@@ -124,6 +124,10 @@ export default {
       margin-right: $margin-m;
       padding-bottom: 10rem;
       flex: 1;
+      &-title {
+        font-size: 1.25rem;
+        font-weight: normal;
+      }
       &:last-of-type {
         margin-right: 0;
       }
