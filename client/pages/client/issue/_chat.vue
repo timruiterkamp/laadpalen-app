@@ -1,5 +1,16 @@
 <template>
   <div class="c-chat">
+    <!-- serverObj: {
+      title: 'laadpaal kapot',
+      description: 'Op de vijverberg is het niet lit',
+      status: 'open',
+      location: 'De vijverberg 201',
+      image: 'String.jpg',
+      stakeholderId: '5cf8eb7c01707a2031a38e1d',
+      created: '2019-06-12T10:52:22.783Z',
+      polenumber: 18293,
+      confirmed: 0
+    } -->
     <SmallHeader/>
 
     <div class="c-chat__content">
@@ -8,14 +19,16 @@
         {{ $route.params.chat }}
       </h4>
 
-      <ChatBubble :time="'12:39 vandaag'" :context="'operator'">
-        Goedemorgen! Wat vervelend dat een niet elektrisch voertuig geparkeerd staat.
-        <span
-          class="bold"
-        >Kunt u laten zien waar het is?</span>
-      </ChatBubble>
+      <div class="c-chat__block" v-for="step in currentSteps" :key="step.context + step.id">
+        <ChatBubble :time="step.time()" :context="step.context">
+          <!-- <p v-html="step.message"></p> -->
+          {{step.message}}
+        </ChatBubble>
+        <button v-if="step.action && step.action.el === 'button' && index === step.id + 1" class="btn btn--primary" @click="(e) => $refs[step.action.modal].show(e)">{{step.action.text}}</button>
+      </div>
 
-      <a class="btn btn--primary" @click="modalLocation">Deel locatie</a>
+      <button type="button" name="button" @click="() => {index = index + 1}">add step</button>
+
     </div>
 
     <Modal ref="modalLocation">
@@ -69,15 +82,61 @@ export default {
         'Laadpalen',
         'Niet beschikbaar',
         'Aangeraden plan'
-      ]
+      ],
+      steps: [
+        {
+          id: 0,
+          context: 'operator',
+          message: 'Goedemorgen! Wat vervelend dat een niet elektrisch voertuig geparkeerd staat. <span class="bold">Kunt u laten zien waar het is?</span>',
+          action: {
+            el: 'button',
+            text: 'Deel locatie',
+            modal: 'modalLocation'
+          },
+          time: () => {
+            const date = new Date
+            const hours = date.getUTCHours()
+            const minutes = date.getUTCMinutes()
+            return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes} vandaag`
+          }
+        },
+        {
+          id: 1,
+          context: 'user',
+          message: 'Dit is de locatie van de laadpaal.',
+          time: () => {
+            const date = new Date
+            const hours = date.getUTCHours()
+            const minutes = date.getUTCMinutes()
+            return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes} vandaag`
+          }
+        },
+        {
+          id: 2,
+          context: 'operator',
+          message: 'Stuur foto dan',
+          action: {
+            el: 'button',
+            text: 'Stuur foto',
+            modal: 'modalLocation'
+          },
+          time: () => {
+            const date = new Date
+            const hours = date.getUTCHours()
+            const minutes = date.getUTCMinutes()
+            return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes} vandaag`
+          }
+        },
+      ],
+      index: 1
+    }
+  },
+  computed: {
+    currentSteps() {
+      return this.steps.slice(0, this.index)
     }
   },
   methods: {
-    modalLocation(e) {
-      e.preventDefault()
-
-      console.log('test')
-    },
     modalLocation(e) {
       this.$refs.modalLocation.show(e)
     }
@@ -89,6 +148,9 @@ export default {
 @import '~/assets/css/config/main.scss';
 
 .c-chat {
+  &__block {
+    margin-bottom: 2rem;
+  }
   &__content {
     padding: $padding-m;
 
@@ -156,4 +218,3 @@ export default {
   }
 }
 </style>
-
