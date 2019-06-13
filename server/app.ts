@@ -5,7 +5,7 @@ const graphqlHTTP = require("express-graphql");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const port = process.env.PORT || 3001;
-
+const cors = require("cors");
 const graphqlSchema = require("./graphql/schema/index");
 const graphqlResolvers = require("./graphql/resolvers/index");
 import { RequestController } from "./requests/requests";
@@ -17,6 +17,7 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(isAuth);
 

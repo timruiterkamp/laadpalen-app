@@ -24,10 +24,3 @@ app.get("/api/laadpalen", function(req, res) {
       throw err;
     });
 });
-app.get("/api/endpoint2", function(req, res) {
-  // Set Content-Type differently for this particular API
-  res.set({ "Content-Type": "application/xml" });
-  res.send(
-    "<note>\n        <to>Tove</to>\n        <from>Jani</from>\n        <heading>Reminder</heading>\n        <body>Don't forget me this weekend!</body>\n        </note>"
-  );
-});

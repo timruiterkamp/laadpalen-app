@@ -25,6 +25,7 @@ module.exports = {
       });
   },
   createIssue: (args: any, req: any) => {
+    console.log(req.get("Authorization"));
     const issue = new IssueModel({
       title: args.issueInput.title,
       description: args.issueInput.description,
@@ -32,7 +33,7 @@ module.exports = {
       status: args.issueInput.status,
       polenumber: args.issueInput.polenumber,
       created: args.issueInput.date,
-      creator: req.userId,
+      creator: req.userId ? req.userId : null,
       image: args.issueInput.image,
       stakeholders: args.issueInput.stakeholderId
     });
@@ -51,10 +52,25 @@ module.exports = {
 
     let createdIssue = {} as issueObject;
 
+    if (!req.userId) {
+      return issue
+        .save()
+        .then((result: any) => {
+          createdIssue = transformIssue(issue);
+        })
+        .then((res: any) => {
+          return createdIssue;
+        })
+        .catch((err: any) => {
+          throw err;
+        });
+    }
+
     return issue
       .save()
       .then((result: any) => {
         createdIssue = transformIssue(issue);
+        console.log(req.userId);
         return User.findById(req.userId);
       })
       .then((user: any) => {
