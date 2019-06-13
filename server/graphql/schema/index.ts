@@ -37,7 +37,7 @@ type Issue {
   _id: ID!
   title: String!
   description: String!
-  creator: User!
+  creator: User
   category: Category!
   location: String,
   status: String

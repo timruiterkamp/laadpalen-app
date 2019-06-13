@@ -50,6 +50,7 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa'
+    // '@nuxtjs/apollo'
   ],
   /*
    ** Axios module configuration
@@ -57,6 +58,52 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
   },
+  // apollo: {
+  //   tokenName: 'laadpalen-app', // optional, default: apollo-token
+  //   tokenExpires: 10, // optional, default: 7 (days)
+  //   includeNodeModules: false, // optional, default: false (this includes graphql-tag for node_modules folder)
+  //   authenticationType: 'Basic', // optional, default: 'Bearer'
+  //   // (Optional) Default 'apollo' definition
+  //   defaultOptions: {
+  //     // See 'apollo' definition
+  //     // For example: default query options
+  //     $query: {
+  //       loadingKey: 'loading',
+  //       fetchPolicy: 'cache-and-network'
+  //     }
+  //   },
+  //   // optional
+  //   errorHandler: '~/plugins/apollo-error-handler.js',
+  //   // required
+  //   clientConfigs: {
+  //     default: {
+  //       // required
+  //       httpEndpoint: 'http://localhost:3001',
+  //       // optional
+  //       // See https://www.apollographql.com/docs/link/links/http.html#options
+  //       httpLinkOptions: {
+  //         credentials: 'same-origin'
+  //       },
+  //       // You can use `wss` for secure connection (recommended in production)
+  //       // Use `null` to disable subscriptions
+  //       wsEndpoint: '', // optional
+  //       // LocalStorage token
+  //       tokenName: 'laadpalen-app', // optional
+  //       // Enable Automatic Query persisting with Apollo Engine
+  //       persisting: false, // Optional
+  //       // Use websockets for everything (no HTTP)
+  //       // You need to pass a `wsEndpoint` for this to work
+  //       websocketsOnly: false // Optional
+  //     },
+  //     test: {
+  //       httpEndpoint: 'http://localhost:3001',
+  //       wsEndpoint: 'ws://localhost:3001',
+  //       tokenName: 'laadpalen-app'
+  //     }
+  //     // alternative: user path to config which returns exact same config options
+  //     // test2: '~/plugins/my-alternative-apollo-config.js'
+  //   }
+  // },
 
   /*
    ** Build configuration

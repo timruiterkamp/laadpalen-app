@@ -11,13 +11,17 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@nuxtjs/apollo": "^4.0.0-rc6",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^2.6.0",
     "cross-env": "^5.2.0",
     "express": "^4.16.4",
+    "graphql-tag": "^2.10.1",
     "mapbox-gl": "^1.0.0",
     "nuxt": "^2.4.0",
     "popper.js": "^1.15.0",
+    "vue-server-renderer": "2.6.6",
+    "vue-template-compiler": "^2.6.10",
     "vuedraggable": "^2.21.0"
   },
   "devDependencies": {
