@@ -5,8 +5,14 @@
       <div v-if="stakeholder" class="ticket__tag">{{stakeholder}}</div>
     </div>
     <div class="ticket__bottom">
-      <p class="ticket__content-meta">{{location}}</p>
-      <p class="ticket__content-meta" v-if="time && date"><span class="bold">{{time}}</span> - {{date}}</p>
+      <div class="ticket__content-meta ticket__content-meta--location">
+        <p class="ticket__content-meta__text">{{location}}</p>
+      </div>
+      <div class="ticket__content-meta ticket__content-meta--datetime" v-if="time && date">
+        <p class="ticket__content-meta__text">
+          <span class="bold">{{time}}</span> - {{date}}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -57,17 +63,27 @@
 
 <style lang="scss" scoped>
   @import '~/assets/css/config/main.scss';
-
+  .allow-drag {
+    .ticket {
+      &:hover {
+        .ticket__content-meta--location {
+          .ticket__content-meta__text {
+            animation: metascroll 3s infinite linear;
+          }
+        }
+      }
+    }
+  }
   .ticket {
-    margin: $margin-s 0;
-    padding: $padding-m;
+    margin: $margin-xs 0;
+    padding: $padding-s;
     background-color: $color-white;
     border-radius: $rounding-s;
     @include shadow(1rem);
     display: block;
     max-width: 40rem;
     @media screen and (min-width: 40rem) {
-      padding: $padding-l;
+      padding: $padding-m;
     }
     &__top {
       margin-bottom: $margin-xs;
@@ -80,19 +96,57 @@
     &__title {
       margin-bottom: 0;
       font-size: 1rem;
-      @media screen and (min-width: 40rem) {
-        font-size: 1.25rem;
-      }
     }
     &__tag {
       background-color: $color-grey-low;
-      padding: $padding-xs $padding-m;
+      padding: $padding-xs $padding-s;
       border-radius: $rounding-s;
-      font-size: .875rem;
+      font-size: .75rem;
+      @media screen and (min-width: 40rem) {
+        padding: $padding-xs $padding-m;
+      }
     }
     &__content-meta {
-      margin-bottom: 0;
-      font-size: .875rem;
+      font-size: .75rem;
+      white-space: nowrap;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      max-width: 60%;
+      -ms-overflow-style: none;  // IE 10+
+      scrollbar-width: none;  // Firefox
+      position: relative;
+      &--location {
+        &::after {
+          position: absolute;
+          right: 0;
+          top: 0;
+          height: 100%;
+          width: 20%;
+          min-width: 2rem;
+          background-color: white;
+          background: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
+          opacity: .5;
+          content: "";
+        }
+      }
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      &__text {
+        margin-bottom: 0;
+        display: block;
+      }
+    }
+    @keyframes metascroll {
+      20% {
+        transform: translateX(0)
+      }
+      80% {
+        transform: translateX(-50%);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
     }
     &--open {
       .ticket__title {
