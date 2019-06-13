@@ -10,7 +10,11 @@
           </svg>
         </div>
 
-        <slot></slot>
+        <slot name="header"></slot>
+
+        <div class="modal__content">
+          <slot name="content"></slot>
+        </div>
       </div>
     </div>
   </transition>
@@ -69,7 +73,6 @@ $widthHeight: 2.5rem;
     width: 90%;
     max-width: 40rem;
     position: relative;
-    padding: $padding-m;
     transition: transform 0.5s, opacity 0.3s;
     z-index: 9;
 
@@ -85,6 +88,7 @@ $widthHeight: 2.5rem;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      z-index: 9;
       &:hover {
         @include linear-gradient(darken($color-primary, 5%));
         .modal__inner-icon {
@@ -102,6 +106,9 @@ $widthHeight: 2.5rem;
       stroke-linejoin: round;
       transition: transform 0.3s;
     }
+  }
+  &__content {
+    padding: $padding-m;
   }
 }
 
