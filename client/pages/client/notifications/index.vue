@@ -15,7 +15,19 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$store.state.authToken)
+    fetch('http://localhost:3001/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.$store.getters.GET_TOKEN
+      },
+      body: JSON.stringify({
+        query: 'query { issues { location status image confirmed }}'
+      })
+    })
+      .then(res => res.json())
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err))
   }
 }
 </script>
