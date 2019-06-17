@@ -5,21 +5,20 @@
       <div class="d-tickets__column">
         <h3 class="d-tickets__column-title">Open</h3>
         <hr class="d-hr">
-        <TicketList :list="openList" group="tickets" status="open" @change="update" />
+        <TicketList :list="openList" group="tickets" status="open" @change="update"/>
       </div>
       <div class="d-tickets__column">
         <h3 class="d-tickets__column-title">Working</h3>
         <hr class="d-hr">
-        <TicketList :list="workingList" group="tickets" status="working" @change="update" />
+        <TicketList :list="workingList" group="tickets" status="working" @change="update"/>
       </div>
       <div class="d-tickets__column">
         <h3 class="d-tickets__column-title">Closed</h3>
         <hr class="d-hr">
-        <TicketList :list="closedList" group="tickets" status="closed" @change="update" />
+        <TicketList :list="closedList" group="tickets" status="closed" @change="update"/>
       </div>
     </div>
   </div>
-
 </template>
 <script>
 import TicketList from '~/components/dashboard/TicketList.vue'
@@ -86,17 +85,26 @@ export default {
     openList() {
       return this.list
         .filter(ticket => ticket.status === 'open')
-        .sort((ticketA, ticketB) => new Date(ticketB.created) - new Date(ticketA.created))
+        .sort(
+          (ticketA, ticketB) =>
+            new Date(ticketB.created) - new Date(ticketA.created)
+        )
     },
     workingList() {
       return this.list
         .filter(ticket => ticket.status === 'working')
-        .sort((ticketA, ticketB) => new Date(ticketB.created) - new Date(ticketA.created))
+        .sort(
+          (ticketA, ticketB) =>
+            new Date(ticketB.created) - new Date(ticketA.created)
+        )
     },
     closedList() {
       return this.list
         .filter(ticket => ticket.status === 'closed')
-        .sort((ticketA, ticketB) => new Date(ticketB.created) - new Date(ticketA.created))
+        .sort(
+          (ticketA, ticketB) =>
+            new Date(ticketB.created) - new Date(ticketA.created)
+        )
     },
     stakeholder() {
       return this.$store.getters.GET_STAKEHOLDER
@@ -111,26 +119,25 @@ export default {
     }
   }
 }
-
 </script>
 
 <style lang="scss" scoped>
-  @import '~/assets/css/config/main.scss';
-  .d-tickets {
-    @media screen and (min-width: 60rem) {
-      display: flex;
+@import '~/assets/css/config/main.scss';
+.d-tickets {
+  @media screen and (min-width: 60rem) {
+    display: flex;
+  }
+  &__column {
+    margin-right: $margin-m;
+    padding-bottom: 10rem;
+    flex: 1;
+    &-title {
+      font-size: 1.25rem;
+      font-weight: normal;
     }
-    &__column {
-      margin-right: $margin-m;
-      padding-bottom: 10rem;
-      flex: 1;
-      &-title {
-        font-size: 1.25rem;
-        font-weight: normal;
-      }
-      &:last-of-type {
-        margin-right: 0;
-      }
+    &:last-of-type {
+      margin-right: 0;
     }
   }
+}
 </style>
