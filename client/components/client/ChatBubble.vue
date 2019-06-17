@@ -40,7 +40,7 @@ export default {
   }
   &__time {
     margin-bottom: $padding-l;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
   &__operator {
     .chat-bubble {

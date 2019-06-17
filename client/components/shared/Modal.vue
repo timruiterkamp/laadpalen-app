@@ -1,9 +1,9 @@
 <template>
   <transition name="modal">
     <div v-if="visible" class="modal">
-      <div @click="show" class="modal__background"></div>
+      <div @click="hide" class="modal__background"></div>
       <div class="modal__inner">
-        <div class="modal__inner-close" @click="show">
+        <div class="modal__inner-close" @click="hide">
           <svg class="modal__inner-icon">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -29,11 +29,12 @@ export default {
   },
   methods: {
     show(e) {
-      this.visible = !this.visible
-
-      this.visble
-        ? (document.body.style.overflowY = 'scroll')
-        : (document.body.style.overflowY = 'hidden')
+      this.visible = true
+      document.body.style.overflowY = 'hidden'
+    },
+    hide() {
+      this.visible = false
+      document.body.style.overflowY = 'scroll'
     }
   }
 }

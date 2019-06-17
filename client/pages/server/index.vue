@@ -1,7 +1,21 @@
 <template>
   <div>
     <h1>Send something to the client</h1>
-    <a href="#" class="btn btn--primary" @click="send">Send</a>
+    <input v-model="title" placeholder="edit me">
+    <p>title is: {{ title }}</p>
+    <input v-model="description" placeholder="edit me">
+    <p>description is: {{ description }}</p>
+    <input v-model="location" placeholder="edit me">
+    <p>location is: {{ location }}</p>
+    <input v-model="polenumber" placeholder="edit me">
+    <p>polenumber is: {{ polenumber }}</p>
+    <input v-model="image" placeholder="edit me">
+    <p>image is: {{ image }}</p>
+    <a href="#" class="btn btn--primary" @click="sendData">Send</a>
+    <a href="#" class="btn btn--primary" @click="getData">get</a>
+    <div v-if="queryResult && queryResult.length">
+      <li v-for="(result, index) in queryResult" :key="result.title + index">title: {{result.title}}</li>
+    </div>
   </div>
 </template>
 
@@ -11,75 +25,65 @@ const axios = require('axios')
 export default {
   data() {
     return {
-      token: ''
+      token: '',
+      queryResult: null,
+      mutationResult: null,
+      title: '',
+      description: '',
+      location: '',
+      polenumber: '',
+      image: ''
     }
   },
   methods: {
-    getAuth() {
-      return fetch('http://localhost:3001/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: `{ login(email: "test@test.com", password:"tester") {token} }`
-        })
-      })
-        .then(res => res.json())
-        .then(res => res.data.login.token)
-        .catch(err => console.log(err))
-    },
-    async send() {
-      const token = await this.getAuth()
-      console.log(token)
+    async getData() {
+      // const token = await this.getAuth()
 
       fetch('http://localhost:3001/graphql', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token
+          Authorization: 'Bearer ' + this.$store.getters.GET_TOKEN
         },
         body: JSON.stringify({
           query:
-            'mutation { createIssue(issueInput:{title: "laadpaal kapot", description: "Op de vijverberg is het niet lit", status: "open", location: "De vijverberg 201", image: "String.jpg", stakeholderId: "5cf8eb7c01707a2031a38e1d", created: "2019-06-12T10:52:22.783Z", polenumber: 18293, confirmed: 0}) { title } }'
+            'query { issues { title stakeholders { title } creator { email } messages { message } }}'
         })
       })
         .then(res => res.json())
-        .then(res => console.log(res.data))
+        .then(res => {
+          console.log(res.data)
+          this.queryResult = res.data.issues[0]
+        })
+        .catch(err => console.log(err))
+    },
+    async sendData() {
+      // prettier-ignore
+      const data = {
+        title: this.title,
+        description: this.description,
+        location: this.location,
+        status: "open",
+        polenumber: +this.polenumber,
+        createdAt: new Date().toISOString(),
+        image: this.image,
+        stakeholderId: "5d00f4aed7597a3c181949e0"
+      }
+
+      fetch('http://localhost:3001/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.$store.getters.GET_TOKEN
+        },
+        body: JSON.stringify({
+          query: `mutation { createIssue(issueInput:{title: "${data.title}", description: "${data.description}", status: "${data.status}", location: "${data.location}", image: "${data.image}", stakeholderId: "${data.stakeholderId}", createdAt: "${data.createdAt}", polenumber: ${data.polenumber}, confirmed: 0}) { title creator { email } stakeholders { title } createdAt} }`
+        })
+      })
+        .then(res => res.json())
+        .then(res => console.log(res))
         .catch(err => console.log(err))
     }
-    //   return fetch('http://localhost:3001/graphql', {
-    //     method: 'POST',
-    //     headers: { 'content-type': 'application/json' },
-    //     body: JSON.stringify({ query: this.query })
-    //   })
-    //     .then(response => response.json())
-    //     .then((data, res) => {
-    //       console.log(data)
-    //       if (data.errors) {
-    //         console.log('Issue unsuccessfully created')
-    //         res.send('Issue unsuccessfull')
-    //       } else {
-    //         console.log('--- Issue aangemaakt ---')
-    //         console.log('req.file = ')
-    //         console.log(req.file)
-
-    //         if (req.file) {
-    //           // als er een image wordt meegestuurd
-    //           fs.rename(
-    //             req.file.path,
-    //             req.file.destination + data.data.createIssue._id + '.jpeg',
-    //             err => {
-    //               if (err) {
-    //                 console.log(err)
-    //               }
-    //             }
-    //           )
-    //         }
-
-    //         // req.session.currentIssue = data.data.createComplaint._id
-    //         // res.redirect('/complaint/success')
-    //       }
-    //     })
-    // }
   }
 }
 </script>

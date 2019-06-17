@@ -10,6 +10,7 @@ const transformIssue = (issue: any) => {
   return {
     ...issue._doc,
     _id: issue.id,
+    createdAt: new Date(issue.createdAt).toISOString(),
     creator: user.bind(this, issue.creator),
     messages: messages.bind(this, issue._doc.messages),
     stakeholders: stakeholder.bind(this, issue.stakeholders)
@@ -21,8 +22,19 @@ const transformMessage = (message: any) => {
     ...message._doc,
     _id: message.id,
     user: user.bind(this, message.user),
+    createdAt: new Date(message.createdAt).toISOString(),
+    updatedAt: new Date(message.updatedAt).toISOString(),
     issues: issues.bind(this, message.issues),
     categories: categories.bind(this, message.categories)
+  };
+};
+
+const transformUser = (user: any) => {
+  return {
+    ...user._doc,
+    _id: user.id,
+    createdIssues: issues.bind(this, user._doc.createdIssues),
+    createdMessages: messages.bind(this, user._doc.createdMessages)
   };
 };
 
@@ -35,6 +47,7 @@ const transformCategory = (category: any) => {
 };
 
 const transformStakeholder = (stakeholder: any) => {
+  console.log(stakeholder);
   return {
     ...stakeholder._doc,
     _id: stakeholder.id
@@ -90,12 +103,7 @@ const messages = (messageIds: string) => {
 const user = (userId: string) => {
   return User.findById(userId)
     .then((user: any) => {
-      return {
-        ...user._doc,
-        _id: user.id,
-        createdIssues: issues.bind(this, user._doc.createdIssues),
-        createdMessages: messages.bind(this, user._doc.createdMessages)
-      };
+      return transformUser(user);
     })
     .catch((err: string) => {
       throw err;
@@ -106,4 +114,5 @@ exports.transformIssue = transformIssue;
 exports.transformMessage = transformMessage;
 exports.transformCategory = transformCategory;
 exports.transformStakeholder = transformStakeholder;
+exports.transformUser = transformUser;
 // exports.issues = issues;

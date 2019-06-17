@@ -57,4 +57,8 @@ $hoverDarkenAmount: 3%;
       @include linear-gradient(darken($color-tertiary, $hoverDarkenAmount * 2.5));
     }
   }
+  &--center {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

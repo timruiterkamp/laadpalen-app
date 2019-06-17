@@ -25,7 +25,7 @@ const issueSchema = new MongooseSchema({
     type: Number,
     required: false
   },
-  created: {
+  createdAt: {
     type: Date,
     required: false
   },

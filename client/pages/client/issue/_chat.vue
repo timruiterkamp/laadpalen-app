@@ -1,16 +1,5 @@
 <template>
   <div class="c-chat">
-    <!-- serverObj: {
-      title: 'laadpaal kapot',
-      description: 'Op de vijverberg is het niet lit',
-      status: 'open',
-      location: 'De vijverberg 201',
-      image: 'String.jpg',
-      stakeholderId: '5cf8eb7c01707a2031a38e1d',
-      created: '2019-06-12T10:52:22.783Z',
-      polenumber: 18293,
-      confirmed: 0
-    }-->
     <SmallHeader/>
 
     <div class="c-chat__content">
@@ -18,20 +7,21 @@
         <span class="bold">Melding:</span>
         {{ $route.params.chat }}
       </h4>
-
-      <div class="c-chat__block" v-for="step in currentSteps" :key="step.context + step.id">
-        <ChatBubble :time="step.time()" :context="step.context">
-          <!-- <p v-html="step.message"></p> -->
-          {{step.message}}
-        </ChatBubble>
-        <button
-          v-if="step.action && step.action.el === 'button' && index === step.id + 1"
-          class="btn btn--primary"
-          @click="(e) => $refs[step.action.modal].show(e)"
-        >{{step.action.text}}</button>
-      </div>
-
-      <button type="button" name="button" @click="() => {index = index + 1}">add step</button>
+      <transition-group name="messages">
+        <div class="c-chat__block" v-for="step in currentSteps" :key="step.context + step.id">
+          <ChatBubble :time="step.timestamp" :context="step.context">
+            <span v-if="step.message" v-html="step.message"></span>
+            <img v-if="step.img" :src="step.img.src" class="c-chat__img">
+          </ChatBubble>
+          <button v-if="step.action && step.action.el === 'button' && index === step.id + 1" class="btn btn--primary" @click="(e) => $refs[step.action.modal].show(e)">{{step.action.text}}</button>
+          <div v-if="step.action && step.action.el === 'input' && index === step.id + 1" class="c-chat__file-group">
+            <label class="c-chat__file-label btn btn--primary">
+              camera openen
+              <input class="c-chat__file-input" type="file" accept="image/*" capture="environment" @change="e => handleFiles(e, step.id + 1)">
+            </label>
+          </div>
+        </div>
+      </transition-group>
     </div>
 
     <Modal ref="modalLocation">
@@ -59,6 +49,8 @@
         </ul>
 
         <div class="divider-s"></div>
+
+        <button class="btn btn--primary btn--center" @click="handleLocation">bevestig gekozen paal</button>
       </template>
     </Modal>
   </div>
@@ -69,6 +61,7 @@ import SmallHeader from '~/components/client/SmallHeader.vue'
 import ChatBubble from '~/components/client/ChatBubble.vue'
 import Modal from '~/components/shared/Modal.vue'
 import Atlas from '~/components/shared/Atlas.vue'
+import TweenLite from 'gsap'
 
 export default {
   layout: 'client',
@@ -96,59 +89,92 @@ export default {
             el: 'button',
             text: 'Deel locatie',
             modal: 'modalLocation'
-          },
-          time: () => {
-            const date = new Date()
-            const hours = date.getUTCHours()
-            const minutes = date.getUTCMinutes()
-            return `${hours < 10 ? '0' + hours : hours}:${
-              minutes < 10 ? '0' + minutes : minutes
-            } vandaag`
           }
         },
         {
           id: 1,
           context: 'user',
           message: 'Dit is de locatie van de laadpaal.',
-          time: () => {
-            const date = new Date()
-            const hours = date.getUTCHours()
-            const minutes = date.getUTCMinutes()
-            return `${hours < 10 ? '0' + hours : hours}:${
-              minutes < 10 ? '0' + minutes : minutes
-            } vandaag`
-          }
         },
         {
           id: 2,
           context: 'operator',
           message: 'Stuur foto dan',
           action: {
-            el: 'button',
-            text: 'Stuur foto',
-            modal: 'modalLocation'
-          },
-          time: () => {
-            const date = new Date()
-            const hours = date.getUTCHours()
-            const minutes = date.getUTCMinutes()
-            return `${hours < 10 ? '0' + hours : hours}:${
-              minutes < 10 ? '0' + minutes : minutes
-            } vandaag`
+            el: 'input',
+            text: 'Maak foto',
+          }
+        },
+        {
+          id: 3,
+          context: 'user',
+          message: '',
+          img: {
+            src: ''
           }
         }
       ],
-      index: 1
+      index: 0
     }
+  },
+  mounted() {
+    setTimeout(() => (this.index = this.index + 1), 0)
   },
   computed: {
     currentSteps() {
+      if (!this.steps[this.index - 1] && this.index > 0) {
+        return this.steps
+      }
+      if (this.index === 0) {
+        return []
+      }
+      this.genTimeStamp(this.index - 1)
       return this.steps.slice(0, this.index)
     }
   },
   methods: {
     modalLocation(e) {
       this.$refs.modalLocation.show(e)
+    },
+    addStep() {
+      this.index = this.index + 1
+      const ScrollToPlugin = require('gsap/ScrollToPlugin')
+      const body = document.querySelector('body')
+      const bottom = body.getBoundingClientRect().height
+      console.log(body, bottom);
+      TweenLite.to(window, 3, {scrollTo: bottom, delay: 0.3})
+    },
+    genTimeStamp(index) {
+      const stamp = this.time(new Date())
+      this.steps[index].timestamp = stamp
+    },
+    format(time) {
+      return time < 10 ? '0' + time : time
+    },
+    time(date) {
+      const hours = this.format(date.getUTCHours())
+      const minutes = this.format(date.getUTCMinutes())
+      const day = this.format(date.getDate())
+      const month = this.format(date.getMonth() + 1)
+      const year = this.format(date.getFullYear())
+      return `${hours}:${minutes} - ${day}/${month}/${year}`
+    },
+    handleLocation() {
+      this.$refs.modalLocation.hide()
+      this.addStep()
+      setTimeout(this.addStep, 1000)
+    },
+    handleFiles(e, index) {
+      const file = e.target.files[0]
+      if (file) {
+        // this.steps[index].message = file.name
+        this.addStep()
+        var reader = new FileReader()
+        reader.addEventListener('load', e => {
+          this.steps[index].img.src = e.target.result
+        })
+        reader.readAsDataURL(file)
+      }
     }
   }
 }
@@ -163,6 +189,16 @@ export default {
   }
   &__content {
     padding: $padding-m;
+    // position: fixed;
+    // bottom: 0;
+    // min-height: 100vh;
+    // max-height: 100vh;
+    // padding-top: 8rem;
+    // padding-bottom: 5rem;
+    // left: 0;
+    // width: 100%;
+    // z-index: -1;
+    // overflow: scroll;
 
     .btn {
       margin: 0 auto;
@@ -174,6 +210,27 @@ export default {
     font-weight: 100;
     text-align: center;
   }
+  &__img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  &__file-input {
+    width: 0.1px;
+  	height: 0.1px;
+  	opacity: 0;
+  	overflow: hidden;
+  	position: absolute;
+  	z-index: -1;
+  }
+}
+
+.messages-enter-active, .messages-leave-active {
+  transition: all 1s;
+}
+.messages-enter, .messages-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .modal {
@@ -197,6 +254,7 @@ export default {
       display: flex;
       align-items: center;
       height: 1.8rem;
+      line-height: 1;
       &:nth-of-type(1) {
         .modal__legenda--color {
           background-color: blue;
