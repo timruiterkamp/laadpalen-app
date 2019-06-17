@@ -10,7 +10,7 @@
 <script>
 import DashboardHeader from '~/components/dashboard/DashboardHeader'
 export default {
-  middleware: 'auth-token',
+  //middleware: 'auth-token',
   components: {
     DashboardHeader
   }

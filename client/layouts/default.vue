@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  middleware: 'auth-token'
+  //  middleware: 'auth-token'
 }
 </script>
 

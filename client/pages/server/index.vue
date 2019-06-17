@@ -58,18 +58,17 @@ export default {
         .catch(err => console.log(err))
     },
     async sendData() {
+      // prettier-ignore
       const data = {
         title: this.title,
         description: this.description,
         location: this.location,
-        status: 'open',
-        polenumber: this.polenumber,
-        createdAt: new Date().toISOString().toString(),
+        status: "open",
+        polenumber: +this.polenumber,
+        createdAt: new Date().toISOString(),
         image: this.image,
-        stakeholderId: '5d00f4aed7597a3c181949e0'
+        stakeholderId: "5d00f4aed7597a3c181949e0"
       }
-
-      console.log
 
       fetch('http://localhost:3001/graphql', {
         method: 'POST',
@@ -78,7 +77,7 @@ export default {
           Authorization: 'Bearer ' + this.$store.getters.GET_TOKEN
         },
         body: JSON.stringify({
-          query: `mutation { createIssue(issueInput:{title: ${data.title}, description: ${data.description}, status: ${data.status}, location: ${data.location}, image: ${data.image}, stakeholderId: "5d00f4aed7597a3c181949e0", createdAt: ${data.createdAt}, polenumber: ${data.polenumber}, confirmed: 0}) { title creator { email } stakeholders { title } createdAt} }`
+          query: `mutation { createIssue(issueInput:{title: "${data.title}", description: "${data.description}", status: "${data.status}", location: "${data.location}", image: "${data.image}", stakeholderId: "${data.stakeholderId}", createdAt: "${data.createdAt}", polenumber: ${data.polenumber}, confirmed: 0}) { title creator { email } stakeholders { title } createdAt} }`
         })
       })
         .then(res => res.json())
