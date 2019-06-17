@@ -1,16 +1,5 @@
 <template>
   <div class="c-chat">
-    <!-- serverObj: {
-      title: 'laadpaal kapot',
-      description: 'Op de vijverberg is het niet lit',
-      status: 'open',
-      location: 'De vijverberg 201',
-      image: 'String.jpg',
-      stakeholderId: '5cf8eb7c01707a2031a38e1d',
-      created: '2019-06-12T10:52:22.783Z',
-      polenumber: 18293,
-      confirmed: 0
-    } -->
     <SmallHeader/>
 
     <div class="c-chat__content">
