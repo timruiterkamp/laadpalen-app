@@ -4,12 +4,19 @@
       <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
 
-    <h3 class="small-header__title">Geef je probleem door!</h3>
+    <h3 class="small-header__title">{{ title }}</h3>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    title: {
+      default: 'no title',
+      type: String,
+      required: true
+    }
+  },
   methods: {
     goBack() {
       window.history.back()
