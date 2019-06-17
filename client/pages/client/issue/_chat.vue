@@ -10,7 +10,7 @@
       created: '2019-06-12T10:52:22.783Z',
       polenumber: 18293,
       confirmed: 0
-    } -->
+    }-->
     <SmallHeader/>
 
     <div class="c-chat__content">
@@ -24,11 +24,14 @@
           <!-- <p v-html="step.message"></p> -->
           {{step.message}}
         </ChatBubble>
-        <button v-if="step.action && step.action.el === 'button' && index === step.id + 1" class="btn btn--primary" @click="(e) => $refs[step.action.modal].show(e)">{{step.action.text}}</button>
+        <button
+          v-if="step.action && step.action.el === 'button' && index === step.id + 1"
+          class="btn btn--primary"
+          @click="(e) => $refs[step.action.modal].show(e)"
+        >{{step.action.text}}</button>
       </div>
 
       <button type="button" name="button" @click="() => {index = index + 1}">add step</button>
-
     </div>
 
     <Modal ref="modalLocation">
@@ -87,17 +90,20 @@ export default {
         {
           id: 0,
           context: 'operator',
-          message: 'Goedemorgen! Wat vervelend dat een niet elektrisch voertuig geparkeerd staat. <span class="bold">Kunt u laten zien waar het is?</span>',
+          message:
+            'Goedemorgen! Wat vervelend dat een niet elektrisch voertuig geparkeerd staat. <span class="bold">Kunt u laten zien waar het is?</span>',
           action: {
             el: 'button',
             text: 'Deel locatie',
             modal: 'modalLocation'
           },
           time: () => {
-            const date = new Date
+            const date = new Date()
             const hours = date.getUTCHours()
             const minutes = date.getUTCMinutes()
-            return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes} vandaag`
+            return `${hours < 10 ? '0' + hours : hours}:${
+              minutes < 10 ? '0' + minutes : minutes
+            } vandaag`
           }
         },
         {
@@ -105,10 +111,12 @@ export default {
           context: 'user',
           message: 'Dit is de locatie van de laadpaal.',
           time: () => {
-            const date = new Date
+            const date = new Date()
             const hours = date.getUTCHours()
             const minutes = date.getUTCMinutes()
-            return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes} vandaag`
+            return `${hours < 10 ? '0' + hours : hours}:${
+              minutes < 10 ? '0' + minutes : minutes
+            } vandaag`
           }
         },
         {
@@ -121,12 +129,14 @@ export default {
             modal: 'modalLocation'
           },
           time: () => {
-            const date = new Date
+            const date = new Date()
             const hours = date.getUTCHours()
             const minutes = date.getUTCMinutes()
-            return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes} vandaag`
+            return `${hours < 10 ? '0' + hours : hours}:${
+              minutes < 10 ? '0' + minutes : minutes
+            } vandaag`
           }
-        },
+        }
       ],
       index: 1
     }

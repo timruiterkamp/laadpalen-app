@@ -9,8 +9,14 @@
 import Menu from '~/components/client/Menu.vue'
 
 export default {
+  middleware: 'auth-token',
   components: {
     Menu
+  },
+  data() {
+    return {
+      prevHeight: 0
+    }
   }
 }
 </script>
