@@ -39,11 +39,11 @@ export default {
         },
         body: JSON.stringify({
           query:
-            'mutation { createIssue(issueInput:{title: "laadpaal kapot", description: "Op de vijverberg is het niet lit", status: "open", location: "De vijverberg 201", image: "String.jpg", stakeholderId: "5cf8eb7c01707a2031a38e1d", created: "2019-06-12T10:52:22.783Z", polenumber: 18293, confirmed: 0}) { title } }'
+            'mutation { createIssue(issueInput:{title: "laadpaal kapot", description: "Op de vijverberg is het niet lit", status: "open", location: "De vijverberg 201", image: "String.jpg", stakeholderId: "5d00f4aed7597a3c181949e0", createdAt: "2019-06-12T10:52:22.783Z", polenumber: 18293, confirmed: 0}) { title creator { email } stakeholders { title } createdAt} }'
         })
       })
         .then(res => res.json())
-        .then(res => console.log(res.data))
+        .then(res => console.log(res))
         .catch(err => console.log(err))
     }
     //   return fetch('http://localhost:3001/graphql', {

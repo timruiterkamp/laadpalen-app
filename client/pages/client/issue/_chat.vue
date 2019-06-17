@@ -7,7 +7,6 @@
         <span class="bold">Melding:</span>
         {{ $route.params.chat }}
       </h4>
-
       <transition-group name="messages">
         <div class="c-chat__block" v-for="step in currentSteps" :key="step.context + step.id">
           <ChatBubble :time="step.timestamp" :context="step.context">
@@ -23,7 +22,6 @@
           </div>
         </div>
       </transition-group>
-
     </div>
 
     <Modal ref="modalLocation">
@@ -85,7 +83,8 @@ export default {
         {
           id: 0,
           context: 'operator',
-          message: 'Goedemorgen! Wat vervelend dat een niet elektrisch voertuig geparkeerd staat. <span class="bold">Kunt u laten zien waar het is?</span>',
+          message:
+            'Goedemorgen! Wat vervelend dat een niet elektrisch voertuig geparkeerd staat. <span class="bold">Kunt u laten zien waar het is?</span>',
           action: {
             el: 'button',
             text: 'Deel locatie',
