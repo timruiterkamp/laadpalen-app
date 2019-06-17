@@ -42,7 +42,7 @@ type Issue {
   location: String,
   status: String
   polenumber: Int!
-  created: String!
+  createdAt: String!
   messages: [Message!],
   history: [History!],
   image: String
@@ -78,7 +78,7 @@ input IssueInput {
   location: String!
   status: String
   polenumber: Int
-  created: String!
+  createdAt: String!
   image: String
   confirmed: Int
   stakeholderId: String! 
@@ -107,6 +107,7 @@ input MessageInput {
 type RootQuery {
   issues: [Issue!]!
   categories: [Category!]!
+  users: [User!]!
   stakeholders: [Stakeholder!]!
   messages: [Message!]!
   login(email: String!, password: String!): AuthData!

@@ -25,15 +25,14 @@ module.exports = {
       });
   },
   createIssue: (args: any, req: any) => {
-    console.log(req.get("Authorization"));
     const issue = new IssueModel({
       title: args.issueInput.title,
       description: args.issueInput.description,
       location: args.issueInput.location,
       status: args.issueInput.status,
       polenumber: args.issueInput.polenumber,
-      created: args.issueInput.date,
-      creator: req.userId ? req.userId : null,
+      createdAt: args.issueInput.createdAt,
+      creator: req.userId,
       image: args.issueInput.image,
       stakeholders: args.issueInput.stakeholderId
     });
@@ -44,7 +43,7 @@ module.exports = {
       location: string;
       status: string;
       polenumber: number;
-      created: string;
+      createdAt: string;
       creator: string;
       image: string;
       stakeholders: string;
