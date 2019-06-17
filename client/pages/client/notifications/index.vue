@@ -1,20 +1,26 @@
 <template>
   <div>
-    <h1></h1>
-    {{data}}
+    <!-- <TicketList :list="workingList" group="tickets" status="working" @change="update"/> -->
+    {{ data }} -->
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import TicketList from '~/components/dashboard/TicketList.vue'
+
 export default {
   layout: 'client',
+  components: {
+    TicketList
+  },
   data() {
     return {
       data: []
     }
   },
   mounted() {
+    console.log(this.$store.getters.GET_TOKEN)
     fetch('http://localhost:3001/graphql', {
       method: 'POST',
       headers: {
@@ -26,7 +32,9 @@ export default {
       })
     })
       .then(res => res.json())
-      .then(res => console.log(res.data))
+      .then(res => {
+        console.log(res)
+      })
       .catch(err => console.log(err))
   }
 }

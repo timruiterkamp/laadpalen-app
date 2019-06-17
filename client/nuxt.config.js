@@ -41,7 +41,10 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/draggable.js'],
+  plugins: [
+    '@/plugins/draggable.js',
+    { src: '~/plugins/auth-token.js', ssr: false }
+  ],
 
   /*
    ** Nuxt.js modules
