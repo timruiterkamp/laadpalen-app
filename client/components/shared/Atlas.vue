@@ -28,7 +28,6 @@ export default {
     }
   },
   mounted() {
-
     this.mapboxgl = require('mapbox-gl/dist/mapbox-gl.js')
     this.mapboxgl.accessToken = config.MAPBOX_API_KEY
     this.map = new this.mapboxgl.Map({
@@ -60,6 +59,7 @@ export default {
       setTimeout(this.$refs.usermodal.hide, 5000)
     },
     trackUserLocation() {
+      console.log('trying to track user location');
       this.map.addControl(new this.mapboxgl.GeolocateControl({
         positionOptions: {
           enableHighAccuracy: true
@@ -69,11 +69,13 @@ export default {
 
       setTimeout(()=> {
         const geoLocate = document.querySelector('#atlas .mapboxgl-ctrl-geolocate')
+        console.log(geoLocate);
         this.fire(geoLocate, 'click')
       },0)
 
       this.map.on('idle', () => {
         const userLocationDot = document.querySelector('#atlas .mapboxgl-user-location-dot')
+        if (!userLocationDot) return
         userLocationDot.removeEventListener('click', this.showUserModal)
         userLocationDot.addEventListener('click', this.showUserModal)
       })
@@ -92,8 +94,8 @@ export default {
   .atlas {
     width: 100%;
     .mapboxgl-ctrl.mapboxgl-ctrl-group {
-      opacity: 0;
-      pointer-events: none;
+      // opacity: 0;
+      // pointer-events: none;
     }
     .mapboxgl-user-location-dot::before {
       @include linear-gradient($color-secondary);
