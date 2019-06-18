@@ -43,7 +43,8 @@ module.exports = {
    */
   plugins: [
     '@/plugins/draggable.js',
-    { src: '~/plugins/auth-token.js', ssr: false }
+    { src: '~/plugins/auth-token.js', ssr: false },
+    { src: '@/plugins/vue-chartjs.js', ssr: false }
   ],
 
   /*
