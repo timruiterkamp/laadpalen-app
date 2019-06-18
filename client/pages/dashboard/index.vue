@@ -20,7 +20,6 @@
 <script>
 import Atlas from '~/components/shared/Atlas.vue'
 import Toggle from '~/components/dashboard/Toggle.vue'
-import socketIOClient from 'socket.io-client'
 
 export default {
   layout: 'dashboard',
@@ -34,10 +33,7 @@ export default {
       toggles: {
         first: false,
         second: false
-      },
-      endpoint: 'localhost:3001',
-      color: 'white',
-      backgroundColor: null
+      }
     }
   },
   computed: {
@@ -54,12 +50,6 @@ export default {
     setStakeholder() {
       this.$store.commit('SET_STAKEHOLDER', this.newStakeholder)
     }
-  },
-  mounted() {
-    const socket = socketIOClient(this.endpoint)
-    socket.on('issue has been created', data => {
-      console.log('issue is er vriend', data)
-    })
   }
 }
 </script>

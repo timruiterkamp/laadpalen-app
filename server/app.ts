@@ -14,6 +14,8 @@ const http = require("http");
 const socketIO = require("socket.io");
 const server = http.createServer(app);
 
+const { SocketController } = require("./sockets/sockets");
+const sockets = new SocketController();
 // This creates our socket using the instance of the server
 const io = socketIO(server);
 
@@ -51,6 +53,9 @@ io.on("connection", (socket: any) => {
     console.log("issue created", data);
     io.sockets.emit("issue has been created", data);
   });
+
+  sockets.createdIssueSocket(socket, io);
+  sockets.updatedIssueSocket(socket, io);
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
