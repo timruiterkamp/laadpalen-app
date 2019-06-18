@@ -21,6 +21,7 @@
 
 <script>
 const axios = require('axios')
+import socketIOClient from 'socket.io-client'
 
 export default {
   data() {
