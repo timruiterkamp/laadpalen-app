@@ -3,7 +3,7 @@
     <h2>Overzicht</h2>
     <div class="d-overview__holder">
       <div class="d-overview__column">
-        <Atlas height="50vh" :showCurrentLocation="true" />
+        <Atlas height="50vh" :showCurrentLocation="true" :stations="stations" />
       </div>
       <div class="d-overview__column">
         <Toggle :checked.sync="toggles.first">
@@ -32,7 +32,14 @@ export default {
       toggles: {
         first: false,
         second: false
-      }
+      },
+      stations: this.$store.getters.GET_LOADINGSTATION_DATA
+    }
+  },
+  async mounted() {
+    if (this.stations.length === 0) {
+      const data = await this.$store.dispatch('FETCH_LOADINGSTATION_DATA')
+      this.stations = this.$store.getters.GET_LOADINGSTATION_DATA
     }
   },
   computed: {
@@ -46,7 +53,25 @@ export default {
   methods: {
     setStakeholder() {
       this.$store.commit('SET_STAKEHOLDER', this.newStakeholder)
-
+    }
+  },
+  watch: {
+    toggles: {
+      handler(val) {
+        const all = this.$store.getters.GET_LOADINGSTATION_DATA
+        if (val.first === true && val.second === true) {
+          this.stations = all.filter(station => station.status.available === '0')
+        }
+        else if (val.first === true) {
+          this.stations = all.filter(station => station.status.available === '1')
+        }
+        else if (val.second === true) {
+          this.stations = all.filter(station => station.status.available === '2')
+        } else {
+          this.stations = all
+        }
+      },
+      deep: true
     }
   }
 }
