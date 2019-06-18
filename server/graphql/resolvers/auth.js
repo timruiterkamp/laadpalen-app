@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -36,50 +47,56 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-require("dotenv").config();
-var express = require("express");
-var app = express();
-var graphqlHTTP = require("express-graphql");
-var mongoose = require("mongoose");
-var bodyParser = require("body-parser");
-var port = process.env.PORT || 3001;
-var cors = require("cors");
-var graphqlSchema = require("./graphql/schema/index");
-var graphqlResolvers = require("./graphql/resolvers/index");
-var requests_1 = require("./requests/requests");
-var isAuth = require("./middleware/is-auth");
-// Use middleware to set the default Content-Type
-app.use(function (req, res, next) {
-    res.header("Content-Type", "application/json");
-    next();
-});
-app.use(cors());
-app.use(bodyParser.json());
-app.use(isAuth);
-app.use("/graphql", graphqlHTTP({
-    schema: graphqlSchema,
-    rootValue: graphqlResolvers,
-    graphiql: true
-}));
-app.get("/api/laadpalen", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-    var ApiController, data;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                ApiController = new requests_1.RequestController();
-                return [4 /*yield*/, ApiController.laadpalen("https://www.oplaadpalen.nl/api/maplist/clusterset?box=52.35351489560789,4.871848199417968,52.368636728344434,4.943259332230468&zoom=15&accessType=public,company&available=available,charging&power=fast,normal")];
-            case 1:
-                data = _a.sent();
-                res.send(JSON.stringify(data));
-                return [2 /*return*/];
-        }
-    });
-}); });
-mongoose
-    .connect("mongodb+srv://" + process.env.MONGO_USER + ":" + process.env.MONGO_PASSWORD + "@laadpalen-db-6xhlt.mongodb.net/" + process.env.MONGO_DB + "?retryWrites=true&w=majority")
-    .then(function () {
-    app.listen(port);
-})
-    .catch(function (err) {
-    throw err;
-});
+var bcrypt = require("bcryptjs");
+var User = require("../../models/user");
+var jwt = require("jsonwebtoken");
+module.exports = {
+    createUser: function (args, req) {
+        return User.findOne({
+            email: args.userInput.email
+        })
+            .then(function (user) {
+            if (user) {
+                throw new Error("User exist already.");
+            }
+            return bcrypt.hash(args.userInput.password, 12);
+        })
+            .then(function (hashedPassword) {
+            var user = new User({
+                email: args.userInput.email,
+                password: hashedPassword
+            });
+            return user.save();
+        })
+            .then(function (result) {
+            return __assign({}, result._doc, { password: null, _id: result.id });
+        })
+            .catch(function (err) {
+            throw err;
+        });
+    },
+    login: function (_a) {
+        var email = _a.email, password = _a.password;
+        return __awaiter(_this, void 0, void 0, function () {
+            var user, isEqual, token;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, User.findOne({ email: email })];
+                    case 1:
+                        user = _b.sent();
+                        if (!user) {
+                            throw new Error("User does not exist.");
+                        }
+                        return [4 /*yield*/, bcrypt.compare(password, user.password)];
+                    case 2:
+                        isEqual = _b.sent();
+                        if (!isEqual) {
+                            throw new Error("Password is incorrect.");
+                        }
+                        token = jwt.sign({ userId: user.id, email: user.email }, "cFokTdiILPLcmTdw4mn1", { expiresIn: "12h" });
+                        return [2 /*return*/, { userId: user.id, token: token, tokenExpiration: 1 }];
+                }
+            });
+        });
+    }
+};

@@ -1,6 +1,6 @@
 <template>
   <div class="c-chat">
-    <SmallHeader/>
+    <SmallHeader title="Geef je probleem door!"/>
 
     <div class="c-chat__content">
       <h4 class="c-chat__title">
@@ -13,11 +13,24 @@
             <span v-if="step.message" v-html="step.message"></span>
             <img v-if="step.img" :src="step.img.src" class="c-chat__img">
           </ChatBubble>
-          <button v-if="step.action && step.action.el === 'button' && index === step.id + 1" class="btn btn--primary" @click="(e) => $refs[step.action.modal].show(e)">{{step.action.text}}</button>
-          <div v-if="step.action && step.action.el === 'input' && index === step.id + 1" class="c-chat__file-group">
+          <button
+            v-if="step.action && step.action.el === 'button' && index === step.id + 1"
+            class="btn btn--primary"
+            @click="(e) => $refs[step.action.modal].show(e)"
+          >{{step.action.text}}</button>
+          <div
+            v-if="step.action && step.action.el === 'input' && index === step.id + 1"
+            class="c-chat__file-group"
+          >
             <label class="c-chat__file-label btn btn--primary">
               camera openen
-              <input class="c-chat__file-input" type="file" accept="image/*" capture="environment" @change="e => handleFiles(e, step.id + 1)">
+              <input
+                class="c-chat__file-input"
+                type="file"
+                accept="image/*"
+                capture="environment"
+                @change="e => handleFiles(e, step.id + 1)"
+              >
             </label>
           </div>
         </div>
@@ -94,7 +107,7 @@ export default {
         {
           id: 1,
           context: 'user',
-          message: 'Dit is de locatie van de laadpaal.',
+          message: 'Dit is de locatie van de laadpaal.'
         },
         {
           id: 2,
@@ -102,7 +115,7 @@ export default {
           message: 'Stuur foto dan',
           action: {
             el: 'input',
-            text: 'Maak foto',
+            text: 'Maak foto'
           }
         },
         {
@@ -141,8 +154,8 @@ export default {
       const ScrollToPlugin = require('gsap/ScrollToPlugin')
       const body = document.querySelector('body')
       const bottom = body.getBoundingClientRect().height
-      console.log(body, bottom);
-      TweenLite.to(window, 3, {scrollTo: bottom, delay: 0.3})
+      console.log(body, bottom)
+      TweenLite.to(window, 3, { scrollTo: bottom, delay: 0.3 })
     },
     genTimeStamp(index) {
       const stamp = this.time(new Date())
@@ -217,15 +230,16 @@ export default {
   }
   &__file-input {
     width: 0.1px;
-  	height: 0.1px;
-  	opacity: 0;
-  	overflow: hidden;
-  	position: absolute;
-  	z-index: -1;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
   }
 }
 
-.messages-enter-active, .messages-leave-active {
+.messages-enter-active,
+.messages-leave-active {
   transition: all 1s;
 }
 .messages-enter, .messages-leave-to /* .list-leave-active below version 2.1.8 */ {

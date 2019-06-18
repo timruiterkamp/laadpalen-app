@@ -2,14 +2,19 @@
   <div>
     <h1>Send something to the client</h1>
     <input v-model="title" placeholder="edit me">
+
     <p>title is: {{ title }}</p>
     <input v-model="description" placeholder="edit me">
+
     <p>description is: {{ description }}</p>
     <input v-model="location" placeholder="edit me">
+
     <p>location is: {{ location }}</p>
     <input v-model="polenumber" placeholder="edit me">
+
     <p>polenumber is: {{ polenumber }}</p>
     <input v-model="image" placeholder="edit me">
+
     <p>image is: {{ image }}</p>
     <a href="#" class="btn btn--primary" @click="sendData">Send</a>
     <a href="#" class="btn btn--primary" @click="getData">get</a>
@@ -85,7 +90,17 @@ export default {
           Authorization: 'Bearer ' + this.$store.getters.GET_TOKEN
         },
         body: JSON.stringify({
-          query: `mutation { createIssue(issueInput:{title: "${data.title}", description: "${data.description}", status: "${data.status}", location: "${data.location}", image: "${data.image}", stakeholderId: "${data.stakeholderId}", createdAt: "${data.createdAt}", polenumber: ${data.polenumber}, confirmed: 0}) { title creator { email } stakeholders { title } createdAt} }`
+          query: `mutation { createIssue(issueInput:{title: "${
+            data.title
+          }", description: "${data.description}", status: "${
+            data.status
+          }", location: "${data.location}", image: "${
+            data.image
+          }", stakeholderId: "${data.stakeholderId}", createdAt: "${
+            data.createdAt
+          }", polenumber: ${
+            data.polenumber
+          }, confirmed: 0}) { title creator { email } stakeholders { title } createdAt} }`
         })
       })
         .then(res => res.json())
