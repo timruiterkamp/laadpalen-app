@@ -5,6 +5,10 @@
     <Tooltip ref="usermodal" status="secondary">
       Huidige locatie
     </Tooltip>
+
+    <Tooltip ref="lsmodal">
+      Info over laadpaal: {{loadingstation.available}}
+    </Tooltip>
   </div>
 
 </template>
@@ -25,6 +29,18 @@ export default {
     showCurrentLocation: {
       type: Boolean,
       default: true
+    },
+    stations: {
+      type: Array,
+      default: () => []
+    }
+  },
+  data() {
+    return {
+      loadingstation: {
+        available: null
+      },
+      loadingStations: []
     }
   },
   mounted() {
@@ -36,52 +52,147 @@ export default {
       center: [4.895168, 52.370216],
       zoom: 8
     })
+    if (!this.map) {
+      return
+    }
 
-    if (!this.map || !this.showCurrentLocation) {
+    this.map.on('load', this.createMapDataLayer)
+
+    if (!this.showCurrentLocation) {
       return
     }
 
     this.trackUserLocation()
 
   },
+  watch: {
+    stations(arr) {
+      const stations = this.genGeoJSON(arr)
+      const source = this.map.getSource('loadingstations')
+      if (source) {
+        source.setData(stations)
+        this.genCustomMarkers(stations)
+      }
+    }
+  },
   methods: {
-    fire(el, etype){
-      if (el.fireEvent) {
-        el.fireEvent('on' + etype);
-      } else {
-        var evObj = document.createEvent('Events');
-        evObj.initEvent(etype, true, false);
-        el.dispatchEvent(evObj);
+    genGeoJSON(stations) {
+      const features = stations.map(station => ({
+        "type": "Feature",
+        "properties": {
+          "description": "some desc",
+          "icon": "charging-station",
+          "available": station.status.available,
+          "charging": station.status.charging
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [Number(station.point.lng), Number(station.point.lat)]
+        }
+      }))
+      return {
+        "type": "FeatureCollection",
+        "features": features
       }
     },
     showUserModal(e) {
       this.$refs.usermodal.show(e)
-      setTimeout(this.$refs.usermodal.hide, 5000)
     },
     trackUserLocation() {
-      console.log('trying to track user location');
-      this.map.addControl(new this.mapboxgl.GeolocateControl({
+      const geolocate = new this.mapboxgl.GeolocateControl({
         positionOptions: {
           enableHighAccuracy: true
         },
         trackUserLocation: true
-      }))
+      })
+      this.map.addControl(geolocate)
 
-      setTimeout(()=> {
-        const geoLocate = document.querySelector('#atlas .mapboxgl-ctrl-geolocate')
-        console.log(geoLocate);
-        this.fire(geoLocate, 'click')
-      },0)
+      this.map.on('load', () => {
 
-      this.map.on('idle', () => {
-        const userLocationDot = document.querySelector('#atlas .mapboxgl-user-location-dot')
-        if (!userLocationDot) return
-        userLocationDot.removeEventListener('click', this.showUserModal)
-        userLocationDot.addEventListener('click', this.showUserModal)
+        geolocate.on('geolocate', () => {
+          const location = document.querySelector('#atlas .mapboxgl-user-location-dot')
+          if (location.getAttribute('location-listener') !== 'true') {
+             location.addEventListener('click', () => {
+               location.setAttribute('location-listener', 'true')
+               this.showUserModal()
+             })
+          }
+        })
+
+        geolocate.trigger()
+
       })
 
       this.map.on('move', this.$refs.usermodal.hide)
       this.map.on('zoom', this.$refs.usermodal.hide)
+    },
+    genCustomMarkers(geojson) {
+      [...document.querySelectorAll('.marker')].forEach(marker => marker.remove())
+      geojson.features.forEach(feature => {
+        const marker = document.createElement('div')
+
+        const classes = ['marker']
+        const subclasses = ['--tertiary', '--secondary', '--primary']
+        const available = Number(feature.properties.available)
+
+        if (available >= 0 && available <= 2) {
+          classes.push('marker' + subclasses[available])
+        }
+
+        classes.forEach(CSSclass => {
+          marker.classList.add(CSSclass)
+        })
+
+        // make a marker for each feature and add to the map
+        new this.mapboxgl.Marker(marker)
+          .setLngLat(feature.geometry.coordinates)
+          .addTo(this.map)
+      })
+    },
+    async createMapDataLayer() {
+      const geojson = this.genGeoJSON(this.stations)
+      if (geojson.features.length === 0 ) {
+        console.log('no stations');
+        return
+      }
+
+      this.map.addSource('loadingstations', {
+          "type": "geojson",
+          "data": geojson
+        })
+
+      this.map.addLayer({
+        "id": "loadingstations",
+        "type": "circle",
+        "source": "loadingstations"
+      })
+
+      this.genCustomMarkers(geojson)
+
+      this.map.on('move', this.$refs.lsmodal.hide)
+      this.map.on('zoom', this.$refs.lsmodal.hide)
+      this.map.on('zoom ', () => {
+        const markers = document.querySelectorAll('.marker')
+        const zoom = this.map.getZoom()
+        console.log('zooming');
+        markers.forEach(marker => {
+          const size = `${Math.round(1 * zoom)}px`
+          marker.style.width = size
+          marker.style.height = size
+        })
+      })
+
+      this.map.on('mouseenter', 'loadingstations', e => {
+        this.map.getCanvas().style.cursor = 'pointer'
+        this.loadingstation.available = e.features[0].properties.available
+        this.$refs.lsmodal.show(e.originalEvent)
+      })
+      this.map.on('mouseleave', 'loadingstations', () => {
+        this.map.getCanvas().style.cursor = ''
+        this.$refs.lsmodal.hide()
+      })
+
+
     }
   }
 
@@ -103,5 +214,38 @@ export default {
     .mapboxgl-user-location-dot {
       @include linear-gradient($color-secondary);
     }
+    .mapboxgl-popup {
+      &-close-button {
+        display: none;
+      }
+      &-content {
+        background-color: $color-secondary;
+        color: white;
+        font-size: .875rem;
+        font-family: $font-body;
+        padding: $padding-m;
+      }
+      &-tip {
+        border-top-color: $color-secondary;
+      }
+
+    }
+    .marker {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      @include linear-gradient($color-grey-dark);
+      cursor: pointer;
+      &--primary {
+        @include linear-gradient($color-primary);
+      }
+      &--secondary {
+        @include linear-gradient($color-secondary);
+      }
+      &--tertiary {
+        @include linear-gradient($color-tertiary);
+      }
+    }
+
   }
 </style>

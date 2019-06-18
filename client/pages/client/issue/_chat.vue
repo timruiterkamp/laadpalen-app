@@ -180,11 +180,10 @@ export default {
     handleFiles(e, index) {
       const file = e.target.files[0]
       if (file) {
-        // this.steps[index].message = file.name
         this.addStep()
-        var reader = new FileReader()
-        reader.addEventListener('load', e => {
-          this.steps[index].img.src = e.target.result
+        const reader = new FileReader()
+        reader.addEventListener('load', () => {
+          this.steps[index].img.src = reader.result
         })
         reader.readAsDataURL(file)
       }
