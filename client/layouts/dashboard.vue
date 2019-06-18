@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Notifications/>
     <DashboardHeader/>
     <main class="dashboard">
       <nuxt/>
@@ -9,10 +10,13 @@
 
 <script>
 import DashboardHeader from '~/components/dashboard/DashboardHeader'
+import Notifications from '~/components/dashboard/notifications'
+
 export default {
   //middleware: 'auth-token',
   components: {
-    DashboardHeader
+    DashboardHeader,
+    Notifications
   }
 }
 </script>

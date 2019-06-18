@@ -1,5 +1,6 @@
 <template>
   <section class="container">
+    <h1>Navigation</h1>
     <nuxt-link to="/client">Go to client</nuxt-link>
     <nuxt-link to="/dashboard">Go to dashboard</nuxt-link>
     <nuxt-link to="/components">Go to components</nuxt-link>

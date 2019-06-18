@@ -26,6 +26,7 @@
 
 <script>
 const axios = require('axios')
+import socketIOClient from 'socket.io-client'
 
 export default {
   data() {
@@ -37,10 +38,16 @@ export default {
       description: '',
       location: '',
       polenumber: '',
-      image: ''
+      image: '',
+      endpoint: 'localhost:3001',
+      data: ''
     }
   },
   methods: {
+    sendCreatedMessage(title) {
+      const socket = socketIOClient(this.endpoint)
+      socket.emit('issue created', title) // change 'red' to this.state.color
+    },
     async getData() {
       // const token = await this.getAuth()
 
@@ -59,6 +66,7 @@ export default {
         .then(res => {
           console.log(res.data)
           this.queryResult = res.data.issues[0]
+          return this.sendCreatedMessage(res)
         })
         .catch(err => console.log(err))
     },
@@ -96,7 +104,10 @@ export default {
         })
       })
         .then(res => res.json())
-        .then(res => console.log(res))
+        .then(res => {
+          console.log(res)
+          return this.sendCreatedMessage(res)
+        })
         .catch(err => console.log(err))
     }
   }

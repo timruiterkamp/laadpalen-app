@@ -10,6 +10,14 @@ const graphqlSchema = require("./graphql/schema/index");
 const graphqlResolvers = require("./graphql/resolvers/index");
 import { RequestController } from "./requests/requests";
 const isAuth = require("./middleware/is-auth");
+const http = require("http");
+const socketIO = require("socket.io");
+const server = http.createServer(app);
+
+const { SocketController } = require("./sockets/sockets");
+const sockets = new SocketController();
+// This creates our socket using the instance of the server
+const io = socketIO(server);
 
 // Use middleware to set the default Content-Type
 app.use(function(req, res, next) {
@@ -38,6 +46,22 @@ app.get("/api/laadpalen", async (req, res) => {
   res.send(JSON.stringify(data));
 });
 
+io.on("connection", (socket: any) => {
+  console.log("User connected");
+
+  socket.on("issue created", (data: any) => {
+    console.log("issue created", data);
+    io.sockets.emit("issue has been created", data);
+  });
+
+  sockets.createdIssueSocket(socket, io);
+  sockets.updatedIssueSocket(socket, io);
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
+
 mongoose
   .connect(
     `mongodb+srv://${process.env.MONGO_USER}:${
@@ -47,7 +71,7 @@ mongoose
     }?retryWrites=true&w=majority`
   )
   .then(() => {
-    app.listen(port);
+    server.listen(port, () => console.log(`Listening on port ${port}`));
   })
   .catch((err: any) => {
     throw err;
