@@ -22,6 +22,8 @@
 </template>
 <script>
 import TicketList from '~/components/dashboard/TicketList.vue'
+import socketIOClient from 'socket.io-client'
+
 export default {
   layout: 'dashboard',
   components: {
@@ -29,6 +31,7 @@ export default {
   },
   data() {
     return {
+      endpoint: 'localhost:3001',
       list: [
         {
           id: '1',
@@ -111,11 +114,17 @@ export default {
     }
   },
   methods: {
+    sendIssueUpdatedMessage(title) {
+      const socket = socketIOClient(this.endpoint)
+      socket.emit('issue has been updated', title) // change 'red' to this.state.color
+    },
     update(updated) {
       const index = this.list.findIndex(ticket => ticket.id == updated.id)
       if (index > -1) {
         this.list[index].status = updated.status
       }
+      console.log('updated')
+      this.sendIssueUpdatedMessage('Laadpaal defect')
     }
   }
 }
