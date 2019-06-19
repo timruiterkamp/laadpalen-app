@@ -50,7 +50,7 @@ export default {
       container: 'atlas',
       style: 'mapbox://styles/fjvdpol/cjwru7qm50as41co1ccx2xpaj',
       center: [4.895168, 52.370216],
-      zoom: 8
+      zoom: 12
     })
     if (!this.map) {
       return
@@ -95,9 +95,6 @@ export default {
         "features": features
       }
     },
-    showUserModal(e) {
-      this.$refs.usermodal.show(e)
-    },
     trackUserLocation() {
       const geolocate = new this.mapboxgl.GeolocateControl({
         positionOptions: {
@@ -111,10 +108,15 @@ export default {
 
         geolocate.on('geolocate', () => {
           const location = document.querySelector('#atlas .mapboxgl-user-location-dot')
-          if (location.getAttribute('location-listener') !== 'true') {
-             location.addEventListener('click', () => {
-               location.setAttribute('location-listener', 'true')
-               this.showUserModal()
+          // if (!location) return
+          if (!location.dataset.click || location.dataset.click !== 'set') {
+            location.dataset.click = 'set'
+
+             location.addEventListener('mouseover', e => {
+               this.$refs.usermodal.show(e)
+             })
+             location.addEventListener('mouseout', () => {
+               this.$refs.usermodal.hide()
              })
           }
         })
@@ -171,24 +173,12 @@ export default {
 
       this.map.on('move', this.$refs.lsmodal.hide)
       this.map.on('zoom', this.$refs.lsmodal.hide)
-      this.map.on('zoom ', () => {
-        const markers = document.querySelectorAll('.marker')
-        const zoom = this.map.getZoom()
-        console.log('zooming');
-        markers.forEach(marker => {
-          const size = `${Math.round(1 * zoom)}px`
-          marker.style.width = size
-          marker.style.height = size
-        })
-      })
 
       this.map.on('mouseenter', 'loadingstations', e => {
-        this.map.getCanvas().style.cursor = 'pointer'
         this.loadingstation.available = e.features[0].properties.available
         this.$refs.lsmodal.show(e.originalEvent)
       })
       this.map.on('mouseleave', 'loadingstations', () => {
-        this.map.getCanvas().style.cursor = ''
         this.$refs.lsmodal.hide()
       })
 
@@ -213,6 +203,7 @@ export default {
     }
     .mapboxgl-user-location-dot {
       @include linear-gradient($color-secondary);
+      cursor: pointer;
     }
     .mapboxgl-popup {
       &-close-button {
@@ -231,11 +222,11 @@ export default {
 
     }
     .marker {
-      width: 20px;
-      height: 20px;
+      width: 15px;
+      height: 15px;
       border-radius: 50%;
-      @include linear-gradient($color-grey-dark);
       cursor: pointer;
+      @include linear-gradient($color-grey-dark);
       &--primary {
         @include linear-gradient($color-primary);
       }
