@@ -1,13 +1,13 @@
 <template>
-  <div class="toggle" :class="checked ? 'toggle--checked' : ''">
+  <div class="toggle" :class="value ? 'toggle--checked' : ''">
     <label class="toggle__label">
       <div class="toggle__input-icon">
         <transition name="fade">
-          <svg v-if="checked" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <svg v-if="value" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
           <svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg>
         </transition>
       </div>
-      <input class="toggle__input" ref="input" type="checkbox" :checked="checked" @input="emitChange">
+      <input class="toggle__input" ref="input" type="checkbox" :checked="value" @input="emitChange">
       <div class="toggle__content">
         <slot></slot>
       </div>
@@ -18,14 +18,14 @@
 <script type="text/javascript">
 export default {
   props: {
-    checked: {
+    value: {
       type: Boolean,
       default: false
     }
   },
   methods: {
     emitChange() {
-      this.$emit('update:checked', this.$refs.input.checked)
+      this.$emit('input', this.$refs.input.checked)
     }
   }
 }
