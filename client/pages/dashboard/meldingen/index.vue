@@ -1,6 +1,7 @@
 <template>
   <div class="d-container">
     <h2>Meldingen</h2>
+    <TicketFilter :list="data" @filtered="filter" />
     <div class="d-tickets">
       <div class="d-tickets__column">
         <h3 class="d-tickets__column-title">Open</h3>
@@ -22,17 +23,19 @@
 </template>
 <script>
 import TicketList from '~/components/dashboard/TicketList.vue'
+import TicketFilter from '~/components/dashboard/TicketFilter.vue'
 import socketIOClient from 'socket.io-client'
 
 export default {
   layout: 'dashboard',
   components: {
-    TicketList
+    TicketList,
+    TicketFilter
   },
   data() {
     return {
       endpoint: 'localhost:3001',
-      list: [
+      data: [
         {
           id: '1',
           title: 'Some ticket title 1',
@@ -81,8 +84,12 @@ export default {
           created: '2019-06-12T10:30:00+00:00',
           location: 'Nieuwe Herenstraat 37 1332PT Amsterdam'
         }
-      ]
+      ],
+      list: []
     }
+  },
+  mounted() {
+    this.list = this.data
   },
   computed: {
     openList() {
@@ -114,6 +121,9 @@ export default {
     }
   },
   methods: {
+    filter(newList) {
+      this.list = newList
+    },
     sendIssueUpdatedMessage(title) {
       const socket = socketIOClient(this.endpoint)
       socket.emit('issue has been updated', title) // change 'red' to this.state.color

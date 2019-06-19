@@ -6,8 +6,8 @@
         <Atlas height="60vh" :showCurrentLocation="true" :stations="stations" />
       </div>
       <div class="d-overview__column">
-        <Toggle :checked.sync="toggles.first">This is a toggle</Toggle>
-        <Toggle :checked.sync="toggles.second">This is another toggle</Toggle>
+        <Toggle v-model="toggles.first">This is a toggle</Toggle>
+        <Toggle v-model="toggles.second">This is another toggle</Toggle>
       </div>
     </div>
     <button

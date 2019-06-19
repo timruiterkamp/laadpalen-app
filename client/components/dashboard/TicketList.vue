@@ -23,11 +23,11 @@
           :status="ticket.status"
         />
       </li>
-      <li
+      <!-- <li
         class="d-tickets__list-item d-tickets__list-item--empty"
         v-if="tickets.length === 0"
         key="no-tickets"
-      >No tickets in this list</li>
+      >Er zijn geen meldingen in deze categorie</li> -->
     </transition-group>
   </draggable>
 </template>
@@ -86,7 +86,7 @@ export default {
     transition: all 0.3s;
     opacity: 0.5;
     &--empty {
-      padding: 1rem 0 5rem;
+      padding: $padding-m;
       opacity: 1;
       color: $color-grey-dark;
     }
@@ -96,10 +96,10 @@ export default {
     }
   }
 }
-// .tg-tickets-enter, .tg-tickets-leave-to {
-//   opacity: 0;
-// }
-// .tg-tickets-leave-active {
-//   position: absolute;
-// }
+.tg-tickets-enter, .tg-tickets-leave-to {
+  opacity: 0;
+}
+.tg-tickets-leave-active {
+  position: absolute;
+}
 </style>
