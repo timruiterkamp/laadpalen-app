@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="c-notifications">
     <SmallHeader title="Meldingen"/>
     <div class="ticketList">
       <Ticket
@@ -57,5 +57,8 @@ export default {
   margin: $padding-xl auto;
   padding: 0 $padding-s;
   max-width: 40rem;
+}
+.c-notifications {
+  padding-bottom: $padding-xl * 2;
 }
 </style>

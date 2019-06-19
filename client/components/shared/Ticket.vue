@@ -81,15 +81,12 @@ export default {
 }
 .ticket {
   margin: $margin-xs 0;
-  padding: $padding-s;
+  padding: $padding-m;
   background-color: $color-white;
   border-radius: $rounding-s;
   @include shadow(1rem);
   display: block;
   max-width: 40rem;
-  @media screen and (min-width: 40rem) {
-    padding: $padding-m;
-  }
   &__top {
     margin-bottom: $margin-xs;
   }
@@ -122,6 +119,7 @@ export default {
     scrollbar-width: none; // Firefox
     position: relative;
     &--location {
+      flex: 1;
       &::after {
         position: absolute;
         right: 0;
