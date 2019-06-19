@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import Ticket from '~/components/shared/Ticket.vue'
 import SmallHeader from '~/components/client/SmallHeader.vue'
 
@@ -60,4 +59,3 @@ export default {
   max-width: 40rem;
 }
 </style>
-
