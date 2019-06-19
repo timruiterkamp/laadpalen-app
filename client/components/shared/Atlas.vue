@@ -108,8 +108,7 @@ export default {
 
         geolocate.on('geolocate', () => {
           const location = document.querySelector('#atlas .mapboxgl-user-location-dot')
-          // if (!location) return
-          if (!location.dataset.click || location.dataset.click !== 'set') {
+          if (location && (!location.dataset.click || location.dataset.click !== 'set')) {
             location.dataset.click = 'set'
 
              location.addEventListener('mouseover', e => {
@@ -181,8 +180,6 @@ export default {
       this.map.on('mouseleave', 'loadingstations', () => {
         this.$refs.lsmodal.hide()
       })
-
-
     }
   }
 
