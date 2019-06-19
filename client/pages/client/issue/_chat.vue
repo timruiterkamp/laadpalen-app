@@ -5,7 +5,8 @@
     <div class="c-chat__content">
       <h4 class="c-chat__title">
         <span class="bold">Melding:</span>
-        {{ $route.q.chat }}
+        {{ $route.params.chat }}
+
       </h4>
       <transition-group name="messages">
         <div class="c-chat__block" v-for="step in currentSteps" :key="step.context + step.count">
