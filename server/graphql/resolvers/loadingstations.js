@@ -15,6 +15,15 @@ module.exports = {
             throw err;
         });
     },
+    updateLoadingstation: function (loadingstationId) {
+        return LoadingstationModel.findById(loadingstationId)
+            .then(function (loadingstation) {
+            return transformLoadingstation(loadingstation);
+        })
+            .catch(function (err) {
+            throw err;
+        });
+    },
 };
 // exports = module.exports = function((io: any)){
 //   io.sockets.on('connection', function (socket) {

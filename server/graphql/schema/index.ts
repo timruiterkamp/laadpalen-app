@@ -47,6 +47,7 @@ type Issue {
   history: [History!],
   image: String
   stakeholders: Stakeholder!
+  loadingstation: Loadingstation!
   confirmed: Int
 }
 
@@ -73,6 +74,7 @@ type Loadingstation {
   provider: String
   sockets: Int
   usedsockets: Int
+  status: String
   issues: [Issue!]
 }
 
@@ -85,13 +87,14 @@ type AuthData {
 input IssueInput {
   title: String!
   description: String!
-  location: String!
+  location: String
   status: String
   polenumber: Int
   createdAt: String!
   image: String
   confirmed: Int
   stakeholderId: String!
+  loadingstationId: String!
 }
 
 input UserInput {
@@ -120,7 +123,7 @@ type RootQuery {
   users: [User!]!
   stakeholders: [Stakeholder!]!
   messages: [Message!]!
-  loadingstations: [Loadingstation]
+  loadingstations: [Loadingstation!]!
   login(email: String!, password: String!): AuthData!
 }
 
@@ -131,6 +134,7 @@ type RootMutation {
   createMessage(messageInput: MessageInput): Message
   createStakeholder(stakeholderInput: StakeholderInput): Stakeholder
   updateIssue(issueId: ID!): Issue
+  updateLoadingstation(loadingstationId: ID!): Loadingstation
 }
 schema {
   query: RootQuery
