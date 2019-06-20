@@ -17,6 +17,15 @@ const transformIssue = (issue: any) => {
   };
 };
 
+const transformLoadingstation = (loadingstation: any) => {
+  console.log(loadingstation._doc)
+  return {
+    ...loadingstation._doc,
+    _id: loadingstation.id,
+    issues: issues.bind(this, loadingstation._doc.issues)
+  };
+};
+
 const transformMessage = (message: any) => {
   return {
     ...message._doc,
@@ -115,4 +124,5 @@ exports.transformMessage = transformMessage;
 exports.transformCategory = transformCategory;
 exports.transformStakeholder = transformStakeholder;
 exports.transformUser = transformUser;
+exports.transformLoadingstation = transformLoadingstation;
 // exports.issues = issues;
