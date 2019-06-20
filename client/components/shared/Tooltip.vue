@@ -117,15 +117,5 @@
         left: -$popup-arrow-size / 2;
       }
     }
-
-    p, h3, h2, li {
-      color: $color-white;
-    }
-    h3, h2 {
-      font-size: 1rem;
-    }
-    p, li {
-      font-size: .875rem;
-    }
   }
 </style>

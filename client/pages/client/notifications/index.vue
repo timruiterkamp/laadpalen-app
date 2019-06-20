@@ -45,6 +45,7 @@ export default {
     })
       .then(res => res.json())
       .then(res => (this.allIssues = res.data.issues))
+      .then(() => console.log(this.allIssues))
       .catch(err => console.log(err))
   }
 }

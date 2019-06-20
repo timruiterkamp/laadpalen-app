@@ -7,23 +7,23 @@ module.exports = {
     return LoadingstationModel.find()
       .then((loadingstations: any) => {
         return loadingstations
-        .map((loadingstation: any) => {
-          return transformLoadingstation(loadingstation);
-        });
+        // .map((loadingstation: any) => {
+        //   return transformLoadingstation(loadingstation);
+        // });
       })
       .catch((err: string) => {
         throw err;
       });
   },
-  updateLoadingstation: (loadingstationId: string) => {
-    return LoadingstationModel.findById(loadingstationId)
-      .then((loadingstation: any) => {
-        return transformLoadingstation(loadingstation);
-      })
-      .catch((err: string) => {
-        throw err;
-      });
-  },
+  // updateLoadingstation: (loadingstationId: string) => {
+  //   return LoadingstationModel.findById(loadingstationId)
+  //     .then((loadingstation: any) => {
+  //       return transformLoadingstation(loadingstation);
+  //     })
+  //     .catch((err: string) => {
+  //       throw err;
+  //     });
+  // },
   // createIssue: (args: any, req: any) => {
   //   const issue = new IssueModel({
   //     title: args.issueInput.title,

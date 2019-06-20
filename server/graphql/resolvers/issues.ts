@@ -3,9 +3,20 @@ const IssueModel = require("../../models/issue");
 const LoadingstationModel = require("../../models/loadingstation");
 const { transformIssue, transformLoadingstation } = require("./merge");
 const User = require("../../models/user");
+const ObjectID = require('mongodb').ObjectID
+const mongoose = require('mongoose')
 
 
 module.exports = {
+  issue: (params: object) => {
+    return IssueModel.findById(params.id)
+      .then((issue: any) => {
+        return transformIssue(issue)
+      })
+      .catch((err: string) => {
+        throw err;
+      });
+  },
   issues: () => {
     return IssueModel.find()
       .then((issues: any) => {
@@ -75,7 +86,7 @@ module.exports = {
     LoadingstationModel.updateOne(
       { "_id": issue.loadingstation},
       { "$push": { "issues": issue._id } },
-      (err, raw) => {
+      (err: any, raw: any) => {
         if (err) throw err;
         console.log('updated loadingstation: ', raw)
       }
