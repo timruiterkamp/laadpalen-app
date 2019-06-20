@@ -48,6 +48,13 @@ var graphqlSchema = require("./graphql/schema/index");
 var graphqlResolvers = require("./graphql/resolvers/index");
 var requests_1 = require("./requests/requests");
 var isAuth = require("./middleware/is-auth");
+var http = require("http");
+var socketIO = require("socket.io");
+var server = http.createServer(app);
+var SocketController = require("./sockets/sockets").SocketController;
+var sockets = new SocketController();
+// This creates our socket using the instance of the server
+var io = socketIO(server);
 // Use middleware to set the default Content-Type
 app.use(function (req, res, next) {
     res.header("Content-Type", "application/json");
@@ -75,10 +82,22 @@ app.get("/api/laadpalen", function (req, res) { return __awaiter(_this, void 0, 
         }
     });
 }); });
+io.on("connection", function (socket) {
+    console.log("User connected");
+    socket.on("issue created", function (data) {
+        console.log("issue created", data);
+        io.sockets.emit("issue has been created", data);
+    });
+    sockets.createdIssueSocket(socket, io);
+    sockets.updatedIssueSocket(socket, io);
+    socket.on("disconnect", function () {
+        console.log("user disconnected");
+    });
+});
 mongoose
     .connect("mongodb+srv://" + process.env.MONGO_USER + ":" + process.env.MONGO_PASSWORD + "@laadpalen-db-6xhlt.mongodb.net/" + process.env.MONGO_DB + "?retryWrites=true&w=majority")
     .then(function () {
-    app.listen(port);
+    server.listen(port, function () { return console.log("Listening on port " + port); });
 })
     .catch(function (err) {
     throw err;

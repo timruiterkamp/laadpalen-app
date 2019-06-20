@@ -21,7 +21,7 @@ type History {
   _id: ID!
   issue: Issue!
   user: User!
-  stakeholders: Stakeholder! 
+  stakeholders: Stakeholder!
   date: String!
   messages: [Message!]
 }
@@ -59,11 +59,21 @@ type User {
   lastLoggedIn: String
 }
 
-type Laadpalen {
+type Loadingstation {
   _id: ID!
-  address: String!
-  latlong: String!
-  power: Int!
+  longitude: Float
+  latitude: Float
+  city: String!
+  region: String
+  regioncode: String
+  district: String
+  subdistrict: String
+  address: String
+  postalcode: String
+  provider: String
+  sockets: Int
+  usedsockets: Int
+  issues: [Issue!]
 }
 
 type AuthData {
@@ -81,7 +91,7 @@ input IssueInput {
   createdAt: String!
   image: String
   confirmed: Int
-  stakeholderId: String! 
+  stakeholderId: String!
 }
 
 input UserInput {
@@ -110,6 +120,7 @@ type RootQuery {
   users: [User!]!
   stakeholders: [Stakeholder!]!
   messages: [Message!]!
+  loadingstations: [Loadingstation]
   login(email: String!, password: String!): AuthData!
 }
 

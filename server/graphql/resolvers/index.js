@@ -12,9 +12,10 @@ var __assign = (this && this.__assign) || function () {
 };
 var authResolver = require("./auth");
 var issueResolver = require("./issues");
+var loadingstationsResolver = require("./loadingstations");
 var stakeholderResolver = require("./stakeholders");
 var categoryResolver = require("./categories");
 var messageResolver = require("./messages");
 var userResolver = require("./users");
-var rootResolver = __assign({}, authResolver, issueResolver, stakeholderResolver, categoryResolver, messageResolver, userResolver);
+var rootResolver = __assign({}, authResolver, issueResolver, loadingstationsResolver, stakeholderResolver, categoryResolver, messageResolver, userResolver);
 module.exports = rootResolver;
