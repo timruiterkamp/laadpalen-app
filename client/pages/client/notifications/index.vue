@@ -10,6 +10,7 @@
         :created="item.createdAt"
         :stakeholder="item.stakeholders.title"
         :status="item.status"
+        :showStakeholder="false"
       />
     </div>
   </div>

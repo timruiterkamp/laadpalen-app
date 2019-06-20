@@ -5,7 +5,7 @@
     <div class="c-chat__content">
       <h4 class="c-chat__title">
         <span class="bold">Melding:</span>
-        {{ $route.params.chat }}
+        {{ ticket.title }}
 
       </h4>
       <transition-group name="messages">
@@ -100,6 +100,12 @@ export default {
         'Niet beschikbaar',
         'Aangeraden plan'
       ],
+      ticket: {
+        title: this.$route.params.chat.split('-').join(' '),
+        stakeholderId: '5d00f4b7d7597a3c181949e1',
+
+
+      },
       steps: [
         {
           count: 0,
@@ -166,7 +172,7 @@ export default {
   watch: {
     currentSteps(completed) {
       if (completed.length === this.steps.length) {
-        console.log('DONE');
+        this.createTicket()
       }
     }
   },
@@ -212,6 +218,31 @@ export default {
         })
         reader.readAsDataURL(file)
       }
+    },
+    createTicket() {
+      const ticket = this.ticket
+      ticket.createdAt = new Date().toISOString()
+      fetch('http://localhost:3001/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.$store.getters.GET_TOKEN
+        },
+        body: JSON.stringify({
+          query: `mutation { createIssue(issueInput:{
+            title: "${ticket.title}",
+            description: "",
+            status: "open",
+            location: "Nieuwe herengracht 23",
+            stakeholderId: "${ticket.stakeholderId}",
+            createdAt: "${ticket.createdAt}",
+            polenumber: 123,
+            confirmed: 0
+          }) { title creator { email } stakeholders { title } createdAt} }`
+        })
+      })
+      .then(res => res.json())
+      .then(res => console.log(res))
     }
   }
 }
