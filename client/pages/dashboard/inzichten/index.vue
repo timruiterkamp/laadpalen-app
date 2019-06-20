@@ -1,25 +1,31 @@
 <template>
-  <div>
+  <div class="d-container">
     <h2>Inzichten</h2>
-    <div class="d-container">
+
+    <div class="d-container__tiles">
       <Tile>
+        <p>Aantal issues</p>
         <BarChart v-if="BarChartDataThree" :data="BarChartDataThree" :options="barChartOptions"/>
       </Tile>
 
       <Tile>
+        <p></p>
         <Doughnut v-if="DoughNutData" :data="DoughNutData" :options="DoughnutOptions"/>
       </Tile>
     </div>
   </div>
 </template>
+
 <script>
-//import { Line } from 'vue-chartjs'
 import Tile from '~/components/dashboard/Tile.vue'
 import BarChart from '~/components/dashboard/charts/Bar'
 import Doughnut from '~/components/dashboard/charts/Doughnut'
 import LineChart from '~/components/dashboard/charts/LineChart'
 import axios from 'axios'
 import { log } from 'util'
+
+import hexToRGB from '~/helpers/hexToRGB'
+import countOccurence from '~/helpers/countOccurence'
 
 export default {
   layout: 'dashboard',
@@ -36,6 +42,7 @@ export default {
       stations: this.$store.getters.GET_LOADINGSTATION_DATA,
       datacollection: null,
       barChartOptions: {
+        responsive: true,
         legend: {
           display: false
         },
@@ -54,12 +61,17 @@ export default {
         }
       },
       DoughnutOptions: {
+        responsive: true,
         tooltips: {
           displayColors: false
         }
       },
       DoughNutData: null
     }
+  },
+
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize)
   },
   async mounted() {
     if (this.stations.length === 0) {
@@ -85,7 +97,11 @@ export default {
         datasets: [
           {
             data: [total - currentlyLoading, currentlyLoading],
-            backgroundColor: ['#27b5a2', '#ef4c5b']
+            backgroundColor: [
+              hexToRGB('#27b5a2', 0.3),
+              hexToRGB('#ef4c5b', 0.3)
+            ],
+            borderColor: ['#27b5a2', '#ef4c5b']
           }
         ],
         labels: ['Free', 'Loading']
@@ -112,7 +128,7 @@ export default {
             issue => issue.stakeholders.title
           )
 
-          const countStakeholders = this.countOccurence(stakeholders)
+          const countStakeholders = countOccurence(stakeholders)
 
           this.BarChartDataThree = {
             labels: res.data.stakeholders.map(item => item.title),
@@ -120,21 +136,13 @@ export default {
               {
                 label: 'Issues',
                 data: [10, 20, 30],
-                backgroundColor: ['#27b5a2', '#ef4c5b', '#684be2']
+                gradientColor: ['#27b5a2', '#4bd6c3'],
+                backgroundColor: 'no'
               }
             ]
           }
         })
         .catch(err => console.log(err))
-    },
-    countOccurence(arr) {
-      const counts = {}
-
-      for (let i = 0; i < arr.length; i++) {
-        const num = arr[i]
-        counts[num] = counts[num] ? counts[num] + 1 : 1
-      }
-      return counts
     }
   }
 }
@@ -144,9 +152,17 @@ export default {
 @import '~/assets/css/config/main.scss';
 
 .d-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: $padding-l;
+  &__tiles {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: $padding-l;
+    @media screen and (max-width: 1100px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media screen and (max-width: 915px) {
+      grid-template-columns: 1fr;
+    }
+  }
 }
 </style>
 
