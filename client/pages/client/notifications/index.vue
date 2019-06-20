@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="c-notifications">
     <SmallHeader title="Meldingen"/>
     <div class="ticketList">
       <Ticket
@@ -10,6 +10,7 @@
         :created="item.createdAt"
         :stakeholder="item.stakeholders.title"
         :status="item.status"
+        :showStakeholder="false"
       />
     </div>
   </div>
@@ -57,5 +58,8 @@ export default {
   margin: $padding-xl auto;
   padding: 0 $padding-s;
   max-width: 40rem;
+}
+.c-notifications {
+  padding-bottom: $padding-xl * 2;
 }
 </style>

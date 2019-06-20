@@ -2,7 +2,7 @@
   <div class="ticket" :class="'ticket--' + status">
     <div class="ticket__top">
       <h3 class="ticket__title">{{title}}</h3>
-      <div v-if="stakeholder" class="ticket__tag">{{stakeholder}}</div>
+      <div v-if="showStakeholder ? stakeholder : status" class="ticket__tag" :class="showStakeholder ? '' : status">{{showStakeholder ? stakeholder : status}}</div>
     </div>
     <div class="ticket__bottom">
       <div class="ticket__content-meta ticket__content-meta--location">
@@ -40,7 +40,12 @@ export default {
     status: {
       type: String,
       default: 'default'
+    },
+    showStakeholder: {
+      type: Boolean,
+      default: true
     }
+
   },
   computed: {
     date() {
@@ -81,15 +86,12 @@ export default {
 }
 .ticket {
   margin: $margin-xs 0;
-  padding: $padding-s;
+  padding: $padding-m;
   background-color: $color-white;
   border-radius: $rounding-s;
   @include shadow(1rem);
   display: block;
   max-width: 40rem;
-  @media screen and (min-width: 40rem) {
-    padding: $padding-m;
-  }
   &__top {
     margin-bottom: $margin-xs;
   }
@@ -111,6 +113,18 @@ export default {
     @media screen and (min-width: 40rem) {
       padding: $padding-xs $padding-m;
     }
+    &.open {
+      color: $color-white;
+      background-color: $color-tertiary;
+    }
+    &.working {
+      color: $color-white;
+      background-color: $color-secondary;
+    }
+    &.closed {
+      color: $color-white;
+      background-color: $color-primary;
+    }
   }
   &__content-meta {
     font-size: 0.75rem;
@@ -122,6 +136,7 @@ export default {
     scrollbar-width: none; // Firefox
     position: relative;
     &--location {
+      flex: 1;
       &::after {
         position: absolute;
         right: 0;

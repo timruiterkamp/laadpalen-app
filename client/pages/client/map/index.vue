@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="c-map">
     <Atlas height="calc(100vh - 5rem)"/>
   </div>
 </template>
@@ -17,4 +17,3 @@ export default {
 
 <style lang="scss" scoped>
 </style>
-

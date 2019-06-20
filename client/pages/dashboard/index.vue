@@ -3,11 +3,11 @@
     <h2>Overzicht</h2>
     <div class="d-overview__holder">
       <div class="d-overview__column">
-        <Atlas height="50vh" :showCurrentLocation="true" :stations="stations" />
+        <Atlas height="60vh" :showCurrentLocation="true" :stations="stations" />
       </div>
       <div class="d-overview__column">
-        <Toggle :checked.sync="toggles.first">This is a toggle</Toggle>
-        <Toggle :checked.sync="toggles.second">This is another toggle</Toggle>
+        <Toggle v-model="toggles.first">This is a toggle</Toggle>
+        <Toggle v-model="toggles.second">This is another toggle</Toggle>
       </div>
     </div>
     <button
@@ -90,7 +90,10 @@ export default {
     }
   }
   &__column {
-    flex: 1;
+    flex: 2;
+    &:last-of-type {
+      flex: 1;
+    }
     @media screen and (min-width: 60rem) {
       margin-right: $margin-xl;
       &:last-of-type {

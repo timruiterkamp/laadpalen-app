@@ -5,34 +5,42 @@
     <div class="c-chat__content">
       <h4 class="c-chat__title">
         <span class="bold">Melding:</span>
-        {{ $route.q.chat }}
+        {{ ticket.title }}
+
       </h4>
       <transition-group name="messages">
-        <div class="c-chat__block" v-for="step in currentSteps" :key="step.context + step.id">
+        <div class="c-chat__block" v-for="step in currentSteps" :key="step.context + step.count">
           <ChatBubble :time="step.timestamp" :context="step.context">
             <span v-if="step.message" v-html="step.message"></span>
             <img v-if="step.img" :src="step.img.src" class="c-chat__img">
           </ChatBubble>
           <button
-            v-if="step.action && step.action.el === 'button' && index === step.id + 1"
-            class="btn btn--primary"
+            v-if="step.action && step.action.el === 'button' && index === step.count + 1"
+            class="btn btn--secondary"
             @click="(e) => $refs[step.action.modal].show(e)"
           >{{step.action.text}}</button>
           <div
-            v-if="step.action && step.action.el === 'input' && index === step.id + 1"
+            v-if="step.action && step.action.el === 'input' && index === step.count + 1"
             class="c-chat__file-group"
           >
-            <label class="c-chat__file-label btn btn--primary">
+            <label class="c-chat__file-label btn btn--secondary">
               camera openen
               <input
                 class="c-chat__file-input"
                 type="file"
                 accept="image/*"
                 capture="environment"
-                @change="e => handleFiles(e, step.id + 1)"
+                @change="e => handleFiles(e, step.count + 1)"
               >
             </label>
           </div>
+          <nuxt-link
+            v-if="step.action && step.action.el === 'link' && index === step.count + 1"
+            :to="step.action.href"
+            class="btn btn--secondary"
+          >
+            {{step.action.text}}
+          </nuxt-link>
         </div>
       </transition-group>
     </div>
@@ -92,9 +100,15 @@ export default {
         'Niet beschikbaar',
         'Aangeraden plan'
       ],
+      ticket: {
+        title: this.$route.params.chat.split('-').join(' '),
+        stakeholderId: '5d00f4b7d7597a3c181949e1',
+
+
+      },
       steps: [
         {
-          id: 0,
+          count: 0,
           context: 'operator',
           message:
             'Goedemorgen! Wat vervelend dat een niet elektrisch voertuig geparkeerd staat. <span class="bold">Kunt u laten zien waar het is?</span>',
@@ -105,25 +119,35 @@ export default {
           }
         },
         {
-          id: 1,
+          count: 1,
           context: 'user',
           message: 'Dit is de locatie van de laadpaal.'
         },
         {
-          id: 2,
+          count: 2,
           context: 'operator',
-          message: 'Stuur foto dan',
+          message: 'Kunt u een <span class="bold">foto</span> van de situatie maken? We hebben <span class="bold">het nummerbord</span> nodig om de melding goed af te handelen.',
           action: {
             el: 'input',
             text: 'Maak foto'
           }
         },
         {
-          id: 3,
+          count: 3,
           context: 'user',
           message: '',
           img: {
             src: ''
+          }
+        },
+        {
+          count: 4,
+          context: 'operator',
+          message: 'Dankuwel. Wij nemen de melding in behandeling. U kunt de <span class="bold">status</span> van de melding terug vinden in uw <span class="bold">meldingen tab</span>.',
+          action: {
+            el: 'link',
+            text: 'Naar meldingen',
+            href: '/client/notifications'
           }
         }
       ],
@@ -145,6 +169,13 @@ export default {
       return this.steps.slice(0, this.index)
     }
   },
+  watch: {
+    currentSteps(completed) {
+      if (completed.length === this.steps.length) {
+        this.createTicket()
+      }
+    }
+  },
   methods: {
     modalLocation(e) {
       this.$refs.modalLocation.show(e)
@@ -154,7 +185,6 @@ export default {
       const ScrollToPlugin = require('gsap/ScrollToPlugin')
       const body = document.querySelector('body')
       const bottom = body.getBoundingClientRect().height
-      console.log(body, bottom)
       TweenLite.to(window, 3, { scrollTo: bottom, delay: 0.3 })
     },
     genTimeStamp(index) {
@@ -180,13 +210,39 @@ export default {
     handleFiles(e, index) {
       const file = e.target.files[0]
       if (file) {
-        this.addStep()
         const reader = new FileReader()
         reader.addEventListener('load', () => {
           this.steps[index].img.src = reader.result
+          this.addStep()
+          setTimeout(this.addStep, 1000)
         })
         reader.readAsDataURL(file)
       }
+    },
+    createTicket() {
+      const ticket = this.ticket
+      ticket.createdAt = new Date().toISOString()
+      fetch('http://localhost:3001/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.$store.getters.GET_TOKEN
+        },
+        body: JSON.stringify({
+          query: `mutation { createIssue(issueInput:{
+            title: "${ticket.title}",
+            description: "",
+            status: "open",
+            location: "Nieuwe herengracht 23",
+            stakeholderId: "${ticket.stakeholderId}",
+            createdAt: "${ticket.createdAt}",
+            polenumber: 123,
+            confirmed: 0
+          }) { title creator { email } stakeholders { title } createdAt} }`
+        })
+      })
+      .then(res => res.json())
+      .then(res => console.log(res))
     }
   }
 }
@@ -196,22 +252,12 @@ export default {
 @import '~/assets/css/config/main.scss';
 
 .c-chat {
+  padding-bottom: $padding-xl * 2;
   &__block {
-    margin-bottom: 2rem;
+    margin-bottom: $margin-xs;
   }
   &__content {
     padding: $padding-m;
-    // position: fixed;
-    // bottom: 0;
-    // min-height: 100vh;
-    // max-height: 100vh;
-    // padding-top: 8rem;
-    // padding-bottom: 5rem;
-    // left: 0;
-    // width: 100%;
-    // z-index: -1;
-    // overflow: scroll;
-
     .btn {
       margin: 0 auto;
     }
