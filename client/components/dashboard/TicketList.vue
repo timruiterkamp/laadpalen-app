@@ -9,7 +9,6 @@
   >
     <transition-group name="tg-tickets" class="d-tickets__list" tag="ul">
       <li
-        v-if="tickets.length > 0"
         class="d-tickets__list-item"
         v-for="ticket in tickets"
         :class="allowed(ticket) ? 'allow-drag' : ''"
@@ -27,7 +26,7 @@
         class="d-tickets__list-item d-tickets__list-item--empty"
         v-if="tickets.length === 0"
         key="no-tickets"
-      >Er zijn geen meldingen in deze categorie</li> -->
+      >Er zijn geen meldingen in deze categorie</li>-->
     </transition-group>
   </draggable>
 </template>
@@ -65,13 +64,19 @@ export default {
   },
   methods: {
     update(e) {
+      console.log(e)
       if (e.added) {
         const ticket = { ...e.added.element, status: this.status }
         this.$emit('change', ticket)
       }
     },
     allowed(ticket) {
-      return ticket.stakeholder.toLowerCase() === this.stakeholder.toLowerCase()
+      // console.log(ticket)
+      // return ticket.stakeholder.title
+      return (
+        ticket.stakeholders.title.toLowerCase() ===
+        this.stakeholder.toLowerCase()
+      )
     }
   }
 }
@@ -79,6 +84,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/assets/css/config/main.scss';
+
 .d-tickets__list {
   padding: 0;
   list-style: none;
@@ -96,7 +102,8 @@ export default {
     }
   }
 }
-.tg-tickets-enter, .tg-tickets-leave-to {
+.tg-tickets-enter,
+.tg-tickets-leave-to {
   opacity: 0;
 }
 .tg-tickets-leave-active {
