@@ -21,10 +21,14 @@ var dateToString = require("../../helpers/date").dateToString;
 var transformIssue = function (issue) {
     return __assign({}, issue._doc, { _id: issue.id, createdAt: new Date(issue.createdAt).toISOString(), creator: user.bind(_this, issue.creator), messages: messages.bind(_this, issue._doc.messages), stakeholders: stakeholder.bind(_this, issue.stakeholders), loadingstation: loadingstation.bind(_this, issue.loadingstation) });
 };
-var transformLoadingstation = function (loadingstation) {
-    console.log(loadingstation._doc);
-    return __assign({}, loadingstation._doc, { _id: loadingstation.id, issues: issues.bind(_this, loadingstation._doc.issues) });
-};
+// const transformLoadingstation = (loadingstation: any) => {
+//   console.log(loadingstation._doc)
+//   return {
+//     ...loadingstation._doc,
+//     _id: loadingstation.id,
+//     issues: issues.bind(this, loadingstation.issues)
+//   };
+// };
 var transformMessage = function (message) {
     return __assign({}, message._doc, { _id: message.id, user: user.bind(_this, message.user), createdAt: new Date(message.createdAt).toISOString(), updatedAt: new Date(message.updatedAt).toISOString(), issues: issues.bind(_this, message.issues), categories: categories.bind(_this, message.categories) });
 };
@@ -52,7 +56,8 @@ var issues = function (issueIds) {
 var loadingstation = function (loadingstationId) {
     return LoadingstationModel.findById(loadingstationId)
         .then(function (loadingstation) {
-        return transformLoadingstation(loadingstation);
+        return loadingstation;
+        // return transformLoadingstation(loadingstation)
     })
         .catch(function (err) {
         throw err;
@@ -103,5 +108,5 @@ exports.transformMessage = transformMessage;
 exports.transformCategory = transformCategory;
 exports.transformStakeholder = transformStakeholder;
 exports.transformUser = transformUser;
-exports.transformLoadingstation = transformLoadingstation;
+// exports.transformLoadingstation = transformLoadingstation;
 // exports.issues = issues;

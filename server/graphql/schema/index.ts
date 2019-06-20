@@ -119,6 +119,7 @@ input MessageInput {
 
 type RootQuery {
   issues: [Issue!]!
+  issue(id: ID!): Issue!
   categories: [Category!]!
   users: [User!]!
   stakeholders: [Stakeholder!]!

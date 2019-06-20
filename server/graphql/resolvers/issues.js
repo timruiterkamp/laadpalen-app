@@ -4,7 +4,18 @@ var IssueModel = require("../../models/issue");
 var LoadingstationModel = require("../../models/loadingstation");
 var _a = require("./merge"), transformIssue = _a.transformIssue, transformLoadingstation = _a.transformLoadingstation;
 var User = require("../../models/user");
+var ObjectID = require('mongodb').ObjectID;
+var mongoose = require('mongoose');
 module.exports = {
+    issue: function (params) {
+        return IssueModel.findById(params.id)
+            .then(function (issue) {
+            return transformIssue(issue);
+        })
+            .catch(function (err) {
+            throw err;
+        });
+    },
     issues: function () {
         return IssueModel.find()
             .then(function (issues) {

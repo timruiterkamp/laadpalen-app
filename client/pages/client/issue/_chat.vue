@@ -72,7 +72,14 @@
 
         <div class="divider-s"></div>
 
-        <button class="btn btn--primary btn--center" @click="handleLocation">bevestig gekozen paal</button>
+        <button
+          class="btn btn--secondary btn--center"
+          :class="loadingstation.address ? '' : 'btn--disabled'"
+          @click="loadingstation.address ? handleLocation() : () => {}"
+        >
+          {{loadingstation.address ? loadingstation.address : 'selecteer laadpaal'}}
+        </button>
+
       </template>
     </Modal>
   </div>
@@ -247,7 +254,8 @@ export default {
             loadingstationId: "${ticket.loadingstationId}"
             createdAt: "${ticket.createdAt}",
             polenumber: 123,
-            confirmed: 0
+            confirmed: 0,
+            location: "${ticket.address}"
           }) { title stakeholders { title } loadingstation { longitude latitude address status }} }`
         })
       })
