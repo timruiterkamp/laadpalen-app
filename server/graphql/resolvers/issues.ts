@@ -1,7 +1,9 @@
 export {};
 const IssueModel = require("../../models/issue");
-const { transformIssue } = require("./merge");
+const LoadingstationModel = require("../../models/loadingstation");
+const { transformIssue, transformLoadingstation } = require("./merge");
 const User = require("../../models/user");
+
 
 module.exports = {
   issues: () => {
@@ -34,7 +36,8 @@ module.exports = {
       createdAt: args.issueInput.createdAt,
       creator: req.userId,
       image: args.issueInput.image,
-      stakeholders: args.issueInput.stakeholderId
+      stakeholders: args.issueInput.stakeholderId,
+      loadingstation: args.issueInput.loadingstationId
     });
 
     type issueObject = {
@@ -47,6 +50,7 @@ module.exports = {
       creator: string;
       image: string;
       stakeholders: string;
+      loadingstation: string;
     };
 
     let createdIssue = {} as issueObject;
@@ -64,6 +68,18 @@ module.exports = {
           throw err;
         });
     }
+
+    /* ==================================================== */
+    /* Update loadingstation to add the newly created issue */
+    /* ==================================================== */
+    LoadingstationModel.updateOne(
+      { "_id": issue.loadingstation},
+      { "$push": { "issues": issue._id } },
+      (err, raw) => {
+        if (err) throw err;
+        console.log('updated loadingstation: ', raw)
+      }
+    )
 
     return issue
       .save()

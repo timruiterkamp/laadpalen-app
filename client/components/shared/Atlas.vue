@@ -7,7 +7,9 @@
     </Tooltip>
 
     <Tooltip ref="lsmodal">
-      Info over laadpaal: {{loadingstation.available}}
+      <template v-slot="content">
+        {{loadingstation.address}}
+      </template>
     </Tooltip>
   </div>
 
@@ -22,6 +24,10 @@ export default {
     Tooltip
   },
   props: {
+    value: {
+      type: Object,
+      default: () => {}
+    },
     height: {
       type: String,
       default: '10rem'
@@ -38,7 +44,8 @@ export default {
   data() {
     return {
       loadingstation: {
-        available: null
+        address: '',
+        provider: ''
       },
       loadingStations: []
     }
@@ -80,14 +87,16 @@ export default {
       const features = stations.map(station => ({
         "type": "Feature",
         "properties": {
-          "description": "some desc",
-          "icon": "charging-station",
-          "available": station.status.available,
-          "charging": station.status.charging
+          "address": `${station.address} ${station.postalcode} ${station.city}`,
+          "sockets": station.sockets,
+          "usedsockets": station.usedsockets,
+          "provider": station.provider,
+          "status": station.status,
+          "id": station._id
         },
         "geometry": {
           "type": "Point",
-          "coordinates": [Number(station.point.lng), Number(station.point.lat)]
+          "coordinates": [Number(station.longitude), Number(station.latitude)]
         }
       }))
       return {
@@ -133,11 +142,9 @@ export default {
         const marker = document.createElement('div')
 
         const classes = ['marker']
-        const subclasses = ['--tertiary', '--secondary', '--primary']
-        const available = Number(feature.properties.available)
 
-        if (available >= 0 && available <= 2) {
-          classes.push('marker' + subclasses[available])
+        if (status != null) {
+          classes.push('marker--' + status)
         }
 
         classes.forEach(CSSclass => {
@@ -174,8 +181,9 @@ export default {
       this.map.on('zoom', this.$refs.lsmodal.hide)
 
       this.map.on('mouseenter', 'loadingstations', e => {
-        this.loadingstation.available = e.features[0].properties.available
+        this.loadingstation = e.features[0].properties
         this.$refs.lsmodal.show(e.originalEvent)
+        this.$emit('input', this.loadingstation)
       })
       this.map.on('mouseleave', 'loadingstations', () => {
         this.$refs.lsmodal.hide()
@@ -224,14 +232,14 @@ export default {
       border-radius: 50%;
       cursor: pointer;
       @include linear-gradient($color-grey-dark);
-      &--primary {
-        @include linear-gradient($color-primary);
+      &--open {
+        @include linear-gradient($color-tertiary);
       }
-      &--secondary {
+      &--working {
         @include linear-gradient($color-secondary);
       }
-      &--tertiary {
-        @include linear-gradient($color-tertiary);
+      &--closed {
+        @include linear-gradient($color-primary);
       }
     }
 

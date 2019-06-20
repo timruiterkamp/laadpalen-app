@@ -16,7 +16,7 @@ var issueSchema = new MongooseSchema({
     },
     location: {
         type: String,
-        required: true
+        required: false
     },
     status: {
         type: String,
@@ -33,6 +33,10 @@ var issueSchema = new MongooseSchema({
     confirmed: {
         type: Number,
         required: false
+    },
+    loadingstation: {
+        type: MongooseSchema.Types.ObjectId,
+        ref: "Loadingstation"
     },
     messages: [
         {

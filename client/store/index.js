@@ -23,10 +23,23 @@ export const mutations = {
 }
 
 export const actions = {
-  FETCH_LOADINGSTATION_DATA({commit}) {
-    return fetch('http://localhost:3001/api/laadpalen')
-      .then(res => res.json())
-      .then(res => commit('SET_LOADINGSTATION_DATA', res.data))
+  FETCH_LOADINGSTATION_DATA({commit, state}) {
+    return fetch('http://localhost:3001/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + state.authToken
+      },
+      body: JSON.stringify({
+        query:
+          'query { loadingstations { city longitude latitude address postalcode provider sockets usedsockets status _id }}'
+      })
+    })
+    .then(res => res.json())
+    .then(res => {
+      console.log(res.data)
+      commit('SET_LOADINGSTATION_DATA', res.data.loadingstations.slice(0, 200))
+    })
   }
 }
 
