@@ -1,4 +1,5 @@
 export {};
+import LoadingstationInterface from "../../interfaces/Interfaces";
 const LoadingstationModel = require("../../models/loadingstation");
 const { transformLoadingstation } = require("./merge");
 
@@ -6,7 +7,7 @@ module.exports = {
   loadingstations: () => {
     return LoadingstationModel.find()
       .then((loadingstations: any) => {
-        return loadingstations
+        return loadingstations;
         // .map((loadingstation: any) => {
         //   return transformLoadingstation(loadingstation);
         // });
@@ -15,6 +16,27 @@ module.exports = {
         throw err;
       });
   },
+  updateLoadingstation: async (args: any) => {
+    const loadingstations = LoadingstationModel.find({ _id: { $in: args.id } });
+    return loadingstations.map((loadingstation: any, index: number) => {
+      const keys = Object.keys(args.loadingstationInput);
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        loadingstation[0][key] = args.loadingstationInput[key];
+      }
+
+      return loadingstation[0]
+        .save()
+        .then((res: any) => {
+          // console.log(res);
+          return { ...res._doc };
+        })
+        .catch((err: string) => {
+          console.error(err);
+          throw new Error(err);
+        });
+    });
+  }
   // updateLoadingstation: (loadingstationId: string) => {
   //   return LoadingstationModel.findById(loadingstationId)
   //     .then((loadingstation: any) => {

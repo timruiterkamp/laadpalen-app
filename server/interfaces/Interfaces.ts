@@ -27,3 +27,21 @@ export default interface IssueInterface {
   stakeholders: string;
   loadingstation: string;
 }
+
+export default interface LoadingstationInterface {
+  issues: Array<issueObject>;
+  _id: string;
+  longitude: number;
+  latitude: number;
+  city: string;
+  region: string;
+  regioncode: string;
+  district: string;
+  subdistrict: string;
+  address: string;
+  postalcode: string;
+  provider: string;
+  sockets: number;
+  usedsockets: number;
+  status: string;
+}

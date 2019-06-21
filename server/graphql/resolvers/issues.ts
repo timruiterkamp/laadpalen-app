@@ -40,47 +40,20 @@ module.exports = {
       });
   },
   updateIssue: async (args: any) => {
-    console.log(args);
     const issues = IssueModel.find({ _id: { $in: args.id } });
     return issues.map((issue: any) => {
-      console.log(args);
-
-      if (args.issueInput.title) {
-        issue[0].title = args.issueInput.title;
-      }
-
-      if (args.issueInput.location) {
-        issue[0].location = args.issueInput.location;
-      }
-
-      if (args.issueInput.status) {
-        issue[0].status = args.issueInput.status;
-      }
-
-      if (args.issueInput.createdAt) {
-        issue[0].createdAt = args.issueInput.createdAt;
-      }
-
-      if (args.issueInput.creator) {
-        issue[0].creator = args.issueInput.creator;
-      }
-
-      if (args.issueInput.stakeholderId) {
-        issue[0].stakeholderId = args.issueInput.stakeholderId;
-      }
-
-      if (args.issueInput.loadingstationId) {
-        issue[0].loadingstationId = args.issueInput.loadingstationId;
+      const keys = Object.keys(args.issueInput);
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        issue[0][key] = args.issueInput[key];
       }
 
       return issue[0]
         .save()
         .then((res: any) => {
-          console.log(res);
           return { ...res._doc };
         })
         .catch((err: string) => {
-          console.error(err);
           throw new Error(err);
         });
     });
