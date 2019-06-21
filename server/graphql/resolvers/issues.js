@@ -63,19 +63,11 @@ module.exports = {
                 throw err;
             });
         }
-        /* ==================================================== */
-        /* Update loadingstation to add the newly created issue */
-        /* ==================================================== */
-        LoadingstationModel.updateOne({ "_id": issue.loadingstation }, { "$push": { "issues": issue._id } }, function (err, raw) {
-            if (err)
-                throw err;
-            console.log('updated loadingstation: ', raw);
-        });
         return issue
             .save()
             .then(function (result) {
             createdIssue = transformIssue(issue);
-            console.log(req.userId);
+            /* Write issue to User */
             return User.findById(req.userId);
         })
             .then(function (user) {
@@ -84,6 +76,17 @@ module.exports = {
             }
             user.createdIssues.push(issue);
             return user.save();
+        })
+            .then(function (res) {
+            /* Write issue to loadingstation */
+            return LoadingstationModel.findById(issue.loadingstation);
+        })
+            .then(function (loadingstation) {
+            if (!loadingstation) {
+                throw new Error("Loadingstation not found.");
+            }
+            loadingstation.issues.push(issue);
+            return loadingstation.save();
         })
             .then(function (res) {
             return createdIssue;
