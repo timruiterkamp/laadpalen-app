@@ -3,15 +3,26 @@ const IssueModel = require("../../models/issue");
 const LoadingstationModel = require("../../models/loadingstation");
 const { transformIssue, transformLoadingstation } = require("./merge");
 const User = require("../../models/user");
-const ObjectID = require('mongodb').ObjectID
-const mongoose = require('mongoose')
+const ObjectID = require("mongodb").ObjectID;
+const mongoose = require("mongoose");
 
+type issueObject = {
+  id: string;
+  title: string;
+  location: string;
+  status: string;
+  createdAt: string;
+  creator: string;
+  image: string;
+  stakeholders: string;
+  loadingstation: string;
+};
 
 module.exports = {
-  issue: (params: object) => {
+  issue: (params: issueObject) => {
     return IssueModel.findById(params.id)
-      .then((issue: any) => {
-        return transformIssue(issue)
+      .then((issue: issueObject) => {
+        return transformIssue(issue);
       })
       .catch((err: string) => {
         throw err;
@@ -19,8 +30,8 @@ module.exports = {
   },
   issues: () => {
     return IssueModel.find()
-      .then((issues: any) => {
-        return issues.map((issue: any) => {
+      .then((issues: Array<issueObject>) => {
+        return issues.map((issue: issueObject) => {
           return transformIssue(issue);
         });
       })
@@ -28,41 +39,63 @@ module.exports = {
         throw err;
       });
   },
-  updateIssue: (issueId: string) => {
-    return IssueModel.findById(issueId)
-      .then((issue: any) => {
-        return transformIssue(issue);
-      })
-      .catch((err: string) => {
-        throw err;
-      });
+  updateIssue: async (args: any) => {
+    console.log(args);
+    const issues = IssueModel.find({ _id: { $in: args.id } });
+    return issues.map((issue: any) => {
+      console.log(args);
+
+      if (args.issueInput.title) {
+        issue[0].title = args.issueInput.title;
+      }
+
+      if (args.issueInput.location) {
+        issue[0].location = args.issueInput.location;
+      }
+
+      if (args.issueInput.status) {
+        issue[0].status = args.issueInput.status;
+      }
+
+      if (args.issueInput.createdAt) {
+        issue[0].createdAt = args.issueInput.createdAt;
+      }
+
+      if (args.issueInput.creator) {
+        issue[0].creator = args.issueInput.creator;
+      }
+
+      if (args.issueInput.stakeholderId) {
+        issue[0].stakeholderId = args.issueInput.stakeholderId;
+      }
+
+      if (args.issueInput.loadingstationId) {
+        issue[0].loadingstationId = args.issueInput.loadingstationId;
+      }
+
+      return issue[0]
+        .save()
+        .then((res: any) => {
+          console.log(res);
+          return { ...res._doc };
+        })
+        .catch((err: string) => {
+          console.error(err);
+          throw new Error(err);
+        });
+    });
   },
   createIssue: (args: any, req: any) => {
     const issue = new IssueModel({
       title: args.issueInput.title,
-      description: args.issueInput.description,
       location: args.issueInput.location,
       status: args.issueInput.status,
-      polenumber: args.issueInput.polenumber,
       createdAt: args.issueInput.createdAt,
       creator: req.userId,
       image: args.issueInput.image,
       stakeholders: args.issueInput.stakeholderId,
       loadingstation: args.issueInput.loadingstationId
     });
-
-    type issueObject = {
-      title: string;
-      description: string;
-      location: string;
-      status: string;
-      polenumber: number;
-      createdAt: string;
-      creator: string;
-      image: string;
-      stakeholders: string;
-      loadingstation: string;
-    };
 
     let createdIssue = {} as issueObject;
 
