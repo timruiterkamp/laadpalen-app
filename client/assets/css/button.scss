@@ -61,4 +61,17 @@ $hoverDarkenAmount: 3%;
     margin-left: auto;
     margin-right: auto;
   }
+  &--disabled {
+    @include linear-gradient($color-grey-medium);
+    @include shadow(.1rem, $color-grey-medium, .7);
+    color: darken($color-grey-medium, 30%);
+    &:hover {
+      color: inherit;
+      background: inherit;
+    }
+    &:focus {
+      color: inherit;
+      background: inherit;
+    }
+  }
 }

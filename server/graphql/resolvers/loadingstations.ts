@@ -7,9 +7,9 @@ module.exports = {
     return LoadingstationModel.find()
       .then((loadingstations: any) => {
         return loadingstations
-        .map((loadingstation: any) => {
-          return transformLoadingstation(loadingstation);
-        });
+        // .map((loadingstation: any) => {
+        //   return transformLoadingstation(loadingstation);
+        // });
       })
       .catch((err: string) => {
         throw err;

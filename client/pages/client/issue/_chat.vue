@@ -12,6 +12,7 @@
         <div class="c-chat__block" v-for="step in currentSteps" :key="step.context + step.count">
           <ChatBubble :time="step.timestamp" :context="step.context">
             <span v-if="step.message" v-html="step.message"></span>
+            <span v-if="step.location" class="bold">{{loadingstation.address}}</span>
             <img v-if="step.img" :src="step.img.src" class="c-chat__img">
           </ChatBubble>
           <button
@@ -47,7 +48,7 @@
 
     <Modal ref="modalLocation">
       <template v-slot:header>
-        <Atlas height="20rem"/>
+        <Atlas height="20rem" :stations="stations" v-model="loadingstation"/>
 
         <div class="modal__header">
           <p class="modal__header--text">
@@ -71,7 +72,14 @@
 
         <div class="divider-s"></div>
 
-        <button class="btn btn--primary btn--center" @click="handleLocation">bevestig gekozen paal</button>
+        <button
+          class="btn btn--secondary btn--center"
+          :class="loadingstation.address ? '' : 'btn--disabled'"
+          @click="loadingstation.address ? handleLocation() : () => {}"
+        >
+          {{loadingstation.address ? loadingstation.address : 'selecteer laadpaal'}}
+        </button>
+
       </template>
     </Modal>
   </div>
@@ -103,9 +111,9 @@ export default {
       ticket: {
         title: this.$route.params.chat.split('-').join(' '),
         stakeholderId: '5d00f4b7d7597a3c181949e1',
-
-
       },
+      stations: this.$store.getters.GET_LOADINGSTATION_DATA,
+      loadingstation: {},
       steps: [
         {
           count: 0,
@@ -121,7 +129,8 @@ export default {
         {
           count: 1,
           context: 'user',
-          message: 'Dit is de locatie van de laadpaal.'
+          message: 'De locatie van de laadpaal is ',
+          location: true
         },
         {
           count: 2,
@@ -156,6 +165,12 @@ export default {
   },
   mounted() {
     setTimeout(() => (this.index = this.index + 1), 0)
+    if (this.stations.length === 0) {
+      this.$store.dispatch('FETCH_LOADINGSTATION_DATA')
+        .then(() => {
+          this.stations = this.$store.getters.GET_LOADINGSTATION_DATA
+        })
+    }
   },
   computed: {
     currentSteps() {
@@ -177,9 +192,6 @@ export default {
     }
   },
   methods: {
-    modalLocation(e) {
-      this.$refs.modalLocation.show(e)
-    },
     addStep() {
       this.index = this.index + 1
       const ScrollToPlugin = require('gsap/ScrollToPlugin')
@@ -220,8 +232,13 @@ export default {
       }
     },
     createTicket() {
-      const ticket = this.ticket
-      ticket.createdAt = new Date().toISOString()
+      const ticket = {
+        ...this.ticket,
+        createdAt: new Date().toISOString(),
+        loadingstationId: this.loadingstation.id,
+        address: this.loadingstation.address
+      }
+      console.log(ticket);
       fetch('http://localhost:3001/graphql', {
         method: 'POST',
         headers: {
@@ -231,14 +248,15 @@ export default {
         body: JSON.stringify({
           query: `mutation { createIssue(issueInput:{
             title: "${ticket.title}",
-            description: "",
+            description: "some desc",
             status: "open",
-            location: "Nieuwe herengracht 23",
-            stakeholderId: "${ticket.stakeholderId}",
+            stakeholderId: "5d00f4aed7597a3c181949e0",
+            loadingstationId: "${ticket.loadingstationId}"
             createdAt: "${ticket.createdAt}",
             polenumber: 123,
-            confirmed: 0
-          }) { title creator { email } stakeholders { title } createdAt} }`
+            confirmed: 0,
+            location: "${ticket.address}"
+          }) { title stakeholders { title } loadingstation { longitude latitude address status }} }`
         })
       })
       .then(res => res.json())

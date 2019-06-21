@@ -1,9 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var IssueModel = require("../../models/issue");
-var transformIssue = require("./merge").transformIssue;
+var LoadingstationModel = require("../../models/loadingstation");
+var _a = require("./merge"), transformIssue = _a.transformIssue, transformLoadingstation = _a.transformLoadingstation;
 var User = require("../../models/user");
+var ObjectID = require('mongodb').ObjectID;
+var mongoose = require('mongoose');
 module.exports = {
+    issue: function (params) {
+        return IssueModel.findById(params.id)
+            .then(function (issue) {
+            return transformIssue(issue);
+        })
+            .catch(function (err) {
+            throw err;
+        });
+    },
     issues: function () {
         return IssueModel.find()
             .then(function (issues) {
@@ -34,7 +46,8 @@ module.exports = {
             createdAt: args.issueInput.createdAt,
             creator: req.userId,
             image: args.issueInput.image,
-            stakeholders: args.issueInput.stakeholderId
+            stakeholders: args.issueInput.stakeholderId,
+            loadingstation: args.issueInput.loadingstationId
         });
         var createdIssue = {};
         if (!req.userId) {
@@ -50,6 +63,14 @@ module.exports = {
                 throw err;
             });
         }
+        /* ==================================================== */
+        /* Update loadingstation to add the newly created issue */
+        /* ==================================================== */
+        LoadingstationModel.updateOne({ "_id": issue.loadingstation }, { "$push": { "issues": issue._id } }, function (err, raw) {
+            if (err)
+                throw err;
+            console.log('updated loadingstation: ', raw);
+        });
         return issue
             .save()
             .then(function (result) {

@@ -6,10 +6,10 @@ module.exports = {
     loadingstations: function () {
         return LoadingstationModel.find()
             .then(function (loadingstations) {
-            return loadingstations
-                .map(function (loadingstation) {
-                return transformLoadingstation(loadingstation);
-            });
+            return loadingstations;
+            // .map((loadingstation: any) => {
+            //   return transformLoadingstation(loadingstation);
+            // });
         })
             .catch(function (err) {
             throw err;

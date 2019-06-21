@@ -3,6 +3,7 @@ const IssueModel = require("../../models/issue");
 const MessageModel = require("../../models/message");
 const CategoryModel = require("../../models/category");
 const StakeholderModel = require("../../models/stakeholder");
+const LoadingstationModel = require("../../models/loadingstation");
 
 const { dateToString } = require("../../helpers/date");
 
@@ -13,18 +14,19 @@ const transformIssue = (issue: any) => {
     createdAt: new Date(issue.createdAt).toISOString(),
     creator: user.bind(this, issue.creator),
     messages: messages.bind(this, issue._doc.messages),
-    stakeholders: stakeholder.bind(this, issue.stakeholders)
+    stakeholders: stakeholder.bind(this, issue.stakeholders),
+    loadingstation: loadingstation.bind(this, issue.loadingstation)
   };
 };
 
-const transformLoadingstation = (loadingstation: any) => {
-  console.log(loadingstation._doc)
-  return {
-    ...loadingstation._doc,
-    _id: loadingstation.id,
-    issues: issues.bind(this, loadingstation._doc.issues)
-  };
-};
+// const transformLoadingstation = (loadingstation: any) => {
+//   console.log(loadingstation._doc)
+//   return {
+//     ...loadingstation._doc,
+//     _id: loadingstation.id,
+//     issues: issues.bind(this, loadingstation.issues)
+//   };
+// };
 
 const transformMessage = (message: any) => {
   return {
@@ -69,6 +71,17 @@ const issues = (issueIds: string) => {
       return issues.map((issue: any) => {
         return transformIssue(issue);
       });
+    })
+    .catch((err: string) => {
+      throw err;
+    });
+};
+
+const loadingstation = (loadingstationId: string) => {
+  return LoadingstationModel.findById(loadingstationId)
+    .then((loadingstation: any) => {
+      return loadingstation
+      // return transformLoadingstation(loadingstation)
     })
     .catch((err: string) => {
       throw err;
@@ -124,5 +137,5 @@ exports.transformMessage = transformMessage;
 exports.transformCategory = transformCategory;
 exports.transformStakeholder = transformStakeholder;
 exports.transformUser = transformUser;
-exports.transformLoadingstation = transformLoadingstation;
+// exports.transformLoadingstation = transformLoadingstation;
 // exports.issues = issues;
