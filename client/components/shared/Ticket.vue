@@ -175,7 +175,7 @@ export default {
   }
   &--open {
     .ticket__title {
-      color: $color-primary;
+      color: $color-tertiary;
     }
   }
   &--working {
@@ -185,7 +185,7 @@ export default {
   }
   &--closed {
     .ticket__title {
-      color: $color-tertiary;
+      color: $color-primary;
     }
   }
   &--default {

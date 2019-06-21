@@ -81,9 +81,9 @@ export default {
     filter(newList) {
       this.list = newList
     },
-    sendIssueUpdatedMessage(title) {
+    sendIssueUpdatedMessage(issue) {
       const socket = socketIOClient(this.endpoint)
-      socket.emit('issue has been updated', title) // change 'red' to this.state.color
+      socket.emit('issue has been updated', {title: issue.title, _id: issue._id, status: issue.status, loadingstation: {_id: issue.loadingstation._id}})
     },
     update(updated) {
       const index = this.list.findIndex(ticket => ticket._id == updated._id)
@@ -97,10 +97,17 @@ export default {
           title
         }
       }`).then(res => console.log(res))
-      this.sendIssueUpdatedMessage(updated.title)
+      DB.execute(`mutation {
+        updateLoadingstation(id: "${updated.loadingstation._id}", loadingstationInput:{status: "${updated.status}"}) {
+          _id
+          status
+        }
+      }`).then(res => console.log(res))
+      this.$store.commit('UPDATE_LOADINGSTATION', {_id: updated._id, status: updated.status, loadingstation: {_id: updated.loadingstation._id}})
+      this.sendIssueUpdatedMessage(updated)
     },
     getTickets() {
-      return DB.execute('query { issues { _id title location createdAt stakeholders { title } status }}', this.$store.getters.GET_TOKEN)
+      return DB.execute('query { issues { _id title location createdAt stakeholders { title } loadingstation { _id } status }}', this.$store.getters.GET_TOKEN)
         .then(res => res.issues)
     }
   }

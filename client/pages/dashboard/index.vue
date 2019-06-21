@@ -3,7 +3,7 @@
     <h2>Overzicht</h2>
     <div class="d-overview__holder">
       <div class="d-overview__column">
-        <Atlas height="60vh" :showCurrentLocation="true" :stations="stations"/>
+        <Atlas height="60vh" :showCurrentLocation="true" :stations="filteredStations"/>
       </div>
       <div class="d-overview__column">
         <Toggle v-model="filters.open">Melding niet in behandeling</Toggle>
@@ -35,17 +35,21 @@ export default {
         open: false,
         working: false,
         closed: false
-      },
-      stations: this.$store.getters.GET_LOADINGSTATION_DATA
+      }
     }
   },
   async mounted() {
     if (this.stations.length === 0) {
-      const data = await this.$store.dispatch('FETCH_LOADINGSTATION_DATA')
-      this.stations = this.$store.getters.GET_LOADINGSTATION_DATA
+      this.$store.dispatch('FETCH_LOADINGSTATION_DATA')
     }
   },
   computed: {
+    stations() {
+      return this.$store.getters.GET_LOADINGSTATION_DATA
+    },
+    filteredStations() {
+      return this.filter(this.stations)
+    },
     stakeholder() {
       return this.$store.getters.GET_STAKEHOLDER
     },
@@ -58,28 +62,31 @@ export default {
   methods: {
     setStakeholder() {
       this.$store.commit('SET_STAKEHOLDER', this.newStakeholder)
+    },
+    filter(stations) {
+      let filtered = []
+      const filters = this.filters
+
+      if (!filters.open && !filters.working && !filters.closed) {
+        filtered = filtered.concat(stations)
+      } else {
+        if (filters.open) {
+          filtered = filtered.concat(stations.filter(station => station.status === 'open'))
+        }
+        if (filters.working) {
+          filtered = filtered.concat(stations.filter(station => station.status === 'working'))
+        }
+        if (filters.closed) {
+          filtered = filtered.concat(stations.filter(station => station.status === 'closed'))
+        }
+      }
+      return filtered
     }
   },
   watch: {
     filters: {
       handler(filter) {
-        const all = this.$store.getters.GET_LOADINGSTATION_DATA
-        let temp = []
-        if (!filter.open && !filter.working && !filter.closed) {
-          temp = temp.concat(all)
-        } else {
-          if (filter.open) {
-            temp = temp.concat(all.filter(station => station.status === 'open'))
-          }
-          if (filter.working) {
-            temp = temp.concat(all.filter(station => station.status === 'working'))
-          }
-          if (filter.closed) {
-            temp = temp.concat(all.filter(station => station.status === 'closed'))
-          }
-        }
-        this.stations = temp
-        console.log(temp, filter);
+        this.filter(this.stations)
       },
       deep: true
     }

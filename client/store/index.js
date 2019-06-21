@@ -25,6 +25,20 @@ export const mutations = {
   SET_LOADINGSTATION_DATA(state, value) {
     state.loadingStations = value
   },
+  UPDATE_LOADINGSTATION(state, issue) {
+    const index = state.loadingStations.findIndex(station => station._id === issue.loadingstation._id)
+    if (index < 0) {
+      return console.error('Loadingstation to update not found')
+    }
+    const station = state.loadingStations[index]
+    state.loadingStations[index].status = issue.status
+    const issueIndex = state.loadingStations[index].issues.findIndex(stationIssue => stationIssue._id === issue._id)
+    if (issueIndex < 0) {
+      return console.error('Issue within loadingstation to update not found')
+    }
+    state.loadingStations[index].issues[issueIndex].status = issue.status
+    console.log('updated loadingstations');
+  },
   INCREMENT_MESSAGES_NOTIFICATIONS(state) {
     state.messagesNotifications++
   },
