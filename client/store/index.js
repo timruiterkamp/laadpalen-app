@@ -1,6 +1,5 @@
 import DB from '~/helpers/db.js'
 
-
 export const getters = {
   GET_STAKEHOLDER(state) {
     return state.stakeholder
@@ -10,6 +9,9 @@ export const getters = {
   },
   GET_LOADINGSTATION_DATA(state) {
     return state.loadingStations
+  },
+  GET_MESSAGES_NOTIFICATIONS(state) {
+    return state.messagesNotifications
   }
 }
 
@@ -22,11 +24,17 @@ export const mutations = {
   },
   SET_LOADINGSTATION_DATA(state, value) {
     state.loadingStations = value
+  },
+  INCREMENT_MESSAGES_NOTIFICATIONS(state) {
+    state.messagesNotifications++
+  },
+  RESET_MESSAGES_NOTIFICATIONS(state) {
+    state.messagesNotifications = 0
   }
 }
 
 export const actions = {
-  FETCH_LOADINGSTATION_DATA({commit, state}) {
+  FETCH_LOADINGSTATION_DATA({ commit, state }) {
     return DB.execute(
       `query {
         loadingstations {
@@ -44,15 +52,18 @@ export const actions = {
             _id
           }
         }
-      }`, state.authToken)
-    .then(res => res.loadingstations.slice(0, 200))
-    .then(res => {
-      return res.map(station => {
-        const issueIds = station.issues
-        if (issueIds && issueIds.length > 0) {
-          return new Promise((resolve, reject) => {
-            const promises = issueIds.map(issue => {
-              return DB.execute(`
+      }`,
+      state.authToken
+    )
+      .then(res => res.loadingstations.slice(0, 200))
+      .then(res => {
+        return res.map(station => {
+          const issueIds = station.issues
+          if (issueIds && issueIds.length > 0) {
+            return new Promise((resolve, reject) => {
+              const promises = issueIds.map(issue => {
+                return DB.execute(
+                  `
                 query {
                   issue(id: "${issue._id}") {
                     _id
@@ -61,30 +72,33 @@ export const actions = {
                     title
                   }
                 }
-              `, state.authToken)
-              .then(data => data.issue)
-              .catch(err => reject(err))
-            })
-            Promise.all(promises)
-              .then(issues => {
+              `,
+                  state.authToken
+                )
+                  .then(data => data.issue)
+                  .catch(err => reject(err))
+              })
+              Promise.all(promises).then(issues => {
                 station.issues = issues
                 resolve(station)
               })
-          })
-        }
-        return new Promise(resolve => resolve(station))
+            })
+          }
+          return new Promise(resolve => resolve(station))
+        })
       })
-    })
-    .then(res => {
-      return Promise.all(res)
-        .then(res => commit('SET_LOADINGSTATION_DATA', res))
-    })
-    .catch(console.error)
+      .then(res => {
+        return Promise.all(res).then(res =>
+          commit('SET_LOADINGSTATION_DATA', res)
+        )
+      })
+      .catch(console.error)
   }
 }
 
 export const state = () => ({
   stakeholder: 'NUON',
   authToken: '',
-  loadingStations: []
+  loadingStations: [],
+  messagesNotifications: 0
 })

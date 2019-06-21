@@ -3,7 +3,7 @@
     <h2>Overzicht</h2>
     <div class="d-overview__holder">
       <div class="d-overview__column">
-        <Atlas height="60vh" :showCurrentLocation="true" :stations="stations" />
+        <Atlas height="60vh" :showCurrentLocation="true" :stations="stations"/>
       </div>
       <div class="d-overview__column">
         <Toggle v-model="toggles.first">This is a toggle</Toggle>
@@ -63,13 +63,17 @@ export default {
       handler(val) {
         const all = this.$store.getters.GET_LOADINGSTATION_DATA
         if (val.first === true && val.second === true) {
-          this.stations = all.filter(station => station.status.available === '0')
-        }
-        else if (val.first === true) {
-          this.stations = all.filter(station => station.status.available === '1')
-        }
-        else if (val.second === true) {
-          this.stations = all.filter(station => station.status.available === '2')
+          this.stations = all.filter(
+            station => station.status.available === '0'
+          )
+        } else if (val.first === true) {
+          this.stations = all.filter(
+            station => station.status.available === '1'
+          )
+        } else if (val.second === true) {
+          this.stations = all.filter(
+            station => station.status.available === '2'
+          )
         } else {
           this.stations = all
         }
