@@ -13,7 +13,7 @@
         class="d-tickets__list-item"
         v-for="ticket in tickets"
         :class="allowed(ticket) ? 'allow-drag' : ''"
-        :key="ticket.title"
+        :key="ticket._id"
       >
         <Ticket
 

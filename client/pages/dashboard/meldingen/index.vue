@@ -1,7 +1,7 @@
 <template>
   <div class="d-container">
     <h2>Meldingen</h2>
-    <!-- <TicketFilter :list="allIssues" @filtered="filter"/> -->
+    <TicketFilter :list="data" v-on:filtered="filter" />
     <div class="d-tickets">
       <div class="d-tickets__column">
         <h3 class="d-tickets__column-title">Open</h3>
@@ -25,6 +25,7 @@
 import TicketList from '~/components/dashboard/TicketList.vue'
 import TicketFilter from '~/components/dashboard/TicketFilter.vue'
 import socketIOClient from 'socket.io-client'
+import DB from '~/helpers/db'
 
 export default {
   layout: 'dashboard',
@@ -35,15 +36,17 @@ export default {
   data() {
     return {
       endpoint: 'localhost:3001',
-      allIssues: [],
-      list: []
+      list: [],
+      data: []
     }
   },
   mounted() {
-    //this.list = this.data
     this.getTickets()
-      .then(() => (this.list = this.allIssues))
-      .catch(err => console.log(err))
+      .then(res => {
+        this.list = res
+        this.data = res
+      })
+      .catch(console.error)
   },
   computed: {
     openList() {
@@ -83,30 +86,22 @@ export default {
       socket.emit('issue has been updated', title) // change 'red' to this.state.color
     },
     update(updated) {
-      const index = this.list.findIndex(ticket => ticket.id == updated.id)
+      const index = this.list.findIndex(ticket => ticket._id == updated._id)
       if (index > -1) {
         this.list[index].status = updated.status
       }
-      //console.log('updated')
-      this.sendIssueUpdatedMessage('Laadpaal defect')
+      DB.execute(`mutation {
+        updateIssue(id: "${updated._id}", issueInput:{status: "${updated.status}"}) {
+          _id
+          status
+          title
+        }
+      }`).then(res => console.log(res))
+      this.sendIssueUpdatedMessage(updated.title)
     },
     getTickets() {
-      return fetch('http://localhost:3001/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + this.$store.getters.GET_TOKEN
-        },
-        body: JSON.stringify({
-          query:
-            'query { issues { title location createdAt stakeholders { title } status }}'
-        })
-      })
-        .then(res => res.json())
-        .then(res => {
-          console.log(res)
-          this.allIssues = res.data.issues
-        })
+      return DB.execute('query { issues { _id title location createdAt stakeholders { title } status }}', this.$store.getters.GET_TOKEN)
+        .then(res => res.issues)
     }
   }
 }
