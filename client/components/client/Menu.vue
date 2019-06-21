@@ -55,6 +55,7 @@ export default {
 
     socket.on('issue status has been updated', data => {
       this.$store.commit('INCREMENT_MESSAGES_NOTIFICATIONS')
+      this.$store.commit('UPDATE_LOADINGSTATION', data)
     })
   },
   computed: {

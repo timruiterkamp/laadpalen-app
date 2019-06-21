@@ -27,7 +27,7 @@
     computed: {
       stakeholders() {
         const stakeholders = this.list
-          .map(ticket => ticket.stakeholder)
+          .map(ticket => ticket.stakeholders.title)
           .filter((val, index, self) => self.indexOf(val) === index)
 
         return stakeholders
@@ -49,7 +49,7 @@
         })
 
         const filtered = this.list
-          .filter(item => activeToggles.includes(item.stakeholder.toLowerCase()))
+          .filter(item => activeToggles.includes(item.stakeholders.title.toLowerCase()))
           console.log(filtered);
         this.$emit('filtered', filtered)
       }
