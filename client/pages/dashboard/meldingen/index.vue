@@ -35,7 +35,8 @@ export default {
   data() {
     return {
       endpoint: 'localhost:3001',
-      allIssues: []
+      allIssues: [],
+      list: []
     }
   },
   mounted() {
@@ -103,6 +104,7 @@ export default {
       })
         .then(res => res.json())
         .then(res => {
+          console.log(res)
           this.allIssues = res.data.issues
         })
     }

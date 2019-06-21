@@ -38,9 +38,24 @@
 </template>
 
 <script>
+import socketIOClient from 'socket.io-client'
+
 export default {
+  data() {
+    return {
+      endpoint: 'localhost:3001'
+    }
+  },
   mounted() {
-    console.log(this.$store.getters.GET_MESSAGES_NOTIFICATIONS)
+    const socket = socketIOClient(this.endpoint)
+
+    socket.on('issue has been created', data => {
+      this.$store.commit('INCREMENT_MESSAGES_NOTIFICATIONS')
+    })
+
+    socket.on('issue status has been updated', data => {
+      this.$store.commit('INCREMENT_MESSAGES_NOTIFICATIONS')
+    })
   },
   computed: {
     notifications() {
