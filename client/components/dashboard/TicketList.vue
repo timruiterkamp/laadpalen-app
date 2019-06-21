@@ -6,28 +6,29 @@
     handle=".allow-drag"
     :sort="false"
     @change="update"
-    v-if="tickets.length > 0"
   >
     <transition-group name="tg-tickets" class="d-tickets__list" tag="ul">
       <li
+        v-if="tickets.length > 0"
         class="d-tickets__list-item"
         v-for="ticket in tickets"
         :class="allowed(ticket) ? 'allow-drag' : ''"
         :key="ticket.title"
       >
         <Ticket
+
           :title="ticket.title"
-          :stakeholder="ticket.stakeholder"
+          :stakeholder="ticket.stakeholders.title"
           :location="ticket.location"
-          :created="ticket.created"
+          :created="ticket.createdAt"
           :status="ticket.status"
         />
       </li>
-      <!-- <li
+      <li
         class="d-tickets__list-item d-tickets__list-item--empty"
         v-if="tickets.length === 0"
         key="no-tickets"
-      >Er zijn geen meldingen in deze categorie</li>-->
+      >Er zijn geen meldingen in deze categorie</li>
     </transition-group>
   </draggable>
 </template>
