@@ -26,19 +26,57 @@
             d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"
           ></path>
         </svg>
-        <span class="menu__item-text">Meldingen</span>
+        <span class="menu__item-text">
+          Meldingen
+          <transition name="pop-up">
+            <div v-if="notifications > 0" class="menu__item-notification">{{notifications}}</div>
+          </transition>
+        </span>
       </nuxt-link>
     </div>
   </ul>
 </template>
 
 <script>
-export default {}
+import socketIOClient from 'socket.io-client'
+
+export default {
+  data() {
+    return {
+      endpoint: 'localhost:3001'
+    }
+  },
+  mounted() {
+    const socket = socketIOClient(this.endpoint)
+
+    socket.on('issue has been created', data => {
+      this.$store.commit('INCREMENT_MESSAGES_NOTIFICATIONS')
+    })
+
+    socket.on('issue status has been updated', data => {
+      this.$store.commit('INCREMENT_MESSAGES_NOTIFICATIONS')
+    })
+  },
+  computed: {
+    notifications() {
+      return this.$store.getters.GET_MESSAGES_NOTIFICATIONS
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 @import '~assets/css/config/main.scss';
 $widthHeight: 24px;
+
+.pop-up-enter-active,
+.pop-up-leave-active {
+  transition: all 0.5s;
+}
+.pop-up-enter, .pop-up-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(10rem);
+}
 
 .menu {
   height: 5rem;
@@ -90,6 +128,23 @@ $widthHeight: 24px;
       white-space: nowrap;
       font-size: 0.8rem;
       font-weight: bold;
+      position: relative;
+    }
+    &-notification {
+      $widthHeight: 1.3rem;
+      border-radius: $widthHeight;
+      height: $widthHeight;
+      width: $widthHeight;
+      top: 0;
+      right: 0.5rem;
+      background-color: $color-secondary;
+      position: absolute;
+      transform: translateY(-2.3rem);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 2;
+      @include shadow(1rem);
     }
   }
 }

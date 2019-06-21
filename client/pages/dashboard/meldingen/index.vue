@@ -1,7 +1,7 @@
 <template>
   <div class="d-container">
     <h2>Meldingen</h2>
-    <TicketFilter :list="data" @filtered="filter" />
+    <!-- <TicketFilter :list="allIssues" @filtered="filter"/> -->
     <div class="d-tickets">
       <div class="d-tickets__column">
         <h3 class="d-tickets__column-title">Open</h3>
@@ -35,61 +35,15 @@ export default {
   data() {
     return {
       endpoint: 'localhost:3001',
-      data: [
-        {
-          id: '1',
-          title: 'Some ticket title 1',
-          stakeholder: 'NUON',
-          status: 'open',
-          created: '2019-06-12T12:00:00+00:00',
-          location: 'Nieuwe Herenstraat 37 1332PT Amsterdam'
-        },
-        {
-          id: '2',
-          title: 'Some ticket title 2',
-          stakeholder: 'Gemeente',
-          status: 'open',
-          created: '2019-06-12T13:00:00+00:00',
-          location: 'Nieuwe Herenstraat 37 1332PT Amsterdam'
-        },
-        {
-          id: '3',
-          title: 'Some ticket title 3',
-          stakeholder: 'NUON',
-          status: 'working',
-          created: '2019-06-12T09:00:00+00:00',
-          location: 'Nieuwe Herenstraat 37 1332PT Amsterdam'
-        },
-        {
-          id: '4',
-          title: 'Some ticket title 4',
-          stakeholder: 'NUON',
-          status: 'working',
-          created: '2019-06-12T12:00:00+00:00',
-          location: 'Nieuwe Herenstraat 37 1332PT Amsterdam'
-        },
-        {
-          id: '5',
-          title: 'Some ticket title 5',
-          stakeholder: 'NUON',
-          status: 'working',
-          created: '2019-06-12T10:00:00+00:00',
-          location: 'Nieuwe Herenstraat 37 1332PT Amsterdam'
-        },
-        {
-          id: '6',
-          title: 'Some ticket title 6',
-          stakeholder: 'Gemeente',
-          status: 'closed',
-          created: '2019-06-12T10:30:00+00:00',
-          location: 'Nieuwe Herenstraat 37 1332PT Amsterdam'
-        }
-      ],
+      allIssues: [],
       list: []
     }
   },
   mounted() {
-    this.list = this.data
+    //this.list = this.data
+    this.getTickets()
+      .then(() => (this.list = this.allIssues))
+      .catch(err => console.log(err))
   },
   computed: {
     openList() {
@@ -133,8 +87,26 @@ export default {
       if (index > -1) {
         this.list[index].status = updated.status
       }
-      console.log('updated')
+      //console.log('updated')
       this.sendIssueUpdatedMessage('Laadpaal defect')
+    },
+    getTickets() {
+      return fetch('http://localhost:3001/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.$store.getters.GET_TOKEN
+        },
+        body: JSON.stringify({
+          query:
+            'query { issues { title location createdAt stakeholders { title } status }}'
+        })
+      })
+        .then(res => res.json())
+        .then(res => {
+          console.log(res)
+          this.allIssues = res.data.issues
+        })
     }
   }
 }

@@ -3,11 +3,12 @@
     <h2>Overzicht</h2>
     <div class="d-overview__holder">
       <div class="d-overview__column">
-        <Atlas height="60vh" :showCurrentLocation="true" :stations="stations" />
+        <Atlas height="60vh" :showCurrentLocation="true" :stations="stations"/>
       </div>
       <div class="d-overview__column">
-        <Toggle v-model="toggles.first">This is a toggle</Toggle>
-        <Toggle v-model="toggles.second">This is another toggle</Toggle>
+        <Toggle v-model="filters.open">Melding niet in behandeling</Toggle>
+        <Toggle v-model="filters.working">Melding in behandeling</Toggle>
+        <Toggle v-model="filters.closed">Melding opgelost</Toggle>
       </div>
     </div>
     <button
@@ -30,9 +31,10 @@ export default {
   data() {
     return {
       stakeholders: ['NUON', 'Gemeente'],
-      toggles: {
-        first: false,
-        second: false
+      filters: {
+        open: false,
+        working: false,
+        closed: false
       },
       stations: this.$store.getters.GET_LOADINGSTATION_DATA
     }
@@ -59,20 +61,25 @@ export default {
     }
   },
   watch: {
-    toggles: {
-      handler(val) {
+    filters: {
+      handler(filter) {
         const all = this.$store.getters.GET_LOADINGSTATION_DATA
-        if (val.first === true && val.second === true) {
-          this.stations = all.filter(station => station.status.available === '0')
-        }
-        else if (val.first === true) {
-          this.stations = all.filter(station => station.status.available === '1')
-        }
-        else if (val.second === true) {
-          this.stations = all.filter(station => station.status.available === '2')
+        let temp = []
+        if (!filter.open && !filter.working && !filter.closed) {
+          temp = temp.concat(all)
         } else {
-          this.stations = all
+          if (filter.open) {
+            temp = temp.concat(all.filter(station => station.status === 'open'))
+          }
+          if (filter.working) {
+            temp = temp.concat(all.filter(station => station.status === 'working'))
+          }
+          if (filter.closed) {
+            temp = temp.concat(all.filter(station => station.status === 'closed'))
+          }
         }
+        this.stations = temp
+        console.log(temp, filter);
       },
       deep: true
     }

@@ -40,8 +40,11 @@ module.exports = {
       });
   },
   updateIssue: async (args: any) => {
+    console.log(args);
     const issues = IssueModel.find({ _id: { $in: args.id } });
     return issues.map((issue: any) => {
+      console.log(args);
+
       if (args.issueInput.title) {
         issue[0].title = args.issueInput.title;
       }
@@ -110,22 +113,11 @@ module.exports = {
         });
     }
 
-    /* ==================================================== */
-    /* Update loadingstation to add the newly created issue */
-    /* ==================================================== */
-    LoadingstationModel.updateOne(
-      { _id: issue.loadingstation },
-      { $push: { issues: issue._id } },
-      (err: any, raw: any) => {
-        if (err) throw err;
-        console.log("updated loadingstation: ", raw);
-      }
-    );
-
     return issue
       .save()
       .then((result: any) => {
         createdIssue = transformIssue(issue);
+        /* Write issue to User */
         return User.findById(req.userId);
       })
       .then((user: any) => {
@@ -134,6 +126,17 @@ module.exports = {
         }
         user.createdIssues.push(issue);
         return user.save();
+      })
+      .then((res: any) => {
+        /* Write issue to loadingstation */
+        return LoadingstationModel.findById(issue.loadingstation);
+      })
+      .then((loadingstation: any) => {
+        if (!loadingstation) {
+          throw new Error("Loadingstation not found.");
+        }
+        loadingstation.issues.push(issue);
+        return loadingstation.save();
       })
       .then((res: any) => {
         return createdIssue;

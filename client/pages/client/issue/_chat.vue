@@ -91,6 +91,7 @@ import ChatBubble from '~/components/client/ChatBubble.vue'
 import Modal from '~/components/shared/Modal.vue'
 import Atlas from '~/components/shared/Atlas.vue'
 import TweenLite from 'gsap'
+import DB from '~/helpers/db'
 
 export default {
   layout: 'client',
@@ -238,28 +239,19 @@ export default {
         loadingstationId: this.loadingstation.id,
         address: this.loadingstation.address
       }
-      console.log(ticket);
-      fetch('http://localhost:3001/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + this.$store.getters.GET_TOKEN
-        },
-        body: JSON.stringify({
-          query: `mutation { createIssue(issueInput:{
-            title: "${ticket.title}",
-            description: "some desc",
-            status: "open",
-            stakeholderId: "5d00f4aed7597a3c181949e0",
-            loadingstationId: "${ticket.loadingstationId}"
-            createdAt: "${ticket.createdAt}",
-            polenumber: 123,
-            confirmed: 0,
-            location: "${ticket.address}"
-          }) { title stakeholders { title } loadingstation { longitude latitude address status }} }`
-        })
-      })
-      .then(res => res.json())
+      DB.execute(`mutation { createIssue(issueInput:{
+          title: "${ticket.title}",
+          description: "some desc",
+          status: "open",
+          stakeholderId: "5d00f4aed7597a3c181949e0",
+          loadingstationId: "${ticket.loadingstationId}"
+          createdAt: "${ticket.createdAt}",
+          polenumber: 123,
+          confirmed: 0,
+          location: "${ticket.address}"
+        }) { title stakeholders { title } loadingstation { longitude latitude address status }} }`,
+        this.$store.getters.GET_TOKEN
+      )
       .then(res => console.log(res))
     }
   }

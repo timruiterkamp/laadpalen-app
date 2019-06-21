@@ -161,26 +161,11 @@ export default {
         const marker = document.createElement('div')
         marker.classList.add('marker')
 
-
-
-        const issues = feature.properties.issues
-        if (issues.length > 0) {
-          const open = issues.filter(issue => issue.status === 'open').length > 0
-          const working = issues.filter(issue => issue.status === 'working').length > 0
-          const classes = []
-
-          if (open) {
-            classes.push('marker--open')
-          } else if (working) {
-            classes.push('marker--working')
-          }
-          classes.forEach(CSSclass => {
-            marker.classList.add(CSSclass)
-          })
+        const classes = []
+        const status = feature.properties.status
+        if (status) {
+          marker.classList.add('marker--' + status)
         }
-
-
-
 
         // make a marker for each feature and add to the map
         new this.mapboxgl.Marker(marker)

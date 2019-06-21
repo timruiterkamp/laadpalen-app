@@ -16,18 +16,19 @@
         :key="ticket.title"
       >
         <Ticket
+
           :title="ticket.title"
-          :stakeholder="ticket.stakeholder"
+          :stakeholder="ticket.stakeholders.title"
           :location="ticket.location"
-          :created="ticket.created"
+          :created="ticket.createdAt"
           :status="ticket.status"
         />
       </li>
-      <!-- <li
+      <li
         class="d-tickets__list-item d-tickets__list-item--empty"
         v-if="tickets.length === 0"
         key="no-tickets"
-      >Er zijn geen meldingen in deze categorie</li>-->
+      >Er zijn geen meldingen in deze categorie</li>
     </transition-group>
   </draggable>
 </template>
@@ -65,13 +66,19 @@ export default {
   },
   methods: {
     update(e) {
+      console.log(e)
       if (e.added) {
         const ticket = { ...e.added.element, status: this.status }
         this.$emit('change', ticket)
       }
     },
     allowed(ticket) {
-      return ticket.stakeholder.toLowerCase() === this.stakeholder.toLowerCase()
+      // console.log(ticket)
+      // return ticket.stakeholder.title
+      return (
+        ticket.stakeholders.title.toLowerCase() ===
+        this.stakeholder.toLowerCase()
+      )
     }
   }
 }
@@ -79,6 +86,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/assets/css/config/main.scss';
+
 .d-tickets__list {
   padding: 0;
   list-style: none;
