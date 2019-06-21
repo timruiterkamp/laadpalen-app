@@ -80,6 +80,15 @@ export const actions = {
            })
            Promise.all(promises)
              .then(issues => {
+               const open = issues.filter(issue => issue.status === 'open').length > 0
+               const working = issues.filter(issue => issue.status === 'working').length > 0
+               if (open || working) {
+                 if (open) {
+                   station.status = 'open'
+                 } else {
+                   station.status = 'working'
+                 }
+               }
                station.issues = issues
                resolve(station)
              })

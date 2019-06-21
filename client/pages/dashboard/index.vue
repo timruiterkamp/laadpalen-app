@@ -32,9 +32,9 @@ export default {
     return {
       stakeholders: ['NUON', 'Gemeente'],
       filters: {
-        open: true,
-        working: true,
-        closed: true
+        open: false,
+        working: false,
+        closed: false
       },
       stations: this.$store.getters.GET_LOADINGSTATION_DATA
     }
@@ -64,22 +64,22 @@ export default {
     filters: {
       handler(filter) {
         const all = this.$store.getters.GET_LOADINGSTATION_DATA
-        const temp = []
-        if (filter.open && filter.working && filter.closed) {
-          temp.concat(all)
+        let temp = []
+        if (!filter.open && !filter.working && !filter.closed) {
+          temp = temp.concat(all)
         } else {
           if (filter.open) {
-            temp.concat(all.filter(station => station.status === 'open'))
+            temp = temp.concat(all.filter(station => station.status === 'open'))
           }
           if (filter.working) {
-            temp.concat(all.filter(station => station.status === 'working'))
+            temp = temp.concat(all.filter(station => station.status === 'working'))
           }
           if (filter.closed) {
-            temp.concat(all.filter(station => station.status === 'closed'))
+            temp = temp.concat(all.filter(station => station.status === 'closed'))
           }
         }
-        console.log(temp, filter);
         this.stations = temp
+        console.log(temp, filter);
       },
       deep: true
     }
