@@ -38,14 +38,6 @@ app.use(
   })
 );
 
-app.get("/api/laadpalen", async (req, res) => {
-  const ApiController = new RequestController();
-  const data = await ApiController.laadpalen(
-    "https://www.oplaadpalen.nl/api/maplist/clusterset?box=52.35351489560789,4.871848199417968,52.368636728344434,4.943259332230468&zoom=15&accessType=public,company&available=available,charging&power=fast,normal"
-  );
-  res.send(JSON.stringify(data));
-});
-
 io.on("connection", (socket: any) => {
   console.log("User connected");
 

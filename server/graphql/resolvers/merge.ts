@@ -1,11 +1,22 @@
 const User = require("../../models/user");
+import Stakeholder from "../../interfaces/Interfaces";
 const IssueModel = require("../../models/issue");
 const MessageModel = require("../../models/message");
 const CategoryModel = require("../../models/category");
 const StakeholderModel = require("../../models/stakeholder");
 const LoadingstationModel = require("../../models/loadingstation");
-
 const { dateToString } = require("../../helpers/date");
+
+type issueObject = {
+  title: string;
+  location: string;
+  status: string;
+  createdAt: string;
+  creator: string;
+  image: string;
+  stakeholders: string;
+  loadingstation: string;
+};
 
 const transformIssue = (issue: any) => {
   return {
@@ -41,6 +52,7 @@ const transformMessage = (message: any) => {
 };
 
 const transformUser = (user: any) => {
+  // console.log(user);
   return {
     ...user._doc,
     _id: user.id,
@@ -50,6 +62,7 @@ const transformUser = (user: any) => {
 };
 
 const transformCategory = (category: any) => {
+  // console.log(category);
   return {
     ...category._doc,
     _id: category.id,
@@ -57,10 +70,10 @@ const transformCategory = (category: any) => {
   };
 };
 
-const transformStakeholder = (stakeholder: any) => {
-  console.log(stakeholder);
+const transformStakeholder = (stakeholder: Stakeholder) => {
   return {
-    ...stakeholder._doc,
+    issues: stakeholder.issues,
+    title: stakeholder.title,
     _id: stakeholder.id
   };
 };
@@ -80,7 +93,7 @@ const issues = (issueIds: string) => {
 const loadingstation = (loadingstationId: string) => {
   return LoadingstationModel.findById(loadingstationId)
     .then((loadingstation: any) => {
-      return loadingstation
+      return loadingstation;
       // return transformLoadingstation(loadingstation)
     })
     .catch((err: string) => {

@@ -85,16 +85,16 @@ type AuthData {
 }
 
 input IssueInput {
-  title: String!
-  description: String!
+  title: String
+  description: String
   location: String
   status: String
   polenumber: Int
-  createdAt: String!
+  createdAt: String
   image: String
   confirmed: Int
-  stakeholderId: String!
-  loadingstationId: String!
+  stakeholderId: String
+  loadingstationId: String
 }
 
 input UserInput {
@@ -134,7 +134,7 @@ type RootMutation {
   createUser(userInput: UserInput): User
   createMessage(messageInput: MessageInput): Message
   createStakeholder(stakeholderInput: StakeholderInput): Stakeholder
-  updateIssue(issueId: ID!): Issue
+  updateIssue(id: String, issueInput: IssueInput): Issue!
   updateLoadingstation(loadingstationId: ID!): Loadingstation
 }
 schema {

@@ -1,3 +1,4 @@
+export {};
 const Mongoose = require("mongoose");
 const MongooseSchema = Mongoose.Schema;
 const issueSchema = new MongooseSchema({

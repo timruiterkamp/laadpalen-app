@@ -27,7 +27,7 @@
         class="d-tickets__list-item d-tickets__list-item--empty"
         v-if="tickets.length === 0"
         key="no-tickets"
-      >Er zijn geen meldingen in deze categorie</li> -->
+      >Er zijn geen meldingen in deze categorie</li>-->
     </transition-group>
   </draggable>
 </template>
@@ -96,7 +96,8 @@ export default {
     }
   }
 }
-.tg-tickets-enter, .tg-tickets-leave-to {
+.tg-tickets-enter,
+.tg-tickets-leave-to {
   opacity: 0;
 }
 .tg-tickets-leave-active {
