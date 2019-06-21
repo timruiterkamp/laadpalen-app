@@ -64,7 +64,7 @@ type Loadingstation {
   _id: ID!
   longitude: Float
   latitude: Float
-  city: String!
+  city: String
   region: String
   regioncode: String
   district: String
@@ -95,6 +95,22 @@ input IssueInput {
   confirmed: Int
   stakeholderId: String
   loadingstationId: String
+}
+
+input LoadingstationInput {
+  longitude: Float
+  latitude: Float
+  city: String
+  region: String
+  regioncode: String
+  district: String
+  subdistrict: String
+  address: String
+  postalcode: String
+  provider: String
+  sockets: Int
+  usedsockets: Int
+  status: String
 }
 
 input UserInput {
@@ -135,7 +151,8 @@ type RootMutation {
   createMessage(messageInput: MessageInput): Message
   createStakeholder(stakeholderInput: StakeholderInput): Stakeholder
   updateIssue(id: String, issueInput: IssueInput): Issue!
-  updateLoadingstation(loadingstationId: ID!): Loadingstation
+  updateLoadingstation(id: String, loadingstationInput: LoadingstationInput): Loadingstation!
+
 }
 schema {
   query: RootQuery

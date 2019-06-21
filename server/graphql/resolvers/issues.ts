@@ -40,11 +40,8 @@ module.exports = {
       });
   },
   updateIssue: async (args: any) => {
-    console.log(args);
     const issues = IssueModel.find({ _id: { $in: args.id } });
     return issues.map((issue: any) => {
-      console.log(args);
-
       if (args.issueInput.title) {
         issue[0].title = args.issueInput.title;
       }

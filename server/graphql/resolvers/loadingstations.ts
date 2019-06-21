@@ -6,7 +6,7 @@ module.exports = {
   loadingstations: () => {
     return LoadingstationModel.find()
       .then((loadingstations: any) => {
-        return loadingstations
+        return loadingstations;
         // .map((loadingstation: any) => {
         //   return transformLoadingstation(loadingstation);
         // });
@@ -15,6 +15,69 @@ module.exports = {
         throw err;
       });
   },
+  updateLoadingstation: async (args: any) => {
+    const loadingstations = LoadingstationModel.find({ _id: { $in: args.id } });
+    return loadingstations.map((loadingstation: any, index: number) => {
+      if (args.loadingstationInput.longitude) {
+        loadingstation[index].longitude = args.loadingstationInput.longitude;
+      }
+
+      if (args.loadingstationInput.latitude) {
+        loadingstation[0].latitude = args.loadingstationInput.latitude;
+      }
+
+      if (args.loadingstationInput.city) {
+        loadingstation[0].city = args.loadingstationInput.city;
+      }
+
+      if (args.loadingstationInput.region) {
+        loadingstation[0].region = args.loadingstationInput.region;
+      }
+
+      if (args.loadingstationInput.regioncode) {
+        loadingstation[0].regioncode = args.loadingstationInput.regioncode;
+      }
+
+      if (args.loadingstationInput.district) {
+        loadingstation[0].district = args.loadingstationInput.district;
+      }
+
+      if (args.loadingstationInput.address) {
+        loadingstation[0].address = args.loadingstationInput.address;
+      }
+
+      if (args.loadingstationInput.postalcode) {
+        loadingstation[0].postalcode = args.loadingstationInput.postalcode;
+      }
+
+      if (args.loadingstationInput.provider) {
+        loadingstation[0].provider = args.loadingstationInput.provider;
+      }
+
+      if (args.loadingstationInput.sockets) {
+        loadingstation[0].sockets = args.loadingstationInput.sockets;
+      }
+
+      if (args.loadingstationInput.usedsockets) {
+        loadingstation[0].usedsockets = args.loadingstationInput.usedsockets;
+      }
+
+      if (args.loadingstationInput.status) {
+        loadingstation[0].status = args.loadingstationInput.status;
+      }
+
+      return loadingstation[0]
+        .save()
+        .then((res: any) => {
+          // console.log(res);
+          return { ...res._doc };
+        })
+        .catch((err: string) => {
+          console.error(err);
+          throw new Error(err);
+        });
+    });
+  }
   // updateLoadingstation: (loadingstationId: string) => {
   //   return LoadingstationModel.findById(loadingstationId)
   //     .then((loadingstation: any) => {
