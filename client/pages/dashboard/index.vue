@@ -6,8 +6,9 @@
         <Atlas height="60vh" :showCurrentLocation="true" :stations="stations" />
       </div>
       <div class="d-overview__column">
-        <Toggle v-model="toggles.first">This is a toggle</Toggle>
-        <Toggle v-model="toggles.second">This is another toggle</Toggle>
+        <Toggle v-model="filter.open">Melding niet in behandeling</Toggle>
+        <Toggle v-model="filter.working">Melding in behandeling</Toggle>
+        <Toggle v-model="filter.closed">Melding opgelost</Toggle>
       </div>
     </div>
     <button
@@ -30,9 +31,10 @@ export default {
   data() {
     return {
       stakeholders: ['NUON', 'Gemeente'],
-      toggles: {
-        first: false,
-        second: false
+      filters: {
+        open: false,
+        working: false,
+        closed: false
       },
       stations: this.$store.getters.GET_LOADINGSTATION_DATA
     }
@@ -59,20 +61,10 @@ export default {
     }
   },
   watch: {
-    toggles: {
-      handler(val) {
+    filters: {
+      handler(value) {
         const all = this.$store.getters.GET_LOADINGSTATION_DATA
-        if (val.first === true && val.second === true) {
-          this.stations = all.filter(station => station.status.available === '0')
-        }
-        else if (val.first === true) {
-          this.stations = all.filter(station => station.status.available === '1')
-        }
-        else if (val.second === true) {
-          this.stations = all.filter(station => station.status.available === '2')
-        } else {
-          this.stations = all
-        }
+        console.log(value);
       },
       deep: true
     }

@@ -62,7 +62,12 @@ export const actions = {
                   }
                 }
               `, state.authToken)
-              .then(data => data.issue)
+              .then(data => {
+                if (!data) {
+                  console.error('No issue with id: ', issue._id, ' was found at loadingstation: ', station._id)
+                }
+                return data.issue
+              })
               .catch(err => reject(err))
             })
             Promise.all(promises)
@@ -70,6 +75,7 @@ export const actions = {
                 station.issues = issues
                 resolve(station)
               })
+              .catch(err => reject(err))
           })
         }
         return new Promise(resolve => resolve(station))

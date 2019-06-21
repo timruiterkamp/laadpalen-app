@@ -5,12 +5,16 @@
     <div class="d-container__tiles">
       <Tile>
         <p>Aantal issues</p>
-        <BarChart v-if="BarChartDataThree" :data="BarChartDataThree" :options="barChartOptions"/>
+        <div class="d-chart-holder">
+          <BarChart v-if="BarChartDataThree" :data="BarChartDataThree" :options="barChartOptions"/>
+        </div>
       </Tile>
 
       <Tile>
         <p></p>
-        <Doughnut v-if="DoughNutData" :data="DoughNutData" :options="DoughnutOptions"/>
+        <div class="d-chart-holder">
+          <Doughnut v-if="DoughNutData" :data="DoughNutData" :options="DoughnutOptions"/>
+        </div>
       </Tile>
     </div>
   </div>
@@ -21,6 +25,7 @@ import Tile from '~/components/dashboard/Tile.vue'
 import BarChart from '~/components/dashboard/charts/Bar'
 import Doughnut from '~/components/dashboard/charts/Doughnut'
 import LineChart from '~/components/dashboard/charts/LineChart'
+import DB from '~/helpers/db'
 import axios from 'axios'
 import { log } from 'util'
 
@@ -78,9 +83,9 @@ export default {
       const data = await this.$store.dispatch('FETCH_LOADINGSTATION_DATA')
       this.stations = this.$store.getters.GET_LOADINGSTATION_DATA
     }
-
-    this.createBarChart()
     this.createPieChart()
+    this.createBarChart()
+
   },
   methods: {
     createPieChart() {
@@ -109,30 +114,31 @@ export default {
       }
     },
     createBarChart() {
-      fetch('http://localhost:3001/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + this.$store.getters.GET_TOKEN
-        },
-        body: JSON.stringify({
-          query:
-            'query { issues { title location createdAt stakeholders { title } status } stakeholders { _id title } }'
-        })
-      })
-        .then(res => res.json())
+      DB.execute(`query {
+          issues {
+            title
+            location
+            createdAt
+            stakeholders {
+              title
+            }
+            status
+          }
+          stakeholders {
+            _id
+            title
+          }
+        }`,
+        this.$store.getters.GET_TOKEN)
         .then(res => {
-          // res.data
-          // res.data.issues [{stakeholder: {title: 'string'}}]
-          //console.log(res.data.issues)
-          const stakeholders = res.data.issues.map(
+          const stakeholders = res.issues.map(
             issue => issue.stakeholders.title
           )
 
           const countStakeholders = countOccurence(stakeholders)
 
           this.BarChartDataThree = {
-            labels: res.data.stakeholders.map(item => item.title),
+            labels: res.stakeholders.map(item => item.title),
             datasets: [
               {
                 label: 'Issues',
@@ -152,6 +158,13 @@ export default {
 <style lang="scss" scoped>
 @import '~/assets/css/config/main.scss';
 
+.d-chart-holder {
+  position: relative;
+  max-width: 80vw;
+  display: block;
+  margin: 0 auto;
+  height: auto;
+}
 .d-container {
   &__tiles {
     display: grid;
@@ -161,9 +174,8 @@ export default {
       grid-template-columns: 1fr 1fr;
     }
     @media screen and (max-width: 915px) {
-      grid-template-columns: 1fr;
+      grid-template-columns: 100%;
     }
   }
 }
 </style>
-
