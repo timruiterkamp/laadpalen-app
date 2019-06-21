@@ -86,11 +86,12 @@ export default {
     createPieChart() {
       console.log(this.stations)
       const total = this.stations
-        .map(item => Number(item.status.available))
+        .map(item => item.sockets)
         .reduce((total, item) => total + item)
 
+      console.log(total)
       const currentlyLoading = this.stations
-        .map(item => Number(item.status.charging))
+        .map(item => item.usedsockets)
         .reduce((total, item) => total + item)
 
       this.DoughNutData = {

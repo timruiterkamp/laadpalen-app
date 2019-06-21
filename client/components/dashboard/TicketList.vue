@@ -6,6 +6,7 @@
     handle=".allow-drag"
     :sort="false"
     @change="update"
+    v-if="tickets.length > 0"
   >
     <transition-group name="tg-tickets" class="d-tickets__list" tag="ul">
       <li
