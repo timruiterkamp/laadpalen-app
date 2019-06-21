@@ -19,6 +19,7 @@
 <script>
 import Ticket from '~/components/shared/Ticket.vue'
 import SmallHeader from '~/components/client/SmallHeader.vue'
+import DB from '~/helpers/db'
 
 export default {
   layout: 'client',
@@ -32,21 +33,15 @@ export default {
     }
   },
   mounted() {
-    fetch('http://localhost:3001/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + this.$store.getters.GET_TOKEN
-      },
-      body: JSON.stringify({
-        query:
-          'query { issues { title location createdAt stakeholders { title } status }}'
-      })
+    this.$store.commit('RESET_MESSAGES_NOTIFICATIONS')
+
+    DB.execute(
+      'query { issues { title location createdAt stakeholders { title } status }}',
+      this.$store.getters.GET_TOKEN
+    ).then(res => {
+      console.log(res)
+      return (this.allIssues = res.issues)
     })
-      .then(res => res.json())
-      .then(res => (this.allIssues = res.data.issues))
-      .then(() => console.log(this.allIssues))
-      .catch(err => console.log(err))
   }
 }
 </script>

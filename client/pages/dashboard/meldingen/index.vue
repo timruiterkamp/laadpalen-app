@@ -35,58 +35,7 @@ export default {
   data() {
     return {
       endpoint: 'localhost:3001',
-      allIssues: [],
-      data: [
-        {
-          id: '1',
-          title: 'Some ticket title 1',
-          stakeholder: 'NUON',
-          status: 'open',
-          created: '2019-06-12T12:00:00+00:00',
-          location: 'Nieuwe Herenstraat 37 1332PT Amsterdam'
-        },
-        {
-          id: '2',
-          title: 'Some ticket title 2',
-          stakeholder: 'Gemeente',
-          status: 'open',
-          created: '2019-06-12T13:00:00+00:00',
-          location: 'Nieuwe Herenstraat 37 1332PT Amsterdam'
-        },
-        {
-          id: '3',
-          title: 'Some ticket title 3',
-          stakeholder: 'NUON',
-          status: 'working',
-          created: '2019-06-12T09:00:00+00:00',
-          location: 'Nieuwe Herenstraat 37 1332PT Amsterdam'
-        },
-        {
-          id: '4',
-          title: 'Some ticket title 4',
-          stakeholder: 'NUON',
-          status: 'working',
-          created: '2019-06-12T12:00:00+00:00',
-          location: 'Nieuwe Herenstraat 37 1332PT Amsterdam'
-        },
-        {
-          id: '5',
-          title: 'Some ticket title 5',
-          stakeholder: 'NUON',
-          status: 'working',
-          created: '2019-06-12T10:00:00+00:00',
-          location: 'Nieuwe Herenstraat 37 1332PT Amsterdam'
-        },
-        {
-          id: '6',
-          title: 'Some ticket title 6',
-          stakeholder: 'Gemeente',
-          status: 'closed',
-          created: '2019-06-12T10:30:00+00:00',
-          location: 'Nieuwe Herenstraat 37 1332PT Amsterdam'
-        }
-      ],
-      list: []
+      allIssues: []
     }
   },
   mounted() {

@@ -10,9 +10,9 @@ const DB = {
         query
       })
     })
-    .then(res => res.json())
-    .then(res => res.data)
-    .catch(console.error)
+      .then(res => res.json())
+      .then(res => res.data)
+      .catch(console.error)
   }
 }
 

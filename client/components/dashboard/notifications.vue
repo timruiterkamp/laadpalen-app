@@ -20,6 +20,8 @@ export default {
       this.notificationTrigger = true
       this.message = 'Nieuwe issue binnengekomen'
 
+      this.$store.commit('INCREMENT_MESSAGES_NOTIFICATIONS')
+
       setTimeout(() => {
         this.notificationTrigger = false
       }, 3000)
@@ -29,6 +31,8 @@ export default {
       this.notificationTrigger = true
       console.log(data)
       this.message = 'Issue is geupdated'
+
+      this.$store.commit('INCREMENT_MESSAGES_NOTIFICATIONS')
 
       setTimeout(() => {
         this.notificationTrigger = false
