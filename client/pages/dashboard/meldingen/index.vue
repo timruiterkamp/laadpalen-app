@@ -1,7 +1,7 @@
 <template>
   <div class="d-container">
     <h2>Meldingen</h2>
-    <TicketFilter :list="data" @filtered="filter" />
+    <!-- <TicketFilter :list="allIssues" @filtered="filter"/> -->
     <div class="d-tickets">
       <div class="d-tickets__column">
         <h3 class="d-tickets__column-title">Open</h3>
@@ -35,6 +35,7 @@ export default {
   data() {
     return {
       endpoint: 'localhost:3001',
+      allIssues: [],
       data: [
         {
           id: '1',
@@ -89,7 +90,10 @@ export default {
     }
   },
   mounted() {
-    this.list = this.data
+    //this.list = this.data
+    this.getTickets()
+      .then(() => (this.list = this.allIssues))
+      .catch(err => console.log(err))
   },
   computed: {
     openList() {
@@ -133,8 +137,25 @@ export default {
       if (index > -1) {
         this.list[index].status = updated.status
       }
-      console.log('updated')
+      //console.log('updated')
       this.sendIssueUpdatedMessage('Laadpaal defect')
+    },
+    getTickets() {
+      return fetch('http://localhost:3001/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.$store.getters.GET_TOKEN
+        },
+        body: JSON.stringify({
+          query:
+            'query { issues { title location createdAt stakeholders { title } status }}'
+        })
+      })
+        .then(res => res.json())
+        .then(res => {
+          this.allIssues = res.data.issues
+        })
     }
   }
 }

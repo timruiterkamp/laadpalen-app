@@ -27,6 +27,8 @@
           ></path>
         </svg>
         <span class="menu__item-text">Meldingen</span>
+
+        <div class="menu__notification"></div>
       </nuxt-link>
     </div>
   </ul>
@@ -85,6 +87,15 @@ $widthHeight: 24px;
       fill: none;
       stroke: $color-white;
       margin-bottom: $margin-xs;
+      &:after {
+        height: 1rem;
+        width: 1rem;
+        top: 0;
+        right: 0;
+        background-color: red;
+        position: absolute;
+        content: '';
+      }
     }
     &-text {
       white-space: nowrap;
