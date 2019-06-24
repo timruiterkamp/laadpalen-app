@@ -1,6 +1,6 @@
 <template>
   <div class="d-ticket-filter">
-    <Toggle class="d-ticket-filter__toggle" v-for="stakeholder in stakeholders" :key="stakeholder" v-model="toggles[stakeholder.toLowerCase()]">{{stakeholder}}</Toggle>
+    <Toggle class="d-ticket-filter__toggle" v-for="stakeholder in stakeholders" :key="stakeholder" v-model="toggles[shorten(stakeholder)]">{{shorten(stakeholder)}}</Toggle>
   </div>
 </template>
 
@@ -31,7 +31,7 @@
           .filter((val, index, self) => self.indexOf(val) === index)
 
         return stakeholders
-      }
+      },
     },
     watch: {
       toggles: {
@@ -42,6 +42,13 @@
       }
     },
     methods: {
+      shorten(stakeholder) {
+        stakeholder = stakeholder.toLowerCase().trim()
+        if (stakeholder === 'gemeente amsterdam') return 'gemeente'
+        if (stakeholder === 'nuon') return 'nuon'
+        if (stakeholder === 'idolaad') return 'idolaad'
+        return 'algemeen'
+      },
       filterList(toggles) {
         const toggleKeys = Object.keys(toggles);
         const activeToggles = toggleKeys.filter(key=> {
@@ -49,8 +56,7 @@
         })
 
         const filtered = this.list
-          .filter(item => activeToggles.includes(item.stakeholders.title.toLowerCase()))
-          console.log(filtered);
+          .filter(item => activeToggles.includes(this.shorten(item.stakeholders.title)))
         this.$emit('filtered', filtered)
       }
     }

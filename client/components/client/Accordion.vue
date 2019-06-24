@@ -25,7 +25,7 @@
           :key="`accordion-item-${i}`"
         >
           <nuxt-link
-            :to="'client/issue/' + item.slug"
+            :to="'client/issue/' + item.slug + '/?flow=' + item.flow"
             class="accordion__options-item-anchor"
           >{{item.title}}</nuxt-link>
           <svg

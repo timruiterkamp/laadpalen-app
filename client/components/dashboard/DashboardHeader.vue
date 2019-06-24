@@ -1,11 +1,12 @@
 <template>
   <header class="d-header" :class="nav_open ? 'nav-open' : ''">
     <div class="d-header__top">
+      <img class="d-header__logo" src="/amsterdam_elektrisch_logo_white.svg" alt="">
       <h1 class="d-header__title">Laadpalen</h1>
     </div>
     <nav class="d-nav">
       <ul class="d-nav__list">
-        <li class="d-nav__list-item"><nuxt-link @click.native="toggleNav" class="d-nav__link" to="/dashboard">Overzicht</nuxt-link></li>
+        <li class="d-nav__list-item"><nuxt-link @click.native="toggleNav" class="d-nav__link" to="/dashboard" exact>Overzicht</nuxt-link></li>
         <li class="d-nav__list-item"><nuxt-link @click.native="toggleNav" class="d-nav__link" to="/dashboard/meldingen">Meldingen</nuxt-link></li>
         <li class="d-nav__list-item"><nuxt-link @click.native="toggleNav" class="d-nav__link" to="/dashboard/inzichten">Inzichten</nuxt-link></li>
       </ul>
@@ -24,7 +25,8 @@
       }
     },
     methods: {
-      toggleNav() {
+      toggleNav(e) {
+        // if (e.target.classList.contains('nuxt-link-active')) e.preventDefault()
         this.nav_open = !this.nav_open
       }
     }
@@ -42,7 +44,7 @@
     @include shadow($size: .5rem, $alpha: .1);
     display: flex;
     flex-direction: row;
-    z-index: 1;
+    z-index: 3;
     @media screen and (min-width: 60rem) {
       max-width: 12.5rem;
       height: 100%;
@@ -60,14 +62,21 @@
       @media screen and (min-width: 60rem) {
         height: auto;
         justify-content: center;
-        flex-direction: column;
+        // flex-direction: column;
         padding: $padding-xl $padding-m;
       }
+    }
+    &__logo {
+      width: 2rem;
+      display: inline-block;
+      display: block;
+      margin-right: .5rem;
     }
     &__title {
       margin: 0;
       color: inherit;
       font-size: 1.25rem;
+      line-height: 1;
     }
     &__bottom {
       margin-top: auto;
@@ -152,7 +161,7 @@
         color: $color-white;
         background: lighten($color-grey-dark, 20%);
       }
-      &.nuxt-link-exact-active {
+      &.nuxt-link-active {
         background-color: $color-grey-dark;
         color: $color-white;
         cursor: default;

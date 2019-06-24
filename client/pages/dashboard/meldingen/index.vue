@@ -4,17 +4,17 @@
     <TicketFilter :list="data" v-on:filtered="filter" />
     <div class="d-tickets">
       <div class="d-tickets__column">
-        <h3 class="d-tickets__column-title">Open</h3>
+        <h3 class="d-tickets__column-title">Gemeld</h3>
         <hr class="d-hr">
         <TicketList :list="openList" group="tickets" status="open" @change="update"/>
       </div>
       <div class="d-tickets__column">
-        <h3 class="d-tickets__column-title">Working</h3>
+        <h3 class="d-tickets__column-title">In behandeling</h3>
         <hr class="d-hr">
         <TicketList :list="workingList" group="tickets" status="working" @change="update"/>
       </div>
       <div class="d-tickets__column">
-        <h3 class="d-tickets__column-title">Closed</h3>
+        <h3 class="d-tickets__column-title">Afgehandeld</h3>
         <hr class="d-hr">
         <TicketList :list="closedList" group="tickets" status="closed" @change="update"/>
       </div>
@@ -41,10 +41,14 @@ export default {
     }
   },
   mounted() {
+    console.log('mounted');
     this.getTickets()
       .then(res => {
         this.list = res
         this.data = res
+        if (this.$route.query && this.$route.query.id) {
+          this.setFocus(this.$route.query.id)
+        }
       })
       .catch(console.error)
   },
@@ -77,13 +81,34 @@ export default {
       return this.$store.getters.GET_STAKEHOLDER
     }
   },
+  watch: {
+    list(arr) {
+      if (arr.length === 0) {
+        this.getTickets()
+          .then(res => this.list = res)
+      }
+    }
+  },
   methods: {
     filter(newList) {
       this.list = newList
     },
+    setFocus(id) {
+      setTimeout(() => {
+        const focus = document.querySelector(`[data-id="${id}"]`)
+        focus.classList.add('focus')
+        const reset = () => {
+          focus.removeEventListener('mouseover', reset)
+          focus.classList.remove('focus')
+        }
+        focus.addEventListener('mouseover', reset)
+
+      }, 0)
+    },
     sendIssueUpdatedMessage(issue) {
       const socket = socketIOClient(this.endpoint)
-      socket.emit('issue has been updated', {title: issue.title, _id: issue._id, status: issue.status, loadingstation: {_id: issue.loadingstation._id}})
+      console.log('issue: ', issue);
+      socket.emit('issue has been updated', {title: issue.title, _id: issue._id, status: issue.status, loadingstation: {_id: issue.loadingstation._id}, location: issue.location})
     },
     update(updated) {
       const index = this.list.findIndex(ticket => ticket._id == updated._id)
@@ -122,7 +147,7 @@ export default {
   }
   &__column {
     margin-right: $margin-m;
-    padding-bottom: 10rem;
+    padding-bottom: $margin-xl * 2;
     flex: 1;
     &-title {
       font-size: 1.25rem;

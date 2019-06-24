@@ -5,9 +5,9 @@
     <div class="c-home__content">
       <h4 class="c-home__title">Mijn probleem heeft te maken met:</h4>
 
-      <Accordion :title="'Laadpaal'" :options="laadpaalOptions"/>
+      <Accordion :title="'De laadpaal'" :options="laadpaalOptions"/>
       <Accordion :title="'Mijn betaalpas'" :options="paymentOptions"/>
-      <Accordion :title="'Parkeerplekken'" :options="parkingOptions"/>
+      <Accordion :title="'De laadplaats'" :options="parkingOptions"/>
       <Accordion :title="'Overig'" :options="other"/>
     </div>
   </div>
@@ -28,49 +28,64 @@ export default {
       laadpaalOptions: [
         {
           title: 'Werkt niet',
-          slug: 'laadpaal-werkt-niet'
+          slug: 'laadpaal-defect',
+          flow: 1,
         },
         {
-          title: 'Is defect',
-          slug: 'laadpaal-is-defect'
+          title: 'Is bezet door een niet-elektrisch voertuig',
+          slug: 'laadpaal-bezet-door-niet-EV',
+          flow: 0
         },
         {
-          title: 'Is te lang bezet',
-          slug: 'laadpaal-te-lang-bezet'
+          title: 'Wordt al geruime tijd bezet',
+          slug: 'laadpaal-te-lang-bezet',
+          flow: 0
         },
         {
-          title: 'Niet te bereiken',
-          slug: 'laadpaal-niet-tebereiken'
+          title: 'Is onbereikbaar',
+          slug: 'laadpaal-onbereikbaar',
+          flow: 0,
         },
         {
-          title: 'Anders',
-          slug: 'laadpaal/anders'
+          title: 'Heeft een ander probleem',
+          slug: 'laadpaal-overig',
+          flow: 1
         }
       ],
       paymentOptions: [
         {
           title: 'Werkt niet',
-          slug: 'laadpaal-werkt-niet'
+          slug: 'pas-werkt-niet',
+          flow: 1,
         }
       ],
       parkingOptions: [
         {
-          title: 'Er staat iemand in de weg',
-          slug: 'laadpaal-werkt-niet'
+          title: 'Is bezet door een niet-elektrisch voertuig',
+          slug: 'laadpaal-bezet-door-niet-EV',
+          flow: 0
         },
         {
-          title: 'Auto staat te lang geparkeerd',
-          slug: 'laadpaal-werkt-niet'
-        }
+          title: 'Wordt al geruime tijd bezet',
+          slug: 'laadpaal-te-lang-bezet',
+          flow: 0
+        },
+        {
+          title: 'Is onbereikbaar',
+          slug: 'laadpaal-onbereikbaar',
+          flow: 0
+        },
       ],
       other: [
         {
           title: 'Ruimteschip ofzo heel raar dit',
-          slug: 'laadpaal-werkt-niet'
+          slug: 'laadpaal-overig',
+          flow: 1
         },
         {
           title: 'Start chat',
-          slug: 'laadpaal-werkt-niet'
+          slug: 'laadpaal-overig',
+          flow: 1
         }
       ]
     }

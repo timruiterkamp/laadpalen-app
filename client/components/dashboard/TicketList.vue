@@ -16,7 +16,7 @@
         :key="ticket._id"
       >
         <Ticket
-
+          :data-id="ticket._id"
           :title="ticket.title"
           :stakeholder="ticket.stakeholders.title"
           :location="ticket.location"
@@ -28,7 +28,10 @@
         class="d-tickets__list-item d-tickets__list-item--empty"
         v-if="tickets.length === 0"
         key="no-tickets"
-      >Er zijn geen meldingen in deze categorie</li>
+      >
+        <span>Geen meldingen.</span>
+        <span class="small">Sleep hier een melding naar toe om status up to date te brengen</span>
+      </li>
     </transition-group>
   </draggable>
 </template>
@@ -94,9 +97,24 @@ export default {
     transition: all 0.3s;
     opacity: 0.5;
     &--empty {
-      padding: $padding-m;
+      height: $padding-xl + $padding-m * 3;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      flex-direction: column;
+      margin: $margin-xs 0;
       opacity: 1;
-      color: $color-grey-dark;
+      color: darken($color-grey-medium, 20%);
+      border: 2px dashed $color-grey-medium;
+      border-radius: $rounding-s;
+      padding: $padding-s $padding-m;
+      span {
+        font-weight: bold;
+        &.small {
+          font-weight: normal;
+        }
+
+      }
     }
     &.allow-drag {
       opacity: 1;

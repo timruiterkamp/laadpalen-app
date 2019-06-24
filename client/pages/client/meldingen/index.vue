@@ -38,10 +38,10 @@ export default {
     DB.execute(
       'query { issues { title location createdAt stakeholders { title } status }}',
       this.$store.getters.GET_TOKEN
-    ).then(res => {
-      console.log(res)
-      return (this.allIssues = res.issues)
-    })
+    )
+    .then(res => res.issues)
+    .then(res => res.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)))
+    .then(res => this.allIssues = res)
   }
 }
 </script>
