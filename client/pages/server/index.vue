@@ -39,7 +39,10 @@ export default {
       location: '',
       polenumber: '',
       image: '',
-      endpoint: 'localhost:3001',
+      endpoint:
+        process.env.NODE_ENV == 'development'
+          ? process.env.DEV_URL
+          : process.env.PROD_URL,
       data: ''
     }
   },
@@ -51,7 +54,7 @@ export default {
     async getData() {
       // const token = await this.getAuth()
 
-      fetch('http://localhost:3001/graphql', {
+      fetch(this.endpoint + '/graphql', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +86,7 @@ export default {
         stakeholderId: "5d00f4aed7597a3c181949e0"
       }
 
-      fetch('http://localhost:3001/graphql', {
+      fetch(this.endpoint + '/graphql', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

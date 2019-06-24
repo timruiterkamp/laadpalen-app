@@ -1,4 +1,5 @@
 const pkg = require('./package')
+const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   mode: 'universal',
@@ -27,6 +28,10 @@ module.exports = {
       }
     ]
   },
+  env: {
+    DEV_URL: 'http://localhost:3001',
+    PROD_URL: 'https://denniswegereef.nl'
+  },
 
   /*
    ** Customize the progress-bar color
@@ -52,8 +57,8 @@ module.exports = {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/axios'
+    // '@nuxtjs/pwa'
     // '@nuxtjs/apollo'
   ],
   /*
@@ -113,9 +118,14 @@ module.exports = {
    ** Build configuration
    */
   build: {
-    /*
-     ** You can extend webpack config here
-     */
-    extend(config, ctx) {}
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          cache: true,
+          parallel: false
+        })
+      ]
+    }
   }
 }
