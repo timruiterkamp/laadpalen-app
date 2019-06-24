@@ -7,7 +7,7 @@
       {{this.message}}
       <span class="bold">{{this.issue.title}}</span>
       <span class="small">{{this.issue.location}}</span>
-    </div<
+    </div>
 </template>
 <script>
 import socketIOClient from 'socket.io-client'

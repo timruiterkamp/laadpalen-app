@@ -163,7 +163,9 @@ export default {
     display: flex;
   }
   &__column {
-    margin-right: $margin-m;
+    @media screen and (min-width: 60rem) {
+      margin-right: $margin-m;
+    }
     padding-bottom: $margin-xl * 2;
     flex: 1;
     &-title {
