@@ -1,5 +1,4 @@
 const pkg = require('./package')
-const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   mode: 'universal',
@@ -120,10 +119,10 @@ module.exports = {
    */
   minimize: false,
   build: {
-    // extend(config) {
-    //   config.plugins = config.plugins.filter(
-    //     plugin => plugin.constructor.name !== 'UglifyJsPlugin'
-    //   )
-    // }
+    extend(config) {
+      config.plugins = config.plugins.filter(
+        plugin => plugin.constructor.name !== 'UglifyJsPlugin'
+      )
+    }
   }
 }
