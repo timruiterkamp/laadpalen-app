@@ -3,6 +3,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   mode: 'universal',
+  debug: true,
 
   /*
    ** Headers of the page
