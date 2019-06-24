@@ -117,11 +117,12 @@ module.exports = {
   /*
    ** Build configuration
    */
+  minimize: false,
   build: {
-    extend(config) {
-      config.plugins = config.plugins.filter(
-        plugin => plugin.constructor.name !== 'UglifyJsPlugin'
-      )
-    }
+    // extend(config) {
+    //   config.plugins = config.plugins.filter(
+    //     plugin => plugin.constructor.name !== 'UglifyJsPlugin'
+    //   )
+    // }
   }
 }
