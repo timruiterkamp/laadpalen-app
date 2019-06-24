@@ -27,6 +27,10 @@ module.exports = {
       }
     ]
   },
+  env: {
+    DEV_URL: 'http://localhost:3001',
+    PROD_URL: 'https://denniswegereef.nl'
+  },
 
   /*
    ** Customize the progress-bar color
@@ -52,8 +56,8 @@ module.exports = {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/axios'
+    // '@nuxtjs/pwa'
     // '@nuxtjs/apollo'
   ],
   /*

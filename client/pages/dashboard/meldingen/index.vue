@@ -1,7 +1,7 @@
 <template>
   <div class="d-container">
     <h2>Meldingen</h2>
-    <TicketFilter :list="data" v-on:filtered="filter" />
+    <TicketFilter :list="data" v-on:filtered="filter"/>
     <div class="d-tickets">
       <div class="d-tickets__column">
         <h3 class="d-tickets__column-title">Open</h3>
@@ -35,7 +35,10 @@ export default {
   },
   data() {
     return {
-      endpoint: 'localhost:3001',
+      endpoint:
+        process.env.NODE_ENV == 'development'
+          ? process.env.DEV_URL
+          : process.env.PROD_URL,
       list: [],
       data: []
     }
@@ -83,32 +86,51 @@ export default {
     },
     sendIssueUpdatedMessage(issue) {
       const socket = socketIOClient(this.endpoint)
-      socket.emit('issue has been updated', {title: issue.title, _id: issue._id, status: issue.status, loadingstation: {_id: issue.loadingstation._id}})
+      socket.emit('issue has been updated', {
+        title: issue.title,
+        _id: issue._id,
+        status: issue.status,
+        loadingstation: { _id: issue.loadingstation._id }
+      })
     },
     update(updated) {
       const index = this.list.findIndex(ticket => ticket._id == updated._id)
       if (index > -1) {
         this.list[index].status = updated.status
       }
-      DB.execute(`mutation {
-        updateIssue(id: "${updated._id}", issueInput:{status: "${updated.status}"}) {
+      DB.execute(
+        `mutation {
+        updateIssue(id: "${updated._id}", issueInput:{status: "${
+          updated.status
+        }"}) {
           _id
           status
           title
         }
-      }`).then(res => console.log(res))
-      DB.execute(`mutation {
-        updateLoadingstation(id: "${updated.loadingstation._id}", loadingstationInput:{status: "${updated.status}"}) {
+      }`
+      ).then(res => console.log(res))
+      DB.execute(
+        `mutation {
+        updateLoadingstation(id: "${
+          updated.loadingstation._id
+        }", loadingstationInput:{status: "${updated.status}"}) {
           _id
           status
         }
-      }`).then(res => console.log(res))
-      this.$store.commit('UPDATE_LOADINGSTATION', {_id: updated._id, status: updated.status, loadingstation: {_id: updated.loadingstation._id}})
+      }`
+      ).then(res => console.log(res))
+      this.$store.commit('UPDATE_LOADINGSTATION', {
+        _id: updated._id,
+        status: updated.status,
+        loadingstation: { _id: updated.loadingstation._id }
+      })
       this.sendIssueUpdatedMessage(updated)
     },
     getTickets() {
-      return DB.execute('query { issues { _id title location createdAt stakeholders { title } loadingstation { _id } status }}', this.$store.getters.GET_TOKEN)
-        .then(res => res.issues)
+      return DB.execute(
+        'query { issues { _id title location createdAt stakeholders { title } loadingstation { _id } status }}',
+        this.$store.getters.GET_TOKEN
+      ).then(res => res.issues)
     }
   }
 }
