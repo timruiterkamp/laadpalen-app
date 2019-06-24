@@ -2,6 +2,7 @@ const pkg = require('./package')
 
 module.exports = {
   mode: 'universal',
+  debug: true,
 
   /*
    ** Headers of the page
@@ -26,6 +27,10 @@ module.exports = {
           'https://fonts.googleapis.com/css?family=Poppins:300,400,600,700&display=swap'
       }
     ]
+  },
+  env: {
+    DEV_URL: 'http://localhost:3001',
+    PROD_URL: 'https://denniswegereef.nl'
   },
 
   /*
@@ -52,8 +57,8 @@ module.exports = {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/axios'
+    // '@nuxtjs/pwa'
     // '@nuxtjs/apollo'
   ],
   /*
@@ -112,10 +117,12 @@ module.exports = {
   /*
    ** Build configuration
    */
+  minimize: false,
   build: {
-    /*
-     ** You can extend webpack config here
-     */
-    extend(config, ctx) {}
+    extend(config) {
+      config.plugins = config.plugins.filter(
+        plugin => plugin.constructor.name !== 'UglifyJsPlugin'
+      )
+    }
   }
 }

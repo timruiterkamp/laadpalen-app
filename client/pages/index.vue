@@ -9,7 +9,19 @@
 </template>
 
 <script>
-export default {}
+export default {
+  mounted() {
+    console.log(
+      process.env.NODE_ENV == 'development'
+        ? process.env.DEV_URL
+        : process.env.PROD_URL
+    )
+    // if (process.env.NODE_ENV === 'development') {
+    //   console.log('hello')
+    // }
+    // console.log(process.env.NODE_ENV)
+  }
+}
 </script>
 
 <style lang="scss">

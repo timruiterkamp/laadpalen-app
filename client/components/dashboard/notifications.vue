@@ -7,7 +7,7 @@
       {{this.message}}
       <span class="bold">{{this.issue.title}}</span>
       <span class="small">{{this.issue.location}}</span>
-    </div>
+    </div<
 </template>
 <script>
 import socketIOClient from 'socket.io-client'
@@ -17,7 +17,10 @@ export default {
   layout: 'default',
   data() {
     return {
-      endpoint: 'localhost:3001',
+      endpoint:
+        process.env.NODE_ENV == 'development'
+          ? process.env.DEV_URL
+          : process.env.PROD_URL,
       message: '',
       issue: {
         title: '',
@@ -79,25 +82,22 @@ export default {
   right: 2rem;
   width: 20rem;
   height: auto;
-  border-left: .5rem solid $color-grey-dark;
+  border-left: 0.5rem solid $color-grey-dark;
   border-radius: $rounding-s;
   background-color: white;
   z-index: 100;
   opacity: 0;
   padding: 1rem;
-  font-size: .875rem;
-  @include shadow(2rem, $color-grey-dark, .15);
+  font-size: 0.875rem;
+  @include shadow(2rem, $color-grey-dark, 0.15);
   &--open {
-    border-left: .5rem solid $color-tertiary;
-
+    border-left: 0.5rem solid $color-tertiary;
   }
   &--working {
-    border-left: .5rem solid $color-secondary;
-
+    border-left: 0.5rem solid $color-secondary;
   }
   &--closed {
-    border-left: .5rem solid $color-primary;
-
+    border-left: 0.5rem solid $color-primary;
   }
   .bold {
     font-size: 1rem;
