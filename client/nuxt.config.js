@@ -1,4 +1,5 @@
 const pkg = require('./package')
+const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   mode: 'universal',
@@ -117,9 +118,14 @@ module.exports = {
    ** Build configuration
    */
   build: {
-    /*
-     ** You can extend webpack config here
-     */
-    extend(config, ctx) {}
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          cache: true,
+          parallel: false
+        })
+      ]
+    }
   }
 }
