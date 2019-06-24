@@ -118,14 +118,10 @@ module.exports = {
    ** Build configuration
    */
   build: {
-    optimization: {
-      minimize: true,
-      minimizer: [
-        new TerserPlugin({
-          cache: true,
-          parallel: false
-        })
-      ]
+    extend(config) {
+      config.plugins = config.plugins.filter(
+        plugin => plugin.constructor.name !== 'UglifyJsPlugin'
+      )
     }
   }
 }
