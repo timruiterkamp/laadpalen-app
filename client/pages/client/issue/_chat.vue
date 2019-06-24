@@ -6,7 +6,6 @@
       <h4 class="c-chat__title">
         <span class="bold">Melding:</span>
         {{ ticket.title }}
-
       </h4>
       <transition-group name="messages">
         <div class="c-chat__block" v-for="step in currentSteps" :key="step.context + step.count">
@@ -39,9 +38,7 @@
             v-if="step.action && step.action.el === 'link' && index === step.count + 1"
             :to="step.action.href"
             class="btn btn--secondary"
-          >
-            {{step.action.text}}
-          </nuxt-link>
+          >{{step.action.text}}</nuxt-link>
         </div>
       </transition-group>
     </div>
@@ -76,10 +73,7 @@
           class="btn btn--secondary btn--center"
           :class="loadingstation.address ? '' : 'btn--disabled'"
           @click="loadingstation.address ? handleLocation() : () => {}"
-        >
-          {{loadingstation.address ? loadingstation.address : 'selecteer laadpaal'}}
-        </button>
-
+        >{{loadingstation.address ? loadingstation.address : 'selecteer laadpaal'}}</button>
       </template>
     </Modal>
   </div>
@@ -111,7 +105,7 @@ export default {
       ],
       ticket: {
         title: this.$route.params.chat.split('-').join(' '),
-        stakeholderId: '5d00f4b7d7597a3c181949e1',
+        stakeholderId: '5d00f4b7d7597a3c181949e1'
       },
       stations: this.$store.getters.GET_LOADINGSTATION_DATA,
       loadingstation: {},
@@ -136,7 +130,8 @@ export default {
         {
           count: 2,
           context: 'operator',
-          message: 'Kunt u een <span class="bold">foto</span> van de situatie maken? We hebben <span class="bold">het nummerbord</span> nodig om de melding goed af te handelen.',
+          message:
+            'Kunt u een <span class="bold">foto</span> van de situatie maken? We hebben <span class="bold">het nummerbord</span> nodig om de melding goed af te handelen.',
           action: {
             el: 'input',
             text: 'Maak foto'
@@ -153,7 +148,8 @@ export default {
         {
           count: 4,
           context: 'operator',
-          message: 'Dankuwel. Wij nemen de melding in behandeling. U kunt de <span class="bold">status</span> van de melding terug vinden in uw <span class="bold">meldingen tab</span>.',
+          message:
+            'Dankuwel. Wij nemen de melding in behandeling. U kunt de <span class="bold">status</span> van de melding terug vinden in uw <span class="bold">meldingen tab</span>.',
           action: {
             el: 'link',
             text: 'Naar meldingen',
@@ -167,10 +163,9 @@ export default {
   mounted() {
     setTimeout(() => (this.index = this.index + 1), 0)
     if (this.stations.length === 0) {
-      this.$store.dispatch('FETCH_LOADINGSTATION_DATA')
-        .then(() => {
-          this.stations = this.$store.getters.GET_LOADINGSTATION_DATA
-        })
+      this.$store.dispatch('FETCH_LOADINGSTATION_DATA').then(() => {
+        this.stations = this.$store.getters.GET_LOADINGSTATION_DATA
+      })
     }
   },
   computed: {
@@ -239,7 +234,8 @@ export default {
         loadingstationId: this.loadingstation.id,
         address: this.loadingstation.address
       }
-      DB.execute(`mutation { createIssue(issueInput:{
+      DB.execute(
+        `mutation { createIssue(issueInput:{
           title: "${ticket.title}",
           description: "some desc",
           status: "open",
@@ -251,8 +247,7 @@ export default {
           location: "${ticket.address}"
         }) { title stakeholders { title } loadingstation { longitude latitude address status }} }`,
         this.$store.getters.GET_TOKEN
-      )
-      .then(res => console.log(res))
+      ).then(res => console.log(res))
     }
   }
 }
@@ -263,6 +258,7 @@ export default {
 
 .c-chat {
   padding-bottom: $padding-xl * 2;
+
   &__block {
     margin-bottom: $margin-xs;
   }
@@ -290,6 +286,10 @@ export default {
     overflow: hidden;
     position: absolute;
     z-index: -1;
+
+    &:focus + label {
+      width: 100000px;
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="c-home">
+  <div class="c-home" id="main">
     <BigHeader name="Folkert"/>
 
     <div class="c-home__content">

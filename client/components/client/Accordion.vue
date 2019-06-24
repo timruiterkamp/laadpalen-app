@@ -1,6 +1,6 @@
 <template>
   <div class="accordion">
-    <div class="accordion__header" @click="showOptions">
+    <button class="accordion__header" @click="showOptions">
       <div class="accordion__header-title">{{title}}</div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -10,7 +10,7 @@
       >
         <polyline points="6 9 12 15 18 9"></polyline>
       </svg>
-    </div>
+    </button>
     <transition
       name="accordion"
       v-on:before-enter="beforeEnter"
@@ -93,8 +93,15 @@ $widthHeight: 24px;
     @include shadow(1.5rem);
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    appearance: none;
+    font-size: 1rem;
     cursor: pointer;
     user-select: none;
+
+    &:focus {
+      outline: 1px solid green;
+    }
     &:hover {
       @include linear-gradient(darken($color-grey-dark, 5%));
     }

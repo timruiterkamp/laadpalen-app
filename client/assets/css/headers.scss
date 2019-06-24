@@ -45,7 +45,7 @@ a {
   }
   &:focus {
     color: darken($color-primary, 20%);
-    outline: none;
+    outline: 1px solid green;
     text-decoration: none;
   }
 }

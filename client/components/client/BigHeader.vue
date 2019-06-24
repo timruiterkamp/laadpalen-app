@@ -1,9 +1,10 @@
 <template>
-  <div class="big-header">
-    <h3 class="big-header__title">
-      <span class="bold">Hey {{name}}</span>
-      Welk probleem wil je melden?
-    </h3>
+  <section class="big-header">
+    <h1 class="big-header__logo">Laadpalen app</h1>
+    <div class="big-header__title">
+      <h2 class="bold">Hey {{name}}</h2>
+      <h3>Welk probleem wil je melden?</h3>
+    </div>
 
     <!-- <div class="big-header__wave">
       <div class="svg-container">
@@ -14,7 +15,7 @@
         </svg>
       </div>
     </div>-->
-  </div>
+  </section>
 </template>
 
 <script>
@@ -47,11 +48,21 @@ export default {
     height: 300px;
   }
 
-  &__title {
+  &__logo {
     color: $color-white;
     font-weight: 100;
-    span {
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__title {
+    h2,
+    h3 {
       display: block;
+      color: $color-white;
+      padding: 0;
+      margin: 0;
     }
   }
   path {
