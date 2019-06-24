@@ -2,7 +2,7 @@
   <div class="ticket" :class="'ticket--' + status">
     <div class="ticket__top">
       <h3 class="ticket__title">{{title}}</h3>
-      <div v-if="showStakeholder ? stakeholder : status" class="ticket__tag" :class="showStakeholder ? '' : status">{{showStakeholder ? stakeholder : status}}</div>
+      <div v-if="showStakeholder ? stakeholder : status" class="ticket__tag" :class="showStakeholder ? '' : status">{{showStakeholder ? shortenedStakeholder : translatedStatus}}</div>
     </div>
     <div class="ticket__bottom">
       <div class="ticket__content-meta ticket__content-meta--location">
@@ -66,6 +66,19 @@ export default {
       return `${hours < 10 ? '0' + hours : hours}:${
         minutes < 10 ? '0' + minutes : minutes
       }`
+    },
+    translatedStatus() {
+      if (this.status === 'open') return 'gemeld'
+      if (this.status === 'working') return 'in behandeling'
+      if (this.status === 'closed') return 'afgehandeld'
+      return 'geen status'
+    },
+    shortenedStakeholder() {
+      const stakeholder = this.stakeholder.toLowerCase().trim()
+      if (stakeholder === 'gemeente amsterdam') return 'gemeente'
+      if (stakeholder === 'nuon') return 'nuon'
+      if (stakeholder === 'idolaad') return 'idolaad'
+      return 'algemeen'
     }
   }
 }
@@ -104,12 +117,15 @@ export default {
   &__title {
     margin-bottom: 0;
     font-size: 1rem;
+    margin-right: $margin-s;
   }
   &__tag {
     background-color: $color-grey-low;
     padding: $padding-xs $padding-s;
     border-radius: $rounding-s;
     font-size: 0.75rem;
+    white-space: nowrap;
+    // overflow: hidden;
     @media screen and (min-width: 40rem) {
       padding: $padding-xs $padding-m;
     }
@@ -191,6 +207,17 @@ export default {
   &--default {
     .ticket__title {
       color: $color-grey-dark;
+    }
+  }
+  &.focus {
+    animation: grow 1s infinite alternate ease-in-out;
+  }
+  @keyframes grow {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.1);
     }
   }
 }

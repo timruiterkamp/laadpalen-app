@@ -12,13 +12,17 @@
         <div class="station-details__issues" v-if="issues.length > 0">
           <h3 class="station-details__issues__title">Huidige problemen:</h3>
           <div class="station-details__issue" v-for="issue in issues" :key="issue._id">
-            <p class="station-details__issue__title">{{issue.title}}</p>
-            <p>status: <span class="bold">{{issue.status}}</span></p>
+            <nuxt-link v-if="issue._id" :to="`/dashboard/meldingen/?id=${issue._id}`" class="station-details__issue__link">
+              <p v-if="issue.title" class="station-details__issue__title">{{issue.title}}</p>
+              <p v-if="issue.status">status: <span class="bold">{{translate(issue.status)}}</span></p>
+            </nuxt-link>
           </div>
         </div>
 
       </template>
     </Tooltip>
+    <div id="cursor">
+    </div>
   </div>
 
 </template>
@@ -73,7 +77,8 @@ export default {
       container: 'atlas',
       style: 'mapbox://styles/fjvdpol/cjwru7qm50as41co1ccx2xpaj',
       center: [4.895168, 52.370216],
-      zoom: 12
+      zoom: 13,
+      minZoom: 10
     })
     if (!this.map) {
       return
@@ -94,13 +99,22 @@ export default {
       if (source) {
         const stations = this.genGeoJSON(arr)
         source.setData(stations)
-        this.genCustomMarkers(stations)
+        this.$refs.usermodal.hide()
+        this.$refs.lsmodal.hide()
+        // this.genCustomMarkers(stations)
       } else {
         this.createMapDataLayer()
       }
     }
   },
   methods: {
+    translate(status) {
+      status = status.toLowerCase()
+      if (status === 'open') return 'gemeld'
+      if (status === 'working') return 'in behandeling'
+      if (status === 'closed') return 'afgehandeld'
+      return 'geen status'
+    },
     genGeoJSON(stations) {
       const features = stations.map(station => ({
         "type": "Feature",
@@ -155,24 +169,24 @@ export default {
       this.map.on('move', this.$refs.usermodal.hide)
       this.map.on('zoom', this.$refs.usermodal.hide)
     },
-    genCustomMarkers(geojson) {
-      [...document.querySelectorAll('.marker')].forEach(marker => marker.remove())
-      geojson.features.forEach(feature => {
-        const marker = document.createElement('div')
-        marker.classList.add('marker')
-
-        const classes = []
-        const status = feature.properties.status
-        if (status) {
-          marker.classList.add('marker--' + status)
-        }
-
-        // make a marker for each feature and add to the map
-        new this.mapboxgl.Marker(marker)
-          .setLngLat(feature.geometry.coordinates)
-          .addTo(this.map)
-      })
-    },
+    // genCustomMarkers(geojson) {
+    //   [...document.querySelectorAll('.marker')].forEach(marker => marker.remove())
+    //   geojson.features.forEach(feature => {
+    //     const marker = document.createElement('div')
+    //     marker.classList.add('marker')
+    //
+    //     const classes = []
+    //     const status = feature.properties.status
+    //     if (status) {
+    //       marker.classList.add('marker--' + status)
+    //     }
+    //
+    //     // make a marker for each feature and add to the map
+    //     new this.mapboxgl.Marker(marker)
+    //       .setLngLat(feature.geometry.coordinates)
+    //       .addTo(this.map)
+    //   })
+    // },
     async createMapDataLayer() {
       const geojson = this.genGeoJSON(this.stations)
       if (geojson.features.length === 0 ) {
@@ -182,37 +196,125 @@ export default {
 
       const source = this.map.getSource('loadingstations')
       if (!source) {
-        this.map.addSource('loadingstations', {
+        // const open = ["==", ["get", "status"], "open"]
+        // const working = ["==", ["get", "status"], "working"]
+        // const closed = ["==", ["get", "status"], "closed"]
+        // const other = ["!", ["has", "status"]]
+        this.map.addSource("loadingstations", {
             "type": "geojson",
-            "data": geojson
+            "data": geojson,
+            "cluster": true,
+            "clusterMaxZoom": 12,
+            // "clusterProperties": {
+            //   "open": ["+", ["case", open, 1, 0]],
+            //   "working": ["+", ["case", working, 1, 0]],
+            //   "closed": ["+", ["case", closed, 1, 0]],
+            //   "other": ["+", ["case", other, 1, 0]],
+            // }
           })
       }
 
       const layer = this.map.getLayer('loadingstations')
       if (!layer) {
         this.map.addLayer({
+          "id": "clusters",
+          "type": "circle",
+          "source": "loadingstations",
+          "filter": ["has", "point_count"],
+          "paint": {
+            "circle-radius": [
+              "step",
+              ["get", "point_count"],
+              20,
+              100,
+              30,
+              750,
+              40
+            ],
+            "circle-color": "#505050"
+          }
+        })
+        this.map.addLayer({
+          "id": "cluster-count",
+          type: "symbol",
+          source: "loadingstations",
+          filter: ["has", "point_count"],
+          layout: {
+            "text-field": "{point_count_abbreviated}",
+            "text-size": 12,
+          },
+          "paint": {
+            "text-color": "#fff"
+          }
+        })
+        this.map.addLayer({
           "id": "loadingstations",
           "type": "circle",
-          "source": "loadingstations"
+          "source": "loadingstations",
+          "filter": ["!", ["has", "point_count"]],
+          "paint": {
+            "circle-color": [
+              "match",
+              ["get", "status"],
+              "open", "#ef4c5b",
+              "working", "#684be2",
+              "closed", "#27b5a2",
+              "#505050"
+            ],
+            "circle-radius": [
+              "match",
+              ["get", "status"],
+              "open", 7,
+              "working", 7,
+              "closed", 7,
+              5
+            ]
+          }
         })
       }
-      this.genCustomMarkers(geojson)
+      // this.genCustomMarkers(geojson)
 
       if (!this.listeners) {
         this.listeners = true
 
+        this.map.on('click', 'clusters', e => {
+          const features = this.map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+          const clusterId = features[0].properties.cluster_id
+          this.map.getSource('loadingstations').getClusterExpansionZoom(clusterId, (err, zoom) => {
+            if (err) return
+
+            this.map.easeTo({
+              center: features[0].geometry.coordinates,
+              zoom: zoom
+            })
+          })
+        })
+        this.map.on('mouseenter', 'clusters', () => {
+          this.map.getCanvas().style.cursor = 'pointer';
+        })
+        this.map.on('mouseleave', 'clusters', () => {
+          this.map.getCanvas().style.cursor = '';
+        })
+        this.map.on('mouseenter', 'loadingstations', () => {
+          this.map.getCanvas().style.cursor = 'pointer';
+        })
+        this.map.on('mouseleave', 'loadingstations', () => {
+          this.map.getCanvas().style.cursor = '';
+        })
+
         this.map.on('move', this.$refs.lsmodal.hide)
         this.map.on('zoom', this.$refs.lsmodal.hide)
 
-        this.map.on('mouseenter', 'loadingstations', e => {
-          this.loadingstation = e.features[0].properties
-          console.log(this.loadingstation);
-          this.$refs.lsmodal.show(e.originalEvent)
-          this.$emit('input', this.loadingstation)
-        })
-
-        this.map.on('mouseleave', 'loadingstations', () => {
+        this.map.on('click', 'loadingstations', e => {
           this.$refs.lsmodal.hide()
+          if (this.loadingstation.id !== e.features[0].properties.id) {
+            const cursor = document.querySelector('#cursor')
+            cursor.style = `top: ${e.originalEvent.clientY}px; left: ${e.originalEvent.clientX}px;`
+            this.loadingstation = e.features[0].properties
+            this.$refs.lsmodal.show({target: cursor})
+            this.$emit('input', this.loadingstation)
+          }
+
         })
       }
 
@@ -245,13 +347,23 @@ export default {
       border-radius: 50%;
       cursor: pointer;
       @include linear-gradient($color-grey-dark);
+      transform-origin: center;
+      width: 10px;
+      height: 10px;
+      transition: width .3s, height .3s;
       &--open {
+        width: 15px;
+        height: 15px;
         @include linear-gradient($color-tertiary);
       }
       &--working {
+        width: 15px;
+        height: 15px;
         @include linear-gradient($color-secondary);
       }
       &--closed {
+        width: 15px;
+        height: 15px;
         @include linear-gradient($color-primary);
       }
     }
@@ -266,7 +378,6 @@ export default {
         color: inherit;
         font-size: 1rem;
       }
-
       p {
         margin: 0;
       }
@@ -280,6 +391,23 @@ export default {
       &__title {
         font-size: 1rem;
       }
+      &__link {
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
+  }
+  #cursor {
+    width: 5px;
+    height: 5px;
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>

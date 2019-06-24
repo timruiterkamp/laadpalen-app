@@ -67,7 +67,8 @@ export const actions = {
          }
        }
      }`, state.authToken)
-   .then(res => res.loadingstations.slice(0, 200))
+   // .then(res => res.loadingstations.slice(0, 200))
+   .then(res => res.loadingstations)
    .then(res => {
      return res.map(station => {
        const issueIds = station.issues

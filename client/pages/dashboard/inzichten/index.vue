@@ -4,14 +4,14 @@
 
     <div class="d-container__tiles">
       <Tile>
-        <p>Aantal issues</p>
+        <h3>Aantal issues per instantie</h3>
         <div class="d-chart-holder">
           <BarChart v-if="BarChartDataThree" :data="BarChartDataThree" :options="barChartOptions"/>
         </div>
       </Tile>
 
       <Tile>
-        <p></p>
+        <h3>Laadpalen beschikbaar vs bezet</h3>
         <div class="d-chart-holder">
           <Doughnut v-if="DoughNutData" :data="DoughNutData" :options="DoughnutOptions"/>
         </div>
@@ -59,7 +59,8 @@ export default {
           yAxes: [
             {
               ticks: {
-                beginAtZero: true
+                beginAtZero: true,
+                callback: value => {if (value % 1 === 0) return value}  
               }
             }
           ]
@@ -89,7 +90,6 @@ export default {
   },
   methods: {
     createPieChart() {
-      console.log(this.stations)
       const total = this.stations
         .map(item => item.sockets)
         .reduce((total, item) => total + item)
@@ -110,7 +110,7 @@ export default {
             borderColor: ['#27b5a2', '#ef4c5b']
           }
         ],
-        labels: ['Free', 'Loading']
+        labels: ['Beschikbaar', 'Bezet']
       }
     },
     createBarChart() {
@@ -124,27 +124,27 @@ export default {
             }
             status
           }
-          stakeholders {
-            _id
-            title
-          }
         }`,
         this.$store.getters.GET_TOKEN)
         .then(res => {
-          const stakeholders = res.issues.map(
-            issue => issue.stakeholders.title
+          const stakeholders = Object.keys(
+            countOccurence(
+              res.issues.map(issue => issue.stakeholders.title.toLowerCase())
+            )
           )
-
-          const countStakeholders = countOccurence(stakeholders)
+          const stakeholderObjects = stakeholders.map(stakeholder => ({
+            stakeholder,
+            issues: res.issues.filter(issue => issue.stakeholders.title.toLowerCase() === stakeholder)
+          }))
 
           this.BarChartDataThree = {
-            labels: res.stakeholders.map(item => item.title),
+            labels: stakeholders,
             datasets: [
               {
                 label: 'Issues',
-                data: [10, 20, 30],
+                data: stakeholderObjects.map(stakeholder => stakeholder.issues.length),
                 gradientColor: ['#27b5a2', '#4bd6c3'],
-                backgroundColor: 'no'
+                backgroundColor: 'no',
               }
             ]
           }

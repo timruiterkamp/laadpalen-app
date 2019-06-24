@@ -9,19 +9,19 @@
 
       </h4>
       <transition-group name="messages">
-        <div class="c-chat__block" v-for="step in currentSteps" :key="step.context + step.count">
+        <div class="c-chat__block" v-for="(step, stepIndex) in currentSteps" :key="step.context + stepIndex">
           <ChatBubble :time="step.timestamp" :context="step.context">
             <span v-if="step.message" v-html="step.message"></span>
             <span v-if="step.location" class="bold">{{loadingstation.address}}</span>
             <img v-if="step.img" :src="step.img.src" class="c-chat__img">
           </ChatBubble>
           <button
-            v-if="step.action && step.action.el === 'button' && index === step.count + 1"
+            v-if="step.action && step.action.el === 'button' && index === stepIndex + 1"
             class="btn btn--secondary"
             @click="(e) => $refs[step.action.modal].show(e)"
           >{{step.action.text}}</button>
           <div
-            v-if="step.action && step.action.el === 'input' && index === step.count + 1"
+            v-if="step.action && step.action.el === 'input' && index === stepIndex + 1"
             class="c-chat__file-group"
           >
             <label class="c-chat__file-label btn btn--secondary">
@@ -31,12 +31,12 @@
                 type="file"
                 accept="image/*"
                 capture="environment"
-                @change="e => handleFiles(e, step.count + 1)"
+                @change="e => handleFiles(e, stepIndex + 1)"
               >
             </label>
           </div>
           <nuxt-link
-            v-if="step.action && step.action.el === 'link' && index === step.count + 1"
+            v-if="step.action && step.action.el === 'link' && index === stepIndex + 1"
             :to="step.action.href"
             class="btn btn--secondary"
           >
@@ -111,60 +111,90 @@ export default {
       ],
       ticket: {
         title: this.$route.params.chat.split('-').join(' '),
-        stakeholderId: '5d00f4b7d7597a3c181949e1',
       },
       stations: this.$store.getters.GET_LOADINGSTATION_DATA,
       loadingstation: {},
-      steps: [
+      flows: [
         {
-          count: 0,
-          context: 'operator',
-          message:
-            'Goedemorgen! Wat vervelend dat een niet elektrisch voertuig geparkeerd staat. <span class="bold">Kunt u laten zien waar het is?</span>',
-          action: {
-            el: 'button',
-            text: 'Deel locatie',
-            modal: 'modalLocation'
-          }
+          stakeholder: '5d00f4b7d7597a3c181949e1',
+          steps: [
+            {
+              context: 'operator',
+              message:
+                'Goedemorgen! Wat vervelend dat een niet elektrisch voertuig op de laadplek geparkeerd staat. <span class="bold">Kunt u laten zien waar het is?</span>',
+              action: {
+                el: 'button',
+                text: 'Selecteer laadpaal',
+                modal: 'modalLocation'
+              }
+            },
+            {
+              context: 'user',
+              message: 'De locatie van de laadpaal is ',
+              location: true
+            },
+            {
+              context: 'operator',
+              message: 'Kunt u een <span class="bold">foto</span> van de situatie maken? We hebben <span class="bold">het nummerbord</span> nodig om de melding goed af te handelen.',
+              action: {
+                el: 'input',
+                text: 'Maak foto'
+              }
+            },
+            {
+              context: 'user',
+              message: '',
+              img: {
+                src: ''
+              }
+            },
+            {
+              context: 'operator',
+              message: 'Dankuwel. Wij nemen de melding in behandeling. U kunt de <span class="bold">status</span> van de melding terug vinden in uw <span class="bold">meldingen tab</span>.',
+              action: {
+                el: 'link',
+                text: 'Naar meldingen',
+                href: '/client/meldingen'
+              }
+            }
+          ],
         },
         {
-          count: 1,
-          context: 'user',
-          message: 'De locatie van de laadpaal is ',
-          location: true
-        },
-        {
-          count: 2,
-          context: 'operator',
-          message: 'Kunt u een <span class="bold">foto</span> van de situatie maken? We hebben <span class="bold">het nummerbord</span> nodig om de melding goed af te handelen.',
-          action: {
-            el: 'input',
-            text: 'Maak foto'
-          }
-        },
-        {
-          count: 3,
-          context: 'user',
-          message: '',
-          img: {
-            src: ''
-          }
-        },
-        {
-          count: 4,
-          context: 'operator',
-          message: 'Dankuwel. Wij nemen de melding in behandeling. U kunt de <span class="bold">status</span> van de melding terug vinden in uw <span class="bold">meldingen tab</span>.',
-          action: {
-            el: 'link',
-            text: 'Naar meldingen',
-            href: '/client/notifications'
-          }
+          stakeholder: '5d00f4aed7597a3c181949e0',
+          steps: [
+            {
+              context: 'operator',
+              message:
+                'Goedemorgen! Wat vervelend dat de laadpaal niet werkt. <span class="bold">Kunt u laten zien om welke laadpaal het gaat?</span>',
+              action: {
+                el: 'button',
+                text: 'Selecteer laadpaal',
+                modal: 'modalLocation'
+              }
+
+            },
+            {
+              context: 'user',
+              message: 'De locatie van de laadpaal is ',
+              location: true
+            },
+            {
+              context: 'operator',
+              message: 'Dankuwel. Wij nemen de melding in behandeling. U kunt de <span class="bold">status</span> van de melding terug vinden in uw <span class="bold">meldingen tab</span>.',
+              action: {
+                el: 'link',
+                text: 'Naar meldingen',
+                href: '/client/meldingen'
+              }
+            }
+          ]
         }
       ],
       index: 0
     }
   },
   mounted() {
+    // this.flow = this.flows[Number(this.$route.query.flow)]
     setTimeout(() => (this.index = this.index + 1), 0)
     if (this.stations.length === 0) {
       this.$store.dispatch('FETCH_LOADINGSTATION_DATA')
@@ -174,20 +204,29 @@ export default {
     }
   },
   computed: {
+    flow(){
+      return this.flows[Number(this.$route.query.flow)]
+    },
     currentSteps() {
-      if (!this.steps[this.index - 1] && this.index > 0) {
-        return this.steps
+      console.log(this.flow);
+      const steps = this.flow.steps
+      if (!steps[this.index - 1] && this.index > 0) {
+        return steps
       }
       if (this.index === 0) {
         return []
       }
       this.genTimeStamp(this.index - 1)
-      return this.steps.slice(0, this.index)
+      return steps.slice(0, this.index)
+    },
+    stakeholder() {
+      return this.flow.stakeholder
     }
   },
   watch: {
     currentSteps(completed) {
-      if (completed.length === this.steps.length) {
+      if (!this.flow) return
+      if (completed.length === this.flow.steps.length) {
         this.createTicket()
       }
     }
@@ -202,7 +241,7 @@ export default {
     },
     genTimeStamp(index) {
       const stamp = this.time(new Date())
-      this.steps[index].timestamp = stamp
+      this.flow.steps[index].timestamp = stamp
     },
     format(time) {
       return time < 10 ? '0' + time : time
@@ -225,7 +264,7 @@ export default {
       if (file) {
         const reader = new FileReader()
         reader.addEventListener('load', () => {
-          this.steps[index].img.src = reader.result
+          this.flow.steps[index].img.src = reader.result
           this.addStep()
           setTimeout(this.addStep, 1000)
         })
@@ -234,16 +273,18 @@ export default {
     },
     createTicket() {
       const ticket = {
-        ...this.ticket,
+        title: this.ticket.title,
         createdAt: new Date().toISOString(),
         loadingstationId: this.loadingstation.id,
-        address: this.loadingstation.address
+        address: this.loadingstation.address,
+        stakeholderId: this.stakeholder
       }
+      console.log('creating ticket... ', ticket);
       DB.execute(`mutation { createIssue(issueInput:{
           title: "${ticket.title}",
           description: "some desc",
           status: "open",
-          stakeholderId: "5d00f4aed7597a3c181949e0",
+          stakeholderId: "${ticket.stakeholderId}",
           loadingstationId: "${ticket.loadingstationId}"
           createdAt: "${ticket.createdAt}",
           polenumber: 123,

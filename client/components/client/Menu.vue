@@ -10,7 +10,7 @@
         <span class="menu__item-text">Maak melding</span>
       </nuxt-link>
 
-      <nuxt-link class="menu__item" :to="{ path: '/client/map'}">
+      <nuxt-link class="menu__item" :to="{ path: '/client/kaart'}">
         <svg class="menu__item-icon">
           <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
           <line x1="8" y1="2" x2="8" y2="18"></line>
@@ -19,7 +19,7 @@
         <span class="menu__item-text">Kaart</span>
       </nuxt-link>
 
-      <nuxt-link class="menu__item" :to="{ path: '/client/notifications'}">
+      <nuxt-link class="menu__item" :to="{ path: '/client/meldingen'}">
         <svg class="menu__item-icon">
           <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
           <path

@@ -3,7 +3,7 @@
     <h2>Overzicht</h2>
     <div class="d-overview__holder">
       <div class="d-overview__column">
-        <Atlas height="60vh" :showCurrentLocation="true" :stations="filteredStations"/>
+        <Atlas height="60vh" :showCurrentLocation="false" :stations="filteredStations"/>
       </div>
       <div class="d-overview__column">
         <Toggle v-model="filters.open">Melding niet in behandeling</Toggle>
