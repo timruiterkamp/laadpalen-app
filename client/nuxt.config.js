@@ -30,7 +30,7 @@ module.exports = {
   },
   env: {
     DEV_URL: 'http://localhost:3001',
-    PROD_URL: 'https://denniswegereef.nl'
+    PROD_URL: 'http://server.denniswegereef.nl'
   },
 
   /*

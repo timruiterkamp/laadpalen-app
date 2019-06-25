@@ -1,12 +1,7 @@
 export default function({ app, store }) {
   app.router.onReady(() => {
-    const env =
-      process.env.NODE_ENV == 'development'
-        ? process.env.DEV_URL
-        : process.env.PROD_URL
-
     if (!store.getters.GET_TOKEN) {
-      fetch(env + '/graphql', {
+      fetch('http://localhost:3001/graphql', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
