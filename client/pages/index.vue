@@ -193,8 +193,12 @@ export default {
 .container {
   margin: 0 auto;
   min-height: 100vh;
-  max-width: 60rem;
+  max-width: 40rem;
   padding: 3rem;
+  padding-bottom: 6rem;
+  @media screen and (min-width: 60rem) {
+    padding-bottom: 10rem;
+  }
 
   a {
     margin-bottom: 10px;
@@ -275,6 +279,7 @@ export default {
   }
 }
 .splashscreen {
+  pointer-events: none;
   @include linear-gradient($color-primary);
   width: 100%;
   height: 100vh;

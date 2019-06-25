@@ -98,9 +98,12 @@ export default {
 
 .c-home {
   &__content {
+    max-width: 40rem;
+    margin: 0 auto;
     padding: $padding-m;
   }
   &__title {
+    margin-top: $margin-m;
     font-weight: 100;
     text-align: center;
   }
