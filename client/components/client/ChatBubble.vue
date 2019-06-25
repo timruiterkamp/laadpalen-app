@@ -1,12 +1,12 @@
 <template>
-  <div class="chat-bubble" :class="'chat-bubble__' + context">
+  <blockquote class="chat-bubble" :class="'chat-bubble__' + context">
     <div class="chat-bubble__bubble">
       <p class="chat-bubble__text">
         <slot></slot>
       </p>
     </div>
     <span class="chat-bubble__time">{{time}}</span>
-  </div>
+  </blockquote>
 </template>
 
 <script>
@@ -60,7 +60,7 @@ export default {
         border-radius: $rounding-s $rounding-s 0 $rounding-s;
         align-self: flex-end;
         @include linear-gradient($color-primary);
-        @include shadow(1rem, $color-primary, .5);
+        @include shadow(1rem, $color-primary, 0.5);
       }
       &__text {
         color: $color-white;

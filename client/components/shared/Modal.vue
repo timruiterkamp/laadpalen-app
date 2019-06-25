@@ -1,6 +1,6 @@
 <template>
   <transition name="modal">
-    <div v-if="visible" class="modal">
+    <section v-if="visible" class="modal">
       <div @click="hide" class="modal__background"></div>
       <div class="modal__inner">
         <div class="modal__inner-close" @click="hide">
@@ -16,7 +16,7 @@
           <slot name="content"></slot>
         </div>
       </div>
-    </div>
+    </section>
   </transition>
 </template>
 

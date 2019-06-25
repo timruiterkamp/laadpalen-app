@@ -44,7 +44,7 @@ export default {
     }
   },
   mounted() {
-    console.log('mounted');
+    console.log('mounted')
     this.getTickets()
       .then(res => {
         this.list = res
@@ -87,8 +87,7 @@ export default {
   watch: {
     list(arr) {
       if (arr.length === 0) {
-        this.getTickets()
-          .then(res => this.list = res)
+        this.getTickets().then(res => (this.list = res))
       }
     }
   },
@@ -105,13 +104,18 @@ export default {
           focus.classList.remove('focus')
         }
         focus.addEventListener('mouseover', reset)
-
       }, 0)
     },
     sendIssueUpdatedMessage(issue) {
       const socket = socketIOClient(this.endpoint)
-      console.log('issue: ', issue);
-      socket.emit('issue has been updated', {title: issue.title, _id: issue._id, status: issue.status, loadingstation: {_id: issue.loadingstation._id}, location: issue.location})
+      console.log('issue: ', issue)
+      socket.emit('issue has been updated', {
+        title: issue.title,
+        _id: issue._id,
+        status: issue.status,
+        loadingstation: { _id: issue.loadingstation._id },
+        location: issue.location
+      })
     },
     update(updated) {
       const index = this.list.findIndex(ticket => ticket._id == updated._id)

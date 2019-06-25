@@ -1,13 +1,13 @@
 <template>
-  <div
+  <section
     v-if="notificationTrigger"
     class="notification-message"
     :class="'notification-message--' + status"
-    >
-      {{this.message}}
-      <span class="bold">{{this.issue.title}}</span>
-      <span class="small">{{this.issue.location}}</span>
-    </div>
+  >
+    {{this.message}}
+    <span class="bold">{{this.issue.title}}</span>
+    <span class="small">{{this.issue.location}}</span>
+  </section>
 </template>
 <script>
 import socketIOClient from 'socket.io-client'
@@ -51,9 +51,9 @@ export default {
       this.notificationTrigger = true
       this.message = 'Melding bijgewerkt:'
       this.issue.title = issue.title
-      this.issue.location =  issue.location
+      this.issue.location = issue.location
       this.status = issue.status
-      console.log(issue);
+      console.log(issue)
 
       this.$store.commit('INCREMENT_MESSAGES_NOTIFICATIONS')
 

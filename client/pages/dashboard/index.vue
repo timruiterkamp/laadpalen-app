@@ -71,13 +71,19 @@ export default {
         filtered = filtered.concat(stations)
       } else {
         if (filters.open) {
-          filtered = filtered.concat(stations.filter(station => station.status === 'open'))
+          filtered = filtered.concat(
+            stations.filter(station => station.status === 'open')
+          )
         }
         if (filters.working) {
-          filtered = filtered.concat(stations.filter(station => station.status === 'working'))
+          filtered = filtered.concat(
+            stations.filter(station => station.status === 'working')
+          )
         }
         if (filters.closed) {
-          filtered = filtered.concat(stations.filter(station => station.status === 'closed'))
+          filtered = filtered.concat(
+            stations.filter(station => station.status === 'closed')
+          )
         }
       }
       return filtered

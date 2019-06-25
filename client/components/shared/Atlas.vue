@@ -1,10 +1,7 @@
 <template >
-  <div class="">
-    <div id="atlas" class="atlas" :style="`height: ${height};`">
-    </div>
-    <Tooltip ref="usermodal" status="secondary">
-      Huidige locatie
-    </Tooltip>
+  <section>
+    <div id="atlas" class="atlas" :style="`height: ${height};`"></div>
+    <Tooltip ref="usermodal" status="secondary">Huidige locatie</Tooltip>
 
     <Tooltip ref="lsmodal" class="station-details">
       <template v-slot="content">
@@ -12,19 +9,23 @@
         <div class="station-details__issues" v-if="issues.length > 0">
           <h3 class="station-details__issues__title">Huidige problemen:</h3>
           <div class="station-details__issue" v-for="issue in issues" :key="issue._id">
-            <nuxt-link v-if="issue._id" :to="`/dashboard/meldingen/?id=${issue._id}`" class="station-details__issue__link">
+            <nuxt-link
+              v-if="issue._id"
+              :to="`/dashboard/meldingen/?id=${issue._id}`"
+              class="station-details__issue__link"
+            >
               <p v-if="issue.title" class="station-details__issue__title">{{issue.title}}</p>
-              <p v-if="issue.status">status: <span class="bold">{{translate(issue.status)}}</span></p>
+              <p v-if="issue.status">
+                status:
+                <span class="bold">{{translate(issue.status)}}</span>
+              </p>
             </nuxt-link>
           </div>
         </div>
-
       </template>
     </Tooltip>
-    <div id="cursor">
-    </div>
-  </div>
-
+    <div id="cursor"></div>
+  </section>
 </template>
 
 <script>
@@ -91,7 +92,6 @@ export default {
     }
 
     this.trackUserLocation()
-
   },
   watch: {
     stations(arr) {
@@ -117,24 +117,24 @@ export default {
     },
     genGeoJSON(stations) {
       const features = stations.map(station => ({
-        "type": "Feature",
-        "properties": {
-          "address": `${station.address} ${station.postalcode} ${station.city}`,
-          "sockets": station.sockets,
-          "usedsockets": station.usedsockets,
-          "provider": station.provider,
-          "issues": station.issues,
-          "status": station.status,
-          "id": station._id
+        type: 'Feature',
+        properties: {
+          address: `${station.address} ${station.postalcode} ${station.city}`,
+          sockets: station.sockets,
+          usedsockets: station.usedsockets,
+          provider: station.provider,
+          issues: station.issues,
+          status: station.status,
+          id: station._id
         },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [Number(station.longitude), Number(station.latitude)]
+        geometry: {
+          type: 'Point',
+          coordinates: [Number(station.longitude), Number(station.latitude)]
         }
       }))
       return {
-        "type": "FeatureCollection",
-        "features": features
+        type: 'FeatureCollection',
+        features: features
       }
     },
     trackUserLocation() {
@@ -147,23 +147,26 @@ export default {
       this.map.addControl(geolocate)
 
       this.map.on('load', () => {
-
         geolocate.on('geolocate', () => {
-          const location = document.querySelector('#atlas .mapboxgl-user-location-dot')
-          if (location && (!location.dataset.click || location.dataset.click !== 'set')) {
+          const location = document.querySelector(
+            '#atlas .mapboxgl-user-location-dot'
+          )
+          if (
+            location &&
+            (!location.dataset.click || location.dataset.click !== 'set')
+          ) {
             location.dataset.click = 'set'
 
-             location.addEventListener('mouseover', e => {
-               this.$refs.usermodal.show(e)
-             })
-             location.addEventListener('mouseout', () => {
-               this.$refs.usermodal.hide()
-             })
+            location.addEventListener('mouseover', e => {
+              this.$refs.usermodal.show(e)
+            })
+            location.addEventListener('mouseout', () => {
+              this.$refs.usermodal.hide()
+            })
           }
         })
 
         geolocate.trigger()
-
       })
 
       this.map.on('move', this.$refs.usermodal.hide)
@@ -189,8 +192,8 @@ export default {
     // },
     async createMapDataLayer() {
       const geojson = this.genGeoJSON(this.stations)
-      if (geojson.features.length === 0 ) {
-        console.log('no stations');
+      if (geojson.features.length === 0) {
+        console.log('no stations')
         return
       }
 
@@ -200,73 +203,79 @@ export default {
         // const working = ["==", ["get", "status"], "working"]
         // const closed = ["==", ["get", "status"], "closed"]
         // const other = ["!", ["has", "status"]]
-        this.map.addSource("loadingstations", {
-            "type": "geojson",
-            "data": geojson,
-            "cluster": true,
-            "clusterMaxZoom": 12,
-            // "clusterProperties": {
-            //   "open": ["+", ["case", open, 1, 0]],
-            //   "working": ["+", ["case", working, 1, 0]],
-            //   "closed": ["+", ["case", closed, 1, 0]],
-            //   "other": ["+", ["case", other, 1, 0]],
-            // }
-          })
+        this.map.addSource('loadingstations', {
+          type: 'geojson',
+          data: geojson,
+          cluster: true,
+          clusterMaxZoom: 12
+          // "clusterProperties": {
+          //   "open": ["+", ["case", open, 1, 0]],
+          //   "working": ["+", ["case", working, 1, 0]],
+          //   "closed": ["+", ["case", closed, 1, 0]],
+          //   "other": ["+", ["case", other, 1, 0]],
+          // }
+        })
       }
 
       const layer = this.map.getLayer('loadingstations')
       if (!layer) {
         this.map.addLayer({
-          "id": "clusters",
-          "type": "circle",
-          "source": "loadingstations",
-          "filter": ["has", "point_count"],
-          "paint": {
-            "circle-radius": [
-              "step",
-              ["get", "point_count"],
+          id: 'clusters',
+          type: 'circle',
+          source: 'loadingstations',
+          filter: ['has', 'point_count'],
+          paint: {
+            'circle-radius': [
+              'step',
+              ['get', 'point_count'],
               20,
               100,
               30,
               750,
               40
             ],
-            "circle-color": "#505050"
+            'circle-color': '#505050'
           }
         })
         this.map.addLayer({
-          "id": "cluster-count",
-          type: "symbol",
-          source: "loadingstations",
-          filter: ["has", "point_count"],
+          id: 'cluster-count',
+          type: 'symbol',
+          source: 'loadingstations',
+          filter: ['has', 'point_count'],
           layout: {
-            "text-field": "{point_count_abbreviated}",
-            "text-size": 12,
+            'text-field': '{point_count_abbreviated}',
+            'text-size': 12
           },
-          "paint": {
-            "text-color": "#fff"
+          paint: {
+            'text-color': '#fff'
           }
         })
         this.map.addLayer({
-          "id": "loadingstations",
-          "type": "circle",
-          "source": "loadingstations",
-          "filter": ["!", ["has", "point_count"]],
-          "paint": {
-            "circle-color": [
-              "match",
-              ["get", "status"],
-              "open", "#ef4c5b",
-              "working", "#684be2",
-              "closed", "#27b5a2",
-              "#505050"
+          id: 'loadingstations',
+          type: 'circle',
+          source: 'loadingstations',
+          filter: ['!', ['has', 'point_count']],
+          paint: {
+            'circle-color': [
+              'match',
+              ['get', 'status'],
+              'open',
+              '#ef4c5b',
+              'working',
+              '#684be2',
+              'closed',
+              '#27b5a2',
+              '#505050'
             ],
-            "circle-radius": [
-              "match",
-              ["get", "status"],
-              "open", 7,
-              "working", 7,
-              "closed", 7,
+            'circle-radius': [
+              'match',
+              ['get', 'status'],
+              'open',
+              7,
+              'working',
+              7,
+              'closed',
+              7,
               5
             ]
           }
@@ -278,28 +287,32 @@ export default {
         this.listeners = true
 
         this.map.on('click', 'clusters', e => {
-          const features = this.map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
-          const clusterId = features[0].properties.cluster_id
-          this.map.getSource('loadingstations').getClusterExpansionZoom(clusterId, (err, zoom) => {
-            if (err) return
-
-            this.map.easeTo({
-              center: features[0].geometry.coordinates,
-              zoom: zoom
-            })
+          const features = this.map.queryRenderedFeatures(e.point, {
+            layers: ['clusters']
           })
+          const clusterId = features[0].properties.cluster_id
+          this.map
+            .getSource('loadingstations')
+            .getClusterExpansionZoom(clusterId, (err, zoom) => {
+              if (err) return
+
+              this.map.easeTo({
+                center: features[0].geometry.coordinates,
+                zoom: zoom
+              })
+            })
         })
         this.map.on('mouseenter', 'clusters', () => {
-          this.map.getCanvas().style.cursor = 'pointer';
+          this.map.getCanvas().style.cursor = 'pointer'
         })
         this.map.on('mouseleave', 'clusters', () => {
-          this.map.getCanvas().style.cursor = '';
+          this.map.getCanvas().style.cursor = ''
         })
         this.map.on('mouseenter', 'loadingstations', () => {
-          this.map.getCanvas().style.cursor = 'pointer';
+          this.map.getCanvas().style.cursor = 'pointer'
         })
         this.map.on('mouseleave', 'loadingstations', () => {
-          this.map.getCanvas().style.cursor = '';
+          this.map.getCanvas().style.cursor = ''
         })
 
         this.map.on('move', this.$refs.lsmodal.hide)
@@ -309,105 +322,100 @@ export default {
           this.$refs.lsmodal.hide()
           if (this.loadingstation.id !== e.features[0].properties.id) {
             const cursor = document.querySelector('#cursor')
-            cursor.style = `top: ${e.originalEvent.clientY}px; left: ${e.originalEvent.clientX}px;`
+            cursor.style = `top: ${e.originalEvent.clientY}px; left: ${
+              e.originalEvent.clientX
+            }px;`
             this.loadingstation = e.features[0].properties
-            this.$refs.lsmodal.show({target: cursor})
+            this.$refs.lsmodal.show({ target: cursor })
             this.$emit('input', this.loadingstation)
           }
-
         })
       }
-
-
     }
   }
-
 }
-
 </script>
 
 <style lang="scss">
-  @import '~/assets/css/config/main.scss';
-  .atlas {
-    width: 100%;
-    .mapboxgl-ctrl.mapboxgl-ctrl-group {
-      // opacity: 0;
-      // pointer-events: none;
-    }
-    .mapboxgl-user-location-dot::before {
-      @include linear-gradient($color-secondary);
-    }
-    .mapboxgl-user-location-dot {
-      @include linear-gradient($color-secondary);
-      cursor: pointer;
-    }
-    .marker {
+@import '~/assets/css/config/main.scss';
+.atlas {
+  width: 100%;
+  .mapboxgl-ctrl.mapboxgl-ctrl-group {
+    // opacity: 0;
+    // pointer-events: none;
+  }
+  .mapboxgl-user-location-dot::before {
+    @include linear-gradient($color-secondary);
+  }
+  .mapboxgl-user-location-dot {
+    @include linear-gradient($color-secondary);
+    cursor: pointer;
+  }
+  .marker {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    @include linear-gradient($color-grey-dark);
+    transform-origin: center;
+    width: 10px;
+    height: 10px;
+    transition: width 0.3s, height 0.3s;
+    &--open {
       width: 15px;
       height: 15px;
-      border-radius: 50%;
-      cursor: pointer;
-      @include linear-gradient($color-grey-dark);
-      transform-origin: center;
-      width: 10px;
-      height: 10px;
-      transition: width .3s, height .3s;
-      &--open {
-        width: 15px;
-        height: 15px;
-        @include linear-gradient($color-tertiary);
-      }
-      &--working {
-        width: 15px;
-        height: 15px;
-        @include linear-gradient($color-secondary);
-      }
-      &--closed {
-        width: 15px;
-        height: 15px;
-        @include linear-gradient($color-primary);
-      }
+      @include linear-gradient($color-tertiary);
     }
-
-
+    &--working {
+      width: 15px;
+      height: 15px;
+      @include linear-gradient($color-secondary);
+    }
+    &--closed {
+      width: 15px;
+      height: 15px;
+      @include linear-gradient($color-primary);
+    }
   }
-  .station-details {
-    &__issues {
-      &__title {
-        margin-top: $margin-s;
-        margin-bottom: $margin-s;
-        color: inherit;
-        font-size: 1rem;
-      }
-      p {
-        margin: 0;
-      }
+}
+.station-details {
+  &__issues {
+    &__title {
+      margin-top: $margin-s;
+      margin-bottom: $margin-s;
+      color: inherit;
+      font-size: 1rem;
     }
-    &__issue {
-      padding: $padding-s;
-      background-color: $color-grey-low;
-      color: $color-grey-dark;
-      margin-bottom: $margin-xs;
-      border-radius: $rounding-s;
-      &__title {
-        font-size: 1rem;
-      }
-      &__link {
-        text-decoration: none;
-        &:hover {
-          text-decoration: underline;
-        }
+    p {
+      margin: 0;
+    }
+  }
+  &__issue {
+    padding: $padding-s;
+    background-color: $color-grey-low;
+    color: $color-grey-dark;
+    margin-bottom: $margin-xs;
+    border-radius: $rounding-s;
+    &__title {
+      font-size: 1rem;
+    }
+    &__link {
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
       }
     }
   }
-  #cursor {
-    width: 5px;
-    height: 5px;
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-  }
+}
+#cursor {
+  width: 5px;
+  height: 5px;
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
 </style>

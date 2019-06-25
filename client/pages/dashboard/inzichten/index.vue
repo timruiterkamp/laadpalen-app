@@ -60,7 +60,9 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
-                callback: value => {if (value % 1 === 0) return value}  
+                callback: value => {
+                  if (value % 1 === 0) return value
+                }
               }
             }
           ]
@@ -86,7 +88,6 @@ export default {
     }
     this.createPieChart()
     this.createBarChart()
-
   },
   methods: {
     createPieChart() {
@@ -114,7 +115,8 @@ export default {
       }
     },
     createBarChart() {
-      DB.execute(`query {
+      DB.execute(
+        `query {
           issues {
             title
             location
@@ -125,7 +127,8 @@ export default {
             status
           }
         }`,
-        this.$store.getters.GET_TOKEN)
+        this.$store.getters.GET_TOKEN
+      )
         .then(res => {
           const stakeholders = Object.keys(
             countOccurence(
@@ -134,7 +137,9 @@ export default {
           )
           const stakeholderObjects = stakeholders.map(stakeholder => ({
             stakeholder,
-            issues: res.issues.filter(issue => issue.stakeholders.title.toLowerCase() === stakeholder)
+            issues: res.issues.filter(
+              issue => issue.stakeholders.title.toLowerCase() === stakeholder
+            )
           }))
 
           this.BarChartDataThree = {
@@ -142,9 +147,11 @@ export default {
             datasets: [
               {
                 label: 'Issues',
-                data: stakeholderObjects.map(stakeholder => stakeholder.issues.length),
+                data: stakeholderObjects.map(
+                  stakeholder => stakeholder.issues.length
+                ),
                 gradientColor: ['#27b5a2', '#4bd6c3'],
-                backgroundColor: 'no',
+                backgroundColor: 'no'
               }
             ]
           }

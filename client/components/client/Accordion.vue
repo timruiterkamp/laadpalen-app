@@ -1,5 +1,5 @@
 <template>
-  <div class="accordion">
+  <section class="accordion">
     <div class="accordion__header" @click="showOptions">
       <div class="accordion__header-title">{{title}}</div>
       <svg
@@ -38,7 +38,7 @@
         </li>
       </ul>
     </transition>
-  </div>
+  </section>
 </template>
 
 <script>

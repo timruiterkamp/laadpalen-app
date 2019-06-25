@@ -5,11 +5,15 @@
     <div class="c-chat__content">
       <h4 class="c-chat__title">
         <span class="bold">Melding:</span>
-        {{ ticket.title }}
 
+        {{ ticket.title }}
       </h4>
       <transition-group name="messages">
-        <div class="c-chat__block" v-for="(step, stepIndex) in currentSteps" :key="step.context + stepIndex">
+        <div
+          class="c-chat__block"
+          v-for="(step, stepIndex) in currentSteps"
+          :key="step.context + stepIndex"
+        >
           <ChatBubble :time="step.timestamp" :context="step.context">
             <span v-if="step.message" v-html="step.message"></span>
             <span v-if="step.location" class="bold">{{loadingstation.address}}</span>
@@ -39,9 +43,7 @@
             v-if="step.action && step.action.el === 'link' && index === stepIndex + 1"
             :to="step.action.href"
             class="btn btn--secondary"
-          >
-            {{step.action.text}}
-          </nuxt-link>
+          >{{step.action.text}}</nuxt-link>
         </div>
       </transition-group>
     </div>
@@ -76,10 +78,7 @@
           class="btn btn--secondary btn--center"
           :class="loadingstation.address ? '' : 'btn--disabled'"
           @click="loadingstation.address ? handleLocation() : () => {}"
-        >
-          {{loadingstation.address ? loadingstation.address : 'selecteer laadpaal'}}
-        </button>
-
+        >{{loadingstation.address ? loadingstation.address : 'selecteer laadpaal'}}</button>
       </template>
     </Modal>
   </div>
@@ -110,7 +109,7 @@ export default {
         'Aangeraden plan'
       ],
       ticket: {
-        title: this.$route.params.chat.split('-').join(' '),
+        title: this.$route.params.chat.split('-').join(' ')
       },
       stations: this.$store.getters.GET_LOADINGSTATION_DATA,
       loadingstation: {},
@@ -135,7 +134,8 @@ export default {
             },
             {
               context: 'operator',
-              message: 'Kunt u een <span class="bold">foto</span> van de situatie maken? We hebben <span class="bold">het nummerbord</span> nodig om de melding goed af te handelen.',
+              message:
+                'Kunt u een <span class="bold">foto</span> van de situatie maken? We hebben <span class="bold">het nummerbord</span> nodig om de melding goed af te handelen.',
               action: {
                 el: 'input',
                 text: 'Maak foto'
@@ -150,14 +150,15 @@ export default {
             },
             {
               context: 'operator',
-              message: 'Dankuwel. Wij nemen de melding in behandeling. U kunt de <span class="bold">status</span> van de melding terug vinden in uw <span class="bold">meldingen tab</span>.',
+              message:
+                'Dankuwel. Wij nemen de melding in behandeling. U kunt de <span class="bold">status</span> van de melding terug vinden in uw <span class="bold">meldingen tab</span>.',
               action: {
                 el: 'link',
                 text: 'Naar meldingen',
                 href: '/client/meldingen'
               }
             }
-          ],
+          ]
         },
         {
           stakeholder: '5d00f4aed7597a3c181949e0',
@@ -171,7 +172,6 @@ export default {
                 text: 'Selecteer laadpaal',
                 modal: 'modalLocation'
               }
-
             },
             {
               context: 'user',
@@ -180,7 +180,8 @@ export default {
             },
             {
               context: 'operator',
-              message: 'Dankuwel. Wij nemen de melding in behandeling. U kunt de <span class="bold">status</span> van de melding terug vinden in uw <span class="bold">meldingen tab</span>.',
+              message:
+                'Dankuwel. Wij nemen de melding in behandeling. U kunt de <span class="bold">status</span> van de melding terug vinden in uw <span class="bold">meldingen tab</span>.',
               action: {
                 el: 'link',
                 text: 'Naar meldingen',
@@ -197,18 +198,17 @@ export default {
     // this.flow = this.flows[Number(this.$route.query.flow)]
     setTimeout(() => (this.index = this.index + 1), 0)
     if (this.stations.length === 0) {
-      this.$store.dispatch('FETCH_LOADINGSTATION_DATA')
-        .then(() => {
-          this.stations = this.$store.getters.GET_LOADINGSTATION_DATA
-        })
+      this.$store.dispatch('FETCH_LOADINGSTATION_DATA').then(() => {
+        this.stations = this.$store.getters.GET_LOADINGSTATION_DATA
+      })
     }
   },
   computed: {
-    flow(){
+    flow() {
       return this.flows[Number(this.$route.query.flow)]
     },
     currentSteps() {
-      console.log(this.flow);
+      console.log(this.flow)
       const steps = this.flow.steps
       if (!steps[this.index - 1] && this.index > 0) {
         return steps
@@ -279,8 +279,9 @@ export default {
         address: this.loadingstation.address,
         stakeholderId: this.stakeholder
       }
-      console.log('creating ticket... ', ticket);
-      DB.execute(`mutation { createIssue(issueInput:{
+      console.log('creating ticket... ', ticket)
+      DB.execute(
+        `mutation { createIssue(issueInput:{
           title: "${ticket.title}",
           description: "some desc",
           status: "open",
@@ -292,8 +293,7 @@ export default {
           location: "${ticket.address}"
         }) { title stakeholders { title } loadingstation { longitude latitude address status }} }`,
         this.$store.getters.GET_TOKEN
-      )
-      .then(res => console.log(res))
+      ).then(res => console.log(res))
     }
   }
 }

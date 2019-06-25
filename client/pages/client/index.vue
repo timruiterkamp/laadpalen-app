@@ -29,7 +29,7 @@ export default {
         {
           title: 'Werkt niet',
           slug: 'laadpaal-defect',
-          flow: 1,
+          flow: 1
         },
         {
           title: 'Is bezet door een niet-elektrisch voertuig',
@@ -44,7 +44,7 @@ export default {
         {
           title: 'Is onbereikbaar',
           slug: 'laadpaal-onbereikbaar',
-          flow: 0,
+          flow: 0
         },
         {
           title: 'Heeft een ander probleem',
@@ -56,7 +56,7 @@ export default {
         {
           title: 'Werkt niet',
           slug: 'pas-werkt-niet',
-          flow: 1,
+          flow: 1
         }
       ],
       parkingOptions: [
@@ -74,7 +74,7 @@ export default {
           title: 'Is onbereikbaar',
           slug: 'laadpaal-onbereikbaar',
           flow: 0
-        },
+        }
       ],
       other: [
         {
