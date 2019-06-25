@@ -1,6 +1,11 @@
 const DB = {
   execute(query, auth) {
-    return fetch('http://localhost:3001/graphql', {
+    const env =
+      process.env.NODE_ENV == 'development'
+        ? process.env.DEV_URL
+        : process.env.PROD_URL
+
+    return fetch(env + '/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
