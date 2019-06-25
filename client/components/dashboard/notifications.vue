@@ -1,13 +1,14 @@
 <template>
-  <div
+  <section
     v-if="notificationTrigger"
     class="notification-message"
     :class="'notification-message--' + status"
   >
     {{this.message}}
     <span class="bold">{{this.issue}}</span>
-  </div>
+  </section>
 </template>
+
 <script>
 import socketIOClient from 'socket.io-client'
 import { setTimeout } from 'timers'

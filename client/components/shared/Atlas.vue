@@ -1,10 +1,7 @@
 <template >
-  <div class="">
-    <div id="atlas" class="atlas" :style="`height: ${height};`">
-    </div>
-    <Tooltip ref="usermodal" status="secondary">
-      Huidige locatie
-    </Tooltip>
+  <section>
+    <div id="atlas" class="atlas" :style="`height: ${height};`"></div>
+    <Tooltip ref="usermodal" status="secondary">Huidige locatie</Tooltip>
 
     <Tooltip ref="lsmodal" class="station-details">
       <template v-slot="content">
@@ -13,14 +10,15 @@
           <h3 class="station-details__issues__title">Huidige problemen:</h3>
           <div class="station-details__issue" v-for="issue in issues" :key="issue._id">
             <p class="station-details__issue__title">{{issue.title}}</p>
-            <p>status: <span class="bold">{{issue.status}}</span></p>
+            <p>
+              status:
+              <span class="bold">{{issue.status}}</span>
+            </p>
           </div>
         </div>
-
       </template>
     </Tooltip>
-  </div>
-
+  </section>
 </template>
 
 <script>
@@ -86,7 +84,6 @@ export default {
     }
 
     this.trackUserLocation()
-
   },
   watch: {
     stations(arr) {
@@ -103,24 +100,24 @@ export default {
   methods: {
     genGeoJSON(stations) {
       const features = stations.map(station => ({
-        "type": "Feature",
-        "properties": {
-          "address": `${station.address} ${station.postalcode} ${station.city}`,
-          "sockets": station.sockets,
-          "usedsockets": station.usedsockets,
-          "provider": station.provider,
-          "issues": station.issues,
-          "status": station.status,
-          "id": station._id
+        type: 'Feature',
+        properties: {
+          address: `${station.address} ${station.postalcode} ${station.city}`,
+          sockets: station.sockets,
+          usedsockets: station.usedsockets,
+          provider: station.provider,
+          issues: station.issues,
+          status: station.status,
+          id: station._id
         },
-        "geometry": {
-          "type": "Point",
-          "coordinates": [Number(station.longitude), Number(station.latitude)]
+        geometry: {
+          type: 'Point',
+          coordinates: [Number(station.longitude), Number(station.latitude)]
         }
       }))
       return {
-        "type": "FeatureCollection",
-        "features": features
+        type: 'FeatureCollection',
+        features: features
       }
     },
     trackUserLocation() {
@@ -133,30 +130,35 @@ export default {
       this.map.addControl(geolocate)
 
       this.map.on('load', () => {
-
         geolocate.on('geolocate', () => {
-          const location = document.querySelector('#atlas .mapboxgl-user-location-dot')
-          if (location && (!location.dataset.click || location.dataset.click !== 'set')) {
+          const location = document.querySelector(
+            '#atlas .mapboxgl-user-location-dot'
+          )
+          if (
+            location &&
+            (!location.dataset.click || location.dataset.click !== 'set')
+          ) {
             location.dataset.click = 'set'
 
-             location.addEventListener('mouseover', e => {
-               this.$refs.usermodal.show(e)
-             })
-             location.addEventListener('mouseout', () => {
-               this.$refs.usermodal.hide()
-             })
+            location.addEventListener('mouseover', e => {
+              this.$refs.usermodal.show(e)
+            })
+            location.addEventListener('mouseout', () => {
+              this.$refs.usermodal.hide()
+            })
           }
         })
 
         geolocate.trigger()
-
       })
 
       this.map.on('move', this.$refs.usermodal.hide)
       this.map.on('zoom', this.$refs.usermodal.hide)
     },
     genCustomMarkers(geojson) {
-      [...document.querySelectorAll('.marker')].forEach(marker => marker.remove())
+      ;[...document.querySelectorAll('.marker')].forEach(marker =>
+        marker.remove()
+      )
       geojson.features.forEach(feature => {
         const marker = document.createElement('div')
         marker.classList.add('marker')
@@ -175,25 +177,25 @@ export default {
     },
     async createMapDataLayer() {
       const geojson = this.genGeoJSON(this.stations)
-      if (geojson.features.length === 0 ) {
-        console.log('no stations');
+      if (geojson.features.length === 0) {
+        console.log('no stations')
         return
       }
 
       const source = this.map.getSource('loadingstations')
       if (!source) {
         this.map.addSource('loadingstations', {
-            "type": "geojson",
-            "data": geojson
-          })
+          type: 'geojson',
+          data: geojson
+        })
       }
 
       const layer = this.map.getLayer('loadingstations')
       if (!layer) {
         this.map.addLayer({
-          "id": "loadingstations",
-          "type": "circle",
-          "source": "loadingstations"
+          id: 'loadingstations',
+          type: 'circle',
+          source: 'loadingstations'
         })
       }
       this.genCustomMarkers(geojson)
@@ -206,7 +208,7 @@ export default {
 
         this.map.on('mouseenter', 'loadingstations', e => {
           this.loadingstation = e.features[0].properties
-          console.log(this.loadingstation);
+          console.log(this.loadingstation)
           this.$refs.lsmodal.show(e.originalEvent)
           this.$emit('input', this.loadingstation)
         })
@@ -215,71 +217,65 @@ export default {
           this.$refs.lsmodal.hide()
         })
       }
-
-
     }
   }
-
 }
-
 </script>
 
 <style lang="scss">
-  @import '~/assets/css/config/main.scss';
-  .atlas {
-    width: 100%;
-    .mapboxgl-ctrl.mapboxgl-ctrl-group {
-      // opacity: 0;
-      // pointer-events: none;
+@import '~/assets/css/config/main.scss';
+.atlas {
+  width: 100%;
+  .mapboxgl-ctrl.mapboxgl-ctrl-group {
+    // opacity: 0;
+    // pointer-events: none;
+  }
+  .mapboxgl-user-location-dot::before {
+    @include linear-gradient($color-secondary);
+  }
+  .mapboxgl-user-location-dot {
+    @include linear-gradient($color-secondary);
+    cursor: pointer;
+  }
+  .marker {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    @include linear-gradient($color-grey-dark);
+    &--open {
+      @include linear-gradient($color-tertiary);
     }
-    .mapboxgl-user-location-dot::before {
+    &--working {
       @include linear-gradient($color-secondary);
     }
-    .mapboxgl-user-location-dot {
-      @include linear-gradient($color-secondary);
-      cursor: pointer;
-    }
-    .marker {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      cursor: pointer;
-      @include linear-gradient($color-grey-dark);
-      &--open {
-        @include linear-gradient($color-tertiary);
-      }
-      &--working {
-        @include linear-gradient($color-secondary);
-      }
-      &--closed {
-        @include linear-gradient($color-primary);
-      }
-    }
-
-
-  }
-  .station-details {
-    &__issues {
-      &__title {
-        margin-top: $margin-s;
-        margin-bottom: $margin-s;
-        color: inherit;
-        font-size: 1rem;
-      }
-
-      p {
-        margin: 0;
-      }
-    }
-    &__issue {
-      padding: $padding-s;
-      background-color: $color-grey-low;
-      color: $color-grey-dark;
-      margin-bottom: $margin-xs;
-      border-radius: $rounding-s;
-      &__title {
-        font-size: 1rem;
-      }
+    &--closed {
+      @include linear-gradient($color-primary);
     }
   }
+}
+.station-details {
+  &__issues {
+    &__title {
+      margin-top: $margin-s;
+      margin-bottom: $margin-s;
+      color: inherit;
+      font-size: 1rem;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+  &__issue {
+    padding: $padding-s;
+    background-color: $color-grey-low;
+    color: $color-grey-dark;
+    margin-bottom: $margin-xs;
+    border-radius: $rounding-s;
+    &__title {
+      font-size: 1rem;
+    }
+  }
+}
 </style>

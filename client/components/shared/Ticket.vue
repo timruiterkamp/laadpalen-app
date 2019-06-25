@@ -1,8 +1,12 @@
 <template>
-  <div class="ticket" :class="'ticket--' + status">
+  <section class="ticket" :class="'ticket--' + status">
     <div class="ticket__top">
       <h3 class="ticket__title">{{title}}</h3>
-      <div v-if="showStakeholder ? stakeholder : status" class="ticket__tag" :class="showStakeholder ? '' : status">{{showStakeholder ? stakeholder : status}}</div>
+      <div
+        v-if="showStakeholder ? stakeholder : status"
+        class="ticket__tag"
+        :class="showStakeholder ? '' : status"
+      >{{showStakeholder ? stakeholder : status}}</div>
     </div>
     <div class="ticket__bottom">
       <div class="ticket__content-meta ticket__content-meta--location">
@@ -15,7 +19,7 @@
         </p>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -45,7 +49,6 @@ export default {
       type: Boolean,
       default: true
     }
-
   },
   computed: {
     date() {

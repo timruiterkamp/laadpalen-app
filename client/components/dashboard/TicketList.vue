@@ -8,22 +8,22 @@
     @change="update"
   >
     <transition-group name="tg-tickets" class="d-tickets__list" tag="ul">
-      <li
-        v-if="tickets.length > 0"
-        class="d-tickets__list-item"
-        v-for="ticket in tickets"
-        :class="allowed(ticket) ? 'allow-drag' : ''"
-        :key="ticket._id"
-      >
-        <Ticket
-
-          :title="ticket.title"
-          :stakeholder="ticket.stakeholders.title"
-          :location="ticket.location"
-          :created="ticket.createdAt"
-          :status="ticket.status"
-        />
-      </li>
+      <div v-if="tickets.length > 0">
+        <li
+          class="d-tickets__list-item"
+          v-for="ticket in tickets"
+          :class="allowed(ticket) ? 'allow-drag' : ''"
+          :key="ticket._id"
+        >
+          <Ticket
+            :title="ticket.title"
+            :stakeholder="ticket.stakeholders.title"
+            :location="ticket.location"
+            :created="ticket.createdAt"
+            :status="ticket.status"
+          />
+        </li>
+      </div>
       <li
         class="d-tickets__list-item d-tickets__list-item--empty"
         v-if="tickets.length === 0"

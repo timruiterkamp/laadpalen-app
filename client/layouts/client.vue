@@ -1,8 +1,8 @@
 <template>
-  <div class="layout">
+  <main class="layout">
     <nuxt/>
     <Menu/>
-  </div>
+  </main>
 </template>
 
 <script>

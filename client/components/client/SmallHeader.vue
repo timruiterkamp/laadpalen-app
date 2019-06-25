@@ -1,11 +1,11 @@
 <template>
-  <div class="small-header">
+  <header class="small-header">
     <svg class="small-header__back" viewBox="0 0 50 50" @click="goBack">
       <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
 
     <h3 class="small-header__title">{{ title }}</h3>
-  </div>
+  </header>
 </template>
 
 <script>
