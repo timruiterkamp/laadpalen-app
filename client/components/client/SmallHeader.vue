@@ -1,11 +1,14 @@
 <template>
-  <header class="small-header">
-    <svg class="small-header__back" viewBox="0 0 50 50" @click="goBack">
-      <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
+  <div class="small-header">
+    <div class="c-container">
+      <svg class="small-header__back" viewBox="0 0 50 50" @click="goBack">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
 
-    <h3 class="small-header__title">{{ title }}</h3>
-  </header>
+      <h3 class="small-header__title">{{ title }}</h3>
+    </div>
+
+  </div>
 </template>
 
 <script>
@@ -35,6 +38,10 @@ $widthHeight: 40px;
   @include linear-gradient($color-primary);
   padding: $padding-m $padding-s 0 $padding-l;
   @include shadow(1rem);
+  .c-container {
+    max-width: 40rem;
+    margin: 0 auto;
+  }
 
   &__back {
     cursor: pointer;

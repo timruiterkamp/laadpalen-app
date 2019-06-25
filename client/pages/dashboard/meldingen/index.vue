@@ -5,17 +5,17 @@
     <div class="d-tickets">
       <div class="d-tickets__column">
         <h3 class="d-tickets__column-title">Gemeld</h3>
-        <hr class="d-hr">
+        <hr class="hr">
         <TicketList :list="openList" group="tickets" status="open" @change="update"/>
       </div>
       <div class="d-tickets__column">
         <h3 class="d-tickets__column-title">In behandeling</h3>
-        <hr class="d-hr">
+        <hr class="hr">
         <TicketList :list="workingList" group="tickets" status="working" @change="update"/>
       </div>
       <div class="d-tickets__column">
         <h3 class="d-tickets__column-title">Afgehandeld</h3>
-        <hr class="d-hr">
+        <hr class="hr">
         <TicketList :list="closedList" group="tickets" status="closed" @change="update"/>
       </div>
     </div>
