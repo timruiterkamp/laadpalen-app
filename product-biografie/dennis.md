@@ -131,6 +131,8 @@ De eerste handelingen gemaakt aan het contentieus intergratie van de website. Zo
 
 Ik heb dit een half jaar geleden ongeveer ook gedaan dus het was even weer zoeken hoe en wat maar uiteindelijk naar toch wel flink iteren en proberen en constant nieuwe builds draaien is het gelukt.
 
+Ik heb ook nog met Koop gezeten om te kijken hoe en wat. Eigenlijk kwam er uit dat we nog steeds lekker bezig gaan maar dat ik mijn posistie niet zo snel in de groep snap. Ik voel mij een beetje vliegende keep terwijl ik volgens mij best redelijk wat werk verzet. Maar aan de andere kant het gaat nog steeds goed dus ben de laatste persoon die zou klagen.
+
 ![codeship](images/codeshiplol.png)
 
 Mijn setup commands zijn om te testen of we geen verkeerde build op de server zetten:
@@ -175,14 +177,14 @@ Ook vooral de laatste handelingen aan de documentie zijn in deze week getyped. A
 
 - Het datamodel is op een slimme manier opgezet die van dieper inzicht getuigd. Je hebt een datamodel gecreëerd dat nauw aansluit op jouw app en data
 
-- Het datamodel is op een slimme manier opgezet die van dieper inzicht getuigd. Je hebt een datamodel gecreëerd dat nauw aansluit op jouw app en data
+* Je hebt methodes gecreëerd die clients in staat stelt middels jouw eigen API te communiceren met jouw server. Real time connectiviteit is op een slimme manier opgezet
 
-- Je hebt methodes gecreëerd die clients in staat stelt middels jouw eigen API te communiceren met jouw server. Real time connectiviteit is op een slimme manier opgezet
-
-- Je geeft zodanig feedback op de juiste momenten, dat de user experience er beter van wordt
+* Je geeft zodanig feedback op de juiste momenten, dat de user experience er beter van wordt
 
 Eigenlijk is het best wel dubbel want de intentie van dit project wat direct om mijn leerdoelen te vervullen. Voornamelijk om een tof prototype te maken en te leren van de andere twee. Ik denk dat ik daar echt het aller meest aan heb gehad, het denk process en hoe andere naar relatief simpel maar ook moeilijke problemen kijken. En we hadden een attitude binnen de groep dat niks eigenlijk echt onmogelijk is als je maar genoeg inspanning levert.
 
 Dat was echt heel tof om dan nu met een product te staan waar je je hart en ziel ingestoken hebt om iets vets te maken. Een tech stack op industrie level uitgekozen en maar gewoon het voor elkaar boksen om een prototype te maken. Under the hood is er zo goed nagedacht over alles en ik denk niet zo snel dat er ook maar 1 component is waar we de kantjes er van afgelopen hebben.
 
-Zelf is het vooral een verbreding van mijn kennis dat ik al wist, ik heb niet direct echt iets compleets nieuws geleerd. Misschien had ik zelf wel iets meer willen doen met GraphQL op de server maar je kan niet alles behandelen. Achteraf dacht ik, oh dat vind ik ook wel interessant
+Zelf is het vooral een verbreding van mijn kennis dat ik al wist, ik heb niet direct echt iets compleets nieuws geleerd. Misschien had ik zelf wel iets meer willen doen met GraphQL op de server maar je kan niet alles behandelen. Achteraf dacht ik, oh dat vind ik ook wel interessant maar nog genoeg tijd in mijn leven om dit uit te zoeken.
+
+Als ik moet reflecteren op de leerdoelen die ik heb gesteld. Denk ik dat alles eigenlijk er best goed vanaf gebracht is. Alles zit er in en heb onbewust toch veel rekening gehouden met alles. Alleen omdat we zoveel kleine dingen hebben opgepakt is het helemaal moeilijk om een vinger te leggen om wat ik nou precies concreet gedaan heb.
