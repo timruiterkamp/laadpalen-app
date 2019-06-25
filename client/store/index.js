@@ -4,6 +4,9 @@ export const getters = {
   GET_STAKEHOLDER(state) {
     return state.stakeholder
   },
+  GET_NAME(state) {
+    return state.name
+  },
   GET_TOKEN(state) {
     return state.authToken
   },
@@ -18,6 +21,9 @@ export const getters = {
 export const mutations = {
   SET_STAKEHOLDER(state, value) {
     state.stakeholder = value
+  },
+  SET_NAME(state, value) {
+    state.name = value
   },
   SET_TOKEN(state, value) {
     state.authToken = value
@@ -123,6 +129,7 @@ export const actions = {
 
 export const state = () => ({
   stakeholder: 'NUON',
+  name: 'Jurjen',
   authToken: '',
   loadingStations: [],
   messagesNotifications: 0

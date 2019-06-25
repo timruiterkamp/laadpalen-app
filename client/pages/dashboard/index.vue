@@ -11,11 +11,6 @@
         <Toggle v-model="filters.closed">Melding opgelost</Toggle>
       </div>
     </div>
-    <button
-      name="button"
-      class="btn btn--primary"
-      @click="setStakeholder"
-    >Set global stakeholder to {{newStakeholder}}</button>
   </div>
 </template>
 <script>
@@ -30,7 +25,6 @@ export default {
   },
   data() {
     return {
-      stakeholders: ['NUON', 'Gemeente'],
       filters: {
         open: false,
         working: false,
@@ -50,9 +44,6 @@ export default {
     filteredStations() {
       return this.filter(this.stations)
     },
-    stakeholder() {
-      return this.$store.getters.GET_STAKEHOLDER
-    },
     newStakeholder() {
       return this.stakeholders.filter(
         item => item.toLowerCase() !== this.stakeholder.toLowerCase()
@@ -60,9 +51,6 @@ export default {
     }
   },
   methods: {
-    setStakeholder() {
-      this.$store.commit('SET_STAKEHOLDER', this.newStakeholder)
-    },
     filter(stations) {
       let filtered = []
       const filters = this.filters

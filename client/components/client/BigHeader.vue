@@ -19,10 +19,9 @@
 
 <script>
 export default {
-  props: {
-    name: {
-      type: String,
-      default: 'No name'
+  computed: {
+    name() {
+      return this.$store.getters.GET_NAME
     }
   }
 }
