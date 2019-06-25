@@ -66,12 +66,15 @@ $hoverDarkenAmount: 3%;
     @include shadow(.1rem, $color-grey-medium, .7);
     color: darken($color-grey-medium, 30%);
     &:hover {
-      color: inherit;
-      background: inherit;
+      transform: none;
+      @include linear-gradient($color-grey-medium);
+      @include shadow(.1rem, $color-grey-medium, .7);
+      color: darken($color-grey-medium, 30%);
+      cursor: default;
     }
     &:focus {
-      color: inherit;
-      background: inherit;
+      color: darken($color-grey-medium, 35%);
+      @include linear-gradient(darken($color-grey-medium, 5%));
     }
   }
 }

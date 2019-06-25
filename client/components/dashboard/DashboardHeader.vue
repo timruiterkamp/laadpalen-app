@@ -1,8 +1,8 @@
 <template>
   <header class="d-header" :class="nav_open ? 'nav-open' : ''">
     <div class="d-header__top">
-      <img class="d-header__logo" src="/amsterdam_elektrisch_logo_white.svg" alt="">
-      <h1 class="d-header__title">Laadpalen</h1>
+      <img class="d-header__logo" src="/recharge-logo.svg" alt="">
+      <h1 class="d-header__title visually-hidden">Recharge</h1>
     </div>
     <nav class="d-nav">
       <ul class="d-nav__list">
@@ -67,10 +67,11 @@
       }
     }
     &__logo {
-      width: 2rem;
-      display: inline-block;
+      // width: 2rem;
+      max-width: 10rem;
+      overflow: visible;
       display: block;
-      margin-right: .5rem;
+      transform: translateX(-.25rem);
     }
     &__title {
       margin: 0;

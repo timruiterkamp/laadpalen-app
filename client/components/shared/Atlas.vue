@@ -4,25 +4,16 @@
     <Tooltip ref="usermodal" status="secondary">Huidige locatie</Tooltip>
 
     <Tooltip ref="lsmodal" class="station-details">
-      <template v-slot="content">
-        {{loadingstation.address}}
-        <div class="station-details__issues" v-if="issues.length > 0">
-          <h3 class="station-details__issues__title">Huidige problemen:</h3>
-          <div class="station-details__issue" v-for="issue in issues" :key="issue._id">
-            <nuxt-link
-              v-if="issue._id"
-              :to="`/dashboard/meldingen/?id=${issue._id}`"
-              class="station-details__issue__link"
-            >
-              <p v-if="issue.title" class="station-details__issue__title">{{issue.title}}</p>
-              <p v-if="issue.status">
-                status:
-                <span class="bold">{{translate(issue.status)}}</span>
-              </p>
-            </nuxt-link>
-          </div>
+      {{loadingstation.address}}
+      <div class="station-details__issues" v-if="issues.length > 0">
+        <h3 class="station-details__issues__title">Huidige problemen:</h3>
+        <div class="station-details__issue" v-for="issue in issues" :key="issue._id">
+          <nuxt-link v-if="issue._id" :to="`/dashboard/meldingen/?id=${issue._id}`" class="station-details__issue__link">
+            <p v-if="issue.title" class="station-details__issue__title">{{issue.title}}</p>
+            <p v-if="issue.status">status: <span class="bold">{{translate(issue.status)}}</span></p>
+          </nuxt-link>
         </div>
-      </template>
+      </div>
     </Tooltip>
     <div id="cursor"></div>
   </section>
