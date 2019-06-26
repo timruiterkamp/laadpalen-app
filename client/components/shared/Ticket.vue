@@ -1,7 +1,7 @@
 <template>
   <section class="ticket" :class="'ticket--' + status">
     <div class="ticket__top">
-      <h3 class="ticket__title">{{title}}</h3>
+      <h3 class="ticket__title">{{titleCap}}</h3>
       <div
         v-if="showStakeholder ? stakeholder : status"
         class="ticket__tag"
@@ -51,6 +51,9 @@ export default {
     }
   },
   computed: {
+    titleCap() {
+      return this.title.charAt(0).toUpperCase() + this.title.slice(1)
+    },
     date() {
       if (!this.created) return ''
       const date = new Date(this.created)

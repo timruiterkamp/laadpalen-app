@@ -153,13 +153,14 @@ $widthHeight: 24px;
         }
       }
       &-anchor {
-        padding: $padding-m $padding-l;
+        padding: $padding-m 3.5rem $padding-m $padding-m;
         color: $color-grey-dark;
         text-decoration: none;
         user-select: none;
         width: 100%;
         position: relative;
         display: block;
+        white-space: normal;
       }
       &:hover {
         a {
