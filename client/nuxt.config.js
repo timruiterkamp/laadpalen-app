@@ -7,7 +7,6 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-
     title: 'Recharge ⚡',
     htmlAttrs: {
       lang: 'nl'

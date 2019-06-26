@@ -35,9 +35,9 @@ $widthHeight: 40px;
   height: 5rem;
   display: block;
   @include linear-gradient($color-primary);
-  padding: $padding-m $padding-s 0 $padding-l;
   @include shadow(1rem);
   .c-container {
+    padding: 0$padding-s 0 $padding-l;
     max-width: 40rem;
     margin: 0 auto;
     display: flex;
@@ -63,9 +63,8 @@ $widthHeight: 40px;
 
   &__title {
     color: $color-white;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     margin: 0;
-    margin-left: $margin-s;
     span {
       display: block;
     }
