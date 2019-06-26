@@ -40,7 +40,7 @@ This document provides an insight into the development of an interactive proof o
 ---
 
 ## The team
-The team who build this project consists of three students from the Amsterdam University of Applied Sciences, who identify as designers with a passion for frontend- and backend-development.
+The team who built this project consists of three students from the Amsterdam University of Applied Sciences, who identify as designers with a passion for frontend- and backend-development.
 - [Tim Ruiterkamp](https://github.com/timruiterkamp) - Focus on backend
 - [Dennis Wegereef](https://github.com/denniswegereef) - Focus on frontend
 - [Folkert-Jan van der Pol](https://github.com/follywolly) - Focus on frontend
@@ -112,7 +112,7 @@ An organization in charge of handling specific problems of charging stations sho
 - find the status of an issue that is being handled by a different organization
 
 ### Prototype
-Based on the featurelist and user/stakeholder wishes we started working on a low-fi prototype, build in adobe XD. It served to lay out the flow the app and dashboard would take and what information would be displayed.
+Based on the featurelist and user/stakeholder wishes we started working on a low-fi prototype, built in adobe XD. It served to lay out the flow the app and dashboard would take and what information would be displayed.
 
 [Client app prototype](https://xd.adobe.com/view/200df57a-f938-47e7-62e4-16f374a24c3d-563c/)
 ![overview client wireframes](docs/images/prototype_client_1.png)
@@ -122,7 +122,7 @@ Based on the featurelist and user/stakeholder wishes we started working on a low
 
 ### Wishes and solutions
 #### User doesn't know what organization to submit a problem to
-We quickly decided that we could tackle the frustration of a user submitting a problem to the wrong organization. The most common problems will be build into the app. A user is then taken through a chat-like flow which guides the user through the necessary information needed for an organization to start working on the issue.
+We quickly decided that we could tackle the frustration of a user submitting a problem to the wrong organization. The most common problems will be built into the app. A user is then taken through a chat-like flow which guides the user through the necessary information needed for an organization to start working on the issue.
 Every flow is associated with a specific organization. This way, the user doesn't have to figure out what organization to turn to.
 
 #### User wants to be heard
@@ -282,7 +282,7 @@ We got most functionalities that we planned on having in our interactive prototy
 ---
 
 ## Recommendations
-As this is a proof of concept, it's not build for specific edge cases. That's why we drafted up some things to think about when really implementing this concept.
+As this is a proof of concept, it's not built for specific edge cases. That's why we drafted up some things to think about when really implementing this concept.
 
 - In this proof of concept we've assumed all submitted issues are real. How do you handle fake issues?
 - What kind of insights would be valuable to the organizations? We've not been able to meet with any of them, so this would be an interesting conversation to have.
