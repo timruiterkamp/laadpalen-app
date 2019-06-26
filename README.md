@@ -117,7 +117,7 @@ Based on the featurelist and user/stakeholder wishes we started working on a low
 [Client app prototype](https://xd.adobe.com/view/200df57a-f938-47e7-62e4-16f374a24c3d-563c/)
 ![overview client wireframes](docs/images/prototype_client_1.png)
 
-[Dashboard prototype](https://xd.adobe.com/view/200df57a-f938-47e7-62e4-16f374a24c3d-563c/)
+[Dashboard prototype](https://xd.adobe.com/view/888c5771-e21d-4561-4026-ab89433b5c9d-febd/)
 ![overview dashboard wireframes](docs/images/prototype_dashboard_1.png)
 
 ### Wishes and solutions
