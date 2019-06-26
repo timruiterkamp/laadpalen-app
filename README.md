@@ -250,6 +250,20 @@ From left to right:
 #### Graphs showing insights based on the data provided by the system
 ![screens of dashboard](docs/images/product_dashboard_3.png)
 
+
+### Audits
+We added the @nuxt/PWA module to efficiently cache requests, resulting in an offline experience. This comes in handy while driving and not being connected to the internet.
+
+There were not many problems on the home screen, but there was a lack of hierarchy and the color brought not enough contrast to display white letters.
+
+So, it turned out we came .5 short of getting the right contrast, so we changed the color from #27B6A3 to #27B5A2, which ended up at a contrast of 3.07 and passing the AA webstandards for readability.
+
+The complaint buttons turned out to be made of divs so we changed all the occurances that contained an @click event to button, so that every device could tab through the application. There was also a lack of visual feedback when you tabbed on an item. To tackle this problem we restored the outline property in css and made it match our theme colors.
+
+This is the end review from lighthouse:
+
+![](docs/images/performance.png)
+
 ---
 
 ## Nice to haves
@@ -279,7 +293,7 @@ t.b.w.
 
 ---
 
-## Links to individual product biography
+## Links to individual product biographies
 - [Tim Ruiterkamp](https://github.com/timruiterkamp/meesterproef-1819)
 - [Dennis Wegereef](https://github.com/denniswegereef/meesterproef-1819)
 - [Folkert-Jan van der Pol](https://github.com/follywolly/meesterproef-1819)
