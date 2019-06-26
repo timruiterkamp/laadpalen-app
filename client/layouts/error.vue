@@ -16,6 +16,14 @@ export default {
 <style lang="scss" scoped>
 @import '~assets/css/config/main.scss';
 
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: $margin-xl;
+}
+
 img {
   max-width: 20rem;
   margin-bottom: $margin-m;

@@ -32,14 +32,17 @@ export default {
 $widthHeight: 40px;
 
 .small-header {
-  height: 7rem;
+  height: 5rem;
   display: block;
   @include linear-gradient($color-primary);
-  padding: $padding-m $padding-s 0 $padding-l;
   @include shadow(1rem);
   .c-container {
+    padding: 0$padding-s 0 $padding-l;
     max-width: 40rem;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    height: 100%;
   }
 
   &__back {
@@ -51,14 +54,17 @@ $widthHeight: 40px;
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
+    transform: translateY(3px);
+
     polyline {
-      transform: scale(1.5);
+      transform: scale(1.8);
     }
   }
 
   &__title {
     color: $color-white;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    margin: 0;
     span {
       display: block;
     }

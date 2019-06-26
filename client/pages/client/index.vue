@@ -57,6 +57,21 @@ export default {
           title: 'Werkt niet',
           slug: 'pas-werkt-niet',
           flow: 1
+        },
+        {
+          title: 'Is kapot',
+          slug: 'pas-werkt-niet',
+          flow: 1
+        },
+        {
+          title: 'Heb ik niet bij me',
+          slug: 'pas-werkt-niet',
+          flow: 1
+        },
+        {
+          title: 'Ik heb een ander probleem',
+          slug: 'pas-werkt-niet',
+          flow: 1
         }
       ],
       parkingOptions: [
@@ -77,11 +92,6 @@ export default {
         }
       ],
       other: [
-        {
-          title: 'Ruimteschip ofzo heel raar dit',
-          slug: 'laadpaal-overig',
-          flow: 1
-        },
         {
           title: 'Start chat',
           slug: 'laadpaal-overig',
