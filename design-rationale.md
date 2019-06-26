@@ -1,22 +1,48 @@
-# Design rationale
+# Design rationale - RECHARGE
 
-This project is made by students of the minor webdevelopment in co-operation with the minor data driven development.
+## Summary
+This document provides an insight into the development of an interactive proof of concept for an application that allows users of charging stations in Amsterdam to report problems that occur when trying to charge their electric car.
 
-This product is divided in multiple layers, an App for the user of public car chargers, a dashboard for to provide stakeholders with relevant information and a server that provides the app and dashboard with the right information and provides feedback to user actions.
+## The team
+The team who build this project consists of three students from the Amsterdam University of Applied Sciences, who identify as designers with a passion for frontend- and backend-development.
+- [Tim Ruiterkamp](https://github.com/timruiterkamp) - Focus on backend
+- [Dennis Wegereef](https://github.com/denniswegereef) - Focus on frontend
+- [Folkert-Jan van der Pol](https://github.com/follywolly) - Focus on frontend
 
 ## Introduction
+This project was initiated by Jurjen Helmus from IDOLaad. The idea stems from the desire to gain more insights in the amount of times people try to charge their electric vehicle at a charging station, but fail to. This data would be valuable to accurately predict the amount of charging stations needed in Amsterdam by 2030 to meet the demand.
 
-We are working together on creating an for a user of who drives an electric car as well for all the stakeholders involved at a charging station. There are many stakeholders involved with one single charging station. We are building a proof of concept to help make it more easy to handle all the issues. As well for the electric drivers to share their complaints about the charging stations.
+The original case description can be found [here](https://drive.google.com/file/d/1fpVQgYPpPrP5GxCdBd7kRcVHn0LEfvgG/view).
 
-### Case
+### The problem
+In the year 2030, the city centre of Amsterdam will only be accessible for electric vehicles. All vehicles using a fossil fuel will be prohibited from entering the city.
+More people will travel with electric vehicles, which means there have to be enough charging stations to meet the demand.
 
-When the year 2030 comes around Amsterdam wants to deny all diesel cars and prevent them from accessing the city. So that motivates people in buying electric cars but there comes a problem with that. There are not currently enough charging stations to handle in the future all the people. So they have to invest in them so that everybody can park their car.
+The problem with charging stations is that there is a multitude of problems that can occur.
+Just a few examples of problems that occur when trying to charge your car at a charging station:
+- the charging station doens't work
+- the charging station is unreachable
+- the charging station is occupied by a non-electric vehicle
+- the charging station is occupied for a long time
 
-But the ‘problem’ with a charging station that there are many stakeholders involved. So when electric car drivers find an issue with their charging station they maybe wanna report it and share their complaint. Since as stated above there are many stakeholders involved so when the driver maby calls the Municipality of Amsterdam and they can’t help you. They tell you to call another company, frustrating for the user.
+All these problems cause frustration for people trying to charge their vehicle.
+Usually, people want to notify the relevant organizations who are in charge of the charging station.
 
-So how can we concept a more robust system where it is easier to handle all the complaints and direct them to the right stakeholder. But also a for the driver to make it more easy to create an issue.
+With this situation and the multitude of possible problems in mind, we encounter a challenge: *Different organizations handle different problems.*
 
-[Link to the docs for the orginal case.](https://drive.google.com/file/d/1fpVQgYPpPrP5GxCdBd7kRcVHn0LEfvgG/view)
+The charging stations in Amsterdam are maintained by private companies. In most cases the charging stations belong to *NUON*. They place the charging station and repair them when they break down.
+However, the area the charging station is placed on is usually maintained by the *City of Amsterdam*.
+
+This results in the problem where a user of a charging station tries to submit an issue with the charging station to the 'wrong' organization. The organizations are unaware of each others progress in solving problems at specific charging stations, so they tell the user to reach out to the other organization.
+
+This situation causes even more frustration: the user just wants to notify someone who is in charge about the problem with the charging station, be on their way and maybe later be notified about the status of their submitted issue.
+
+### Proposed solution
+IDOLaad is trying to solve this issue by having a proof of concept being made of a charging station user application.
+This application will allow users to:
+- Submit an issue with a charging station
+- Allow a user to check the status of their submitted issue(s)
+- Inform the user of nearby charging stations that are operational
 
 ### Concept
 
@@ -32,7 +58,7 @@ As mentioned in the concept already there are many stakeholders involved. The cl
 
 ---
 
-## Design proces
+## Design process
 
 Before we could even build a prototype we had to map out what features we would like to see in the client and the dashbaord app. We came with the following feautures at first:
 
@@ -88,10 +114,9 @@ This page is a way for handling tickets. It shows 3 different categories what th
 
 Because all the data exists it is easy to create interactive graphs based on that. It is a quick way to futher look inside the data. For now we created only with the charging station data but the possibilities are endless.
 
-### Reccomondations
+### Recommendations
 
--
-
+- Wat gebeurt er als een melding niet echt blijkt te zijn / niet meer relevant is ?
 - Create your own graphs with different parameters
 -
 
