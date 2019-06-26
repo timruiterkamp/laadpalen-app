@@ -279,5 +279,7 @@ t.b.w.
 
 ---
 
-## Links
-// product biography etc
+## Links to individual product biography
+- [Tim Ruiterkamp](https://github.com/timruiterkamp/meesterproef-1819)
+- [Dennis Wegereef](https://github.com/denniswegereef/meesterproef-1819)
+- [Folkert-Jan van der Pol](https://github.com/follywolly/meesterproef-1819)
