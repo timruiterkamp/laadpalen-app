@@ -282,7 +282,7 @@ We got most functionalities that we planned on having in our interactive prototy
 ---
 
 ## Recommendations
-As this is a proof of concept, it's not build for specific edge cases.
+As this is a proof of concept, it's not build for specific edge cases. That's why we drafted up some things to think about when really implementing this concept.
 
 - In this proof of concept we've assumed all submitted issues are real. How do you handle fake issues?
 - What kind of insights would be valuable to the organizations? We've not been able to meet with any of them, so this would be an interesting conversation to have.
@@ -290,8 +290,12 @@ As this is a proof of concept, it's not build for specific edge cases.
 ---
 
 ## Conclusion
+We created this proof of concept in 5 weeks, from concept to working interactive prototype. It was a tough time with some long days, but we are really proud of the outcome.
 
-t.b.w.
+We are yet to find out if this proof of concept will turn into the development of a real product, but at least the three of us had a lot of fun working on it. We challenged ourselves with new libraries and technologies and tried to make the proof of concept feel as complete as possible.
+
+![fin](docs/images/tesla-model-s-touchscreen.jpg)
+*Maybe one day your tesla dashboard will feature this application!*
 
 ---
 
