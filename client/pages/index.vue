@@ -366,7 +366,6 @@ export default {
 .modal__content {
   .btn {
     margin: $margin-m 0;
-    width: 100%;
     white-space: normal;
   }
 
