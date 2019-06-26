@@ -133,7 +133,7 @@ Ik heb dit een half jaar geleden ongeveer ook gedaan dus het was even weer zoeke
 
 Ik heb ook nog met Koop gezeten om te kijken hoe en wat. Eigenlijk kwam er uit dat we nog steeds lekker bezig gaan maar dat ik mijn posistie niet zo snel in de groep snap. Ik voel mij een beetje vliegende keep terwijl ik volgens mij best redelijk wat werk verzet. Maar aan de andere kant het gaat nog steeds goed dus ben de laatste persoon die zou klagen.
 
-![codeship](images/dennis/codeshiplol.png)
+![codeship](/docs/images/dennis/codeshiplol.png)
 
 Mijn setup commands zijn om te testen of we geen verkeerde build op de server zetten:
 
