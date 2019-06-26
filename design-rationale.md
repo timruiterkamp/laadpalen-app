@@ -45,6 +45,7 @@ This application will allow users to:
 - Inform the user of nearby charging stations that are operational
 
 ### Concept
+
 Since there are many users and the stakeholders of the charging station involved. There needs to be an unique application for both but interacting with each of them. That is the key point of this concept that everybody knows how or what from each other.
 
 As an electric car driver there needs to be an app with a good range of the most common issues by default. So you can quickly share it and add the necessary details of the complaint so it can process quickly and can be solved. Think about things that a diesel car is parking or a As a user you want to also see on the map where already issues are so you don’t have to find out when you try to charge your car. Also there needs to be a overview of all your issues and their corresponding status of the ticket. All have to be updated in real time for all the users so they are constantly up to date what is happening.
