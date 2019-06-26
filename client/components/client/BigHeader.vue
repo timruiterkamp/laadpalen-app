@@ -27,8 +27,11 @@ export default {
   min-height: 10rem;
   display: block;
   @include linear-gradient($color-primary);
-  padding: $padding-m * 2 $padding-s 0 $padding-l;
+  // padding: $padding-m * 2 $padding-s 0 $padding-l;
   @include shadow(1rem);
+  display: flex;
+  justify-content: left;
+  align-items: center;
 
   &__wave {
     z-index: -1;
@@ -40,11 +43,14 @@ export default {
   }
 
   &__title {
+    padding: 1rem;
     color: $color-white;
     font-weight: 100;
     max-width: 40rem;
-    margin: 0 auto;
+    width: 100%;
     font-size: 1.5rem;
+    max-width: 40rem;
+    margin: 0 auto;
     span {
       display: block;
       margin-bottom: $margin-xs;
