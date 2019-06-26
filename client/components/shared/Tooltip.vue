@@ -65,6 +65,7 @@ $popup-arrow-size: 0.5rem;
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 9;
   &--default {
     background-color: $color-grey-dark;
     @include shadow($size: 2rem, $alpha: 0.15);

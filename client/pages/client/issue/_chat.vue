@@ -5,7 +5,6 @@
     <div class="c-chat__content">
       <h4 class="c-chat__title">
         <span class="bold">Melding:</span>
-
         {{ ticket.title }}
       </h4>
       <transition-group name="messages">
@@ -50,7 +49,7 @@
 
     <Modal ref="modalLocation">
       <template v-slot:header>
-        <Atlas height="20rem" :stations="stations" v-model="loadingstation"/>
+        <Atlas height="45vh" :stations="stations" v-model="loadingstation"/>
 
         <div class="modal__header">
           <p class="modal__header--text">
@@ -304,8 +303,12 @@ export default {
 
 .c-chat {
   padding-bottom: $padding-xl * 2;
+
   &__block {
     margin-bottom: $margin-xs;
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: $padding-m;
   }
   &__content {
     padding: $padding-m;
@@ -314,7 +317,7 @@ export default {
     }
   }
   &__title {
-    margin-bottom: $margin-xl;
+    margin-bottom: $margin-s;
     font-size: 1rem;
     font-weight: 100;
     text-align: center;
@@ -346,25 +349,35 @@ export default {
 .modal {
   &__header {
     width: 100%;
-    padding: $padding-xl $padding-m;
+    padding: 1rem;
     background-color: $color-primary;
     &--text {
       margin: 0;
       color: $color-white;
     }
   }
+
+  .btn {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .divider-s {
+    margin-bottom: 1rem;
+  }
   &__legenda {
     padding: 0;
     list-style-type: none;
     display: flex;
     flex-wrap: wrap;
-    padding-bottom: $padding-m;
+    padding-bottom: $padding-s;
     &--item {
       width: 50%;
       display: flex;
       align-items: center;
       height: 1.8rem;
       line-height: 1;
+      font-size: 0.8rem;
       &:nth-of-type(1) {
         .modal__legenda--color {
           background-color: blue;

@@ -11,7 +11,10 @@
 export default {
   computed: {
     name() {
-      return this.$store.getters.GET_NAME
+      return (
+        this.$store.getters.GET_NAME.charAt(0).toUpperCase() +
+        this.$store.getters.GET_NAME.slice(1)
+      )
     }
   }
 }
@@ -21,10 +24,10 @@ export default {
 @import '~/assets/css/config/main.scss';
 
 .big-header {
-  min-height: 14rem;
+  min-height: 10rem;
   display: block;
   @include linear-gradient($color-primary);
-  padding: $padding-xl * 2 $padding-s 0 $padding-l;
+  padding: $padding-m * 2 $padding-s 0 $padding-l;
   @include shadow(1rem);
 
   &__wave {
@@ -41,6 +44,7 @@ export default {
     font-weight: 100;
     max-width: 40rem;
     margin: 0 auto;
+    font-size: 1.5rem;
     span {
       display: block;
       margin-bottom: $margin-xs;

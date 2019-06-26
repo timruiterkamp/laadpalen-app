@@ -103,9 +103,12 @@ export default {
     padding: $padding-m;
   }
   &__title {
-    margin-top: $margin-m;
+    margin-top: 0;
     font-weight: 100;
     text-align: center;
+    @media screen and (max-width: 25rem) {
+      font-size: 5vw;
+    }
   }
 }
 </style>

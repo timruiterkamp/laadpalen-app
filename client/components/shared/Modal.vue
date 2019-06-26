@@ -80,8 +80,8 @@ $widthHeight: 2.5rem;
     &-close {
       position: absolute;
       border-radius: $widthHeight;
-      top: calc(#{-$widthHeight / 2});
-      right: calc(#{-$widthHeight / 2});
+      top: calc(#{-$widthHeight / 5});
+      right: calc(#{-$widthHeight / 4});
       height: $widthHeight;
       width: $widthHeight;
       @include linear-gradient($color-primary);

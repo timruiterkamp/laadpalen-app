@@ -7,7 +7,6 @@
 
       <h3 class="small-header__title">{{ title }}</h3>
     </div>
-
   </div>
 </template>
 
@@ -59,6 +58,7 @@ $widthHeight: 40px;
 
   &__title {
     color: $color-white;
+    font-size: 1.4rem;
     span {
       display: block;
     }

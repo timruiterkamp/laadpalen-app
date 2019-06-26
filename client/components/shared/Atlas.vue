@@ -8,9 +8,16 @@
       <div class="station-details__issues" v-if="issues.length > 0">
         <h3 class="station-details__issues__title">Huidige problemen:</h3>
         <div class="station-details__issue" v-for="issue in issues" :key="issue._id">
-          <nuxt-link v-if="issue._id" :to="`/dashboard/meldingen/?id=${issue._id}`" class="station-details__issue__link">
+          <nuxt-link
+            v-if="issue._id"
+            :to="`/dashboard/meldingen/?id=${issue._id}`"
+            class="station-details__issue__link"
+          >
             <p v-if="issue.title" class="station-details__issue__title">{{issue.title}}</p>
-            <p v-if="issue.status">status: <span class="bold">{{translate(issue.status)}}</span></p>
+            <p v-if="issue.status">
+              status:
+              <span class="bold">{{translate(issue.status)}}</span>
+            </p>
           </nuxt-link>
         </div>
       </div>
@@ -408,5 +415,9 @@ export default {
   pointer-events: none;
   border-radius: 50%;
   transform: translate(-50%, -50%);
+}
+
+.mapboxgl-ctrl-top-right .mapboxgl-ctrl {
+  margin: 10px 40px 0 0;
 }
 </style>
