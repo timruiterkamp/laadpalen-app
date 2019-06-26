@@ -8,6 +8,9 @@ module.exports = {
    */
   head: {
     title: pkg.name,
+    htmlAttrs: {
+      lang: 'nl'
+    },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -35,7 +38,10 @@ module.exports = {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: {
+    color: 'blue',
+    height: '5px'
+  },
 
   /*
    ** Global CSS
@@ -55,62 +61,28 @@ module.exports = {
    ** Nuxt.js modules
    */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
+    '@nuxtjs/pwa',
     '@nuxtjs/axios'
-    // '@nuxtjs/pwa'
+
     // '@nuxtjs/apollo'
   ],
-  /*
-   ** Axios module configuration
-   */
-  axios: {
-    // See https://github.com/nuxt-community/axios-module#options
+  workbox: {
+    // offlinePage: '/offline'
   },
-  // apollo: {
-  //   tokenName: 'laadpalen-app', // optional, default: apollo-token
-  //   tokenExpires: 10, // optional, default: 7 (days)
-  //   includeNodeModules: false, // optional, default: false (this includes graphql-tag for node_modules folder)
-  //   authenticationType: 'Basic', // optional, default: 'Bearer'
-  //   // (Optional) Default 'apollo' definition
-  //   defaultOptions: {
-  //     // See 'apollo' definition
-  //     // For example: default query options
-  //     $query: {
-  //       loadingKey: 'loading',
-  //       fetchPolicy: 'cache-and-network'
+
+  // workbox: {
+  //   runtimeCaching: [
+  //     {
+  //       urlPattern: `'https://${
+  //         process.env.NODE_ENV == 'development'
+  //           ? process.env.DEV_URL
+  //           : process.env.PROD_URL
+  //       }/.*'`,
+  //       handler: 'cacheFirst',
+  //       method: 'GET',
+  //       cacheableResponse: { statuses: [0, 200] }
   //     }
-  //   },
-  //   // optional
-  //   errorHandler: '~/plugins/apollo-error-handler.js',
-  //   // required
-  //   clientConfigs: {
-  //     default: {
-  //       // required
-  //       httpEndpoint: 'http://localhost:3001',
-  //       // optional
-  //       // See https://www.apollographql.com/docs/link/links/http.html#options
-  //       httpLinkOptions: {
-  //         credentials: 'same-origin'
-  //       },
-  //       // You can use `wss` for secure connection (recommended in production)
-  //       // Use `null` to disable subscriptions
-  //       wsEndpoint: '', // optional
-  //       // LocalStorage token
-  //       tokenName: 'laadpalen-app', // optional
-  //       // Enable Automatic Query persisting with Apollo Engine
-  //       persisting: false, // Optional
-  //       // Use websockets for everything (no HTTP)
-  //       // You need to pass a `wsEndpoint` for this to work
-  //       websocketsOnly: false // Optional
-  //     },
-  //     test: {
-  //       httpEndpoint: 'http://localhost:3001',
-  //       wsEndpoint: 'ws://localhost:3001',
-  //       tokenName: 'laadpalen-app'
-  //     }
-  //     // alternative: user path to config which returns exact same config options
-  //     // test2: '~/plugins/my-alternative-apollo-config.js'
-  //   }
+  //   ]
   // },
 
   /*
