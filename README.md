@@ -1,7 +1,7 @@
 ![](docs/images/recharge_logo.png)
 # Design rational
 <br>
-![](/docs/images/mobile-screens.png)
+![](docs/images/mobile-screens.png)
 
 ## Summary
 
