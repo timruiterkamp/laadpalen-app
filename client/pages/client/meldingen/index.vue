@@ -1,7 +1,9 @@
 <template>
   <div class="c-notifications">
     <SmallHeader title="Meldingen"/>
+
     <div class="ticketList">
+      <div v-if="allIssues < 0" class="ticketList__error">Er zijn geen meldingen of je bent offline</div>
       <Ticket
         v-for="(item, i) in allIssues"
         :key="`item-${i}`"
@@ -41,7 +43,7 @@ export default {
     const socket = socketIOClient(this.endpoint)
     this.$store.commit('RESET_MESSAGES_NOTIFICATIONS')
     this.getData()
-    
+
     socket.on('issue has been created', data => {
       this.getData()
     })
@@ -74,6 +76,11 @@ export default {
   margin: $padding-xl auto;
   padding: 0 $padding-s;
   max-width: 40rem;
+  &__error {
+    text-align: center;
+    margin: $margin-l 0;
+    font-weight: bold;
+  }
 }
 .c-notifications {
   padding-bottom: $padding-xl * 2;
