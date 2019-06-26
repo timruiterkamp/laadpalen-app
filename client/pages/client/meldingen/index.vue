@@ -20,6 +20,7 @@
 import Ticket from '~/components/shared/Ticket.vue'
 import SmallHeader from '~/components/client/SmallHeader.vue'
 import DB from '~/helpers/db'
+import socketIOClient from 'socket.io-client'
 
 export default {
   layout: 'client',
@@ -29,21 +30,38 @@ export default {
   },
   data() {
     return {
-      allIssues: []
+      allIssues: [],
+      endpoint:
+        process.env.NODE_ENV == 'development'
+          ? process.env.DEV_URL
+          : process.env.PROD_URL
     }
   },
   mounted() {
+    const socket = socketIOClient(this.endpoint)
     this.$store.commit('RESET_MESSAGES_NOTIFICATIONS')
+    this.getData()
+    
+    socket.on('issue has been created', data => {
+      this.getData()
+    })
 
-    DB.execute(
-      'query { issues { title location createdAt stakeholders { title } status }}',
-      this.$store.getters.GET_TOKEN
-    )
-      .then(res => res.issues)
-      .then(res =>
-        res.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    socket.on('issue status has been updated', data => {
+      this.getData()
+    })
+  },
+  methods: {
+    getData() {
+      DB.execute(
+        'query { issues { title location createdAt stakeholders { title } status }}',
+        this.$store.getters.GET_TOKEN
       )
-      .then(res => (this.allIssues = res))
+        .then(res => res.issues)
+        .then(res =>
+          res.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        )
+        .then(res => (this.allIssues = res))
+    }
   }
 }
 </script>
