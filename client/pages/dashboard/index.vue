@@ -16,6 +16,7 @@
 <script>
 import Atlas from '~/components/shared/Atlas.vue'
 import Toggle from '~/components/dashboard/Toggle.vue'
+import socketIOClient from 'socket.io-client'
 
 export default {
   layout: 'dashboard',
@@ -25,6 +26,10 @@ export default {
   },
   data() {
     return {
+      endpoint:
+        process.env.NODE_ENV == 'development'
+          ? process.env.DEV_URL
+          : process.env.PROD_URL,
       filters: {
         open: false,
         working: false,
@@ -36,6 +41,10 @@ export default {
     if (this.stations.length === 0) {
       this.$store.dispatch('FETCH_LOADINGSTATION_DATA')
     }
+    const socket = socketIOClient(this.endpoint)
+    socket.on('issue has been created', () => {
+      this.$store.dispatch('FETCH_LOADINGSTATION_DATA')
+    })
   },
   computed: {
     stations() {
