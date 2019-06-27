@@ -34,9 +34,10 @@ export default {
   mounted() {
     const socket = socketIOClient(this.endpoint)
     socket.on('issue has been created', issue => {
+      console.log(issue);
       this.notificationTrigger = true
-      this.message = 'Nieuwe melding gemaakt:'
-      this.issue = issue.title
+      this.message = 'Nieuwe melding gemaakt: '
+      this.issue.title = issue.title
       this.status = issue.status
       this.issue.location = issue.location
 

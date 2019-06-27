@@ -44,7 +44,18 @@ export default {
     }
   },
   mounted() {
-    console.log('mounted')
+    const socket = socketIOClient(this.endpoint)
+
+    socket.on('issue has been created', (issue) => {
+      console.log('issue has been created', issue);
+      this.getTickets()
+        .then(res => {
+          this.list = res
+          this.data = res
+        })
+        .catch(console.error)
+    })
+
     this.getTickets()
       .then(res => {
         this.list = res

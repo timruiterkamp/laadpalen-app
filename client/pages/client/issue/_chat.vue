@@ -90,6 +90,7 @@ import Modal from '~/components/shared/Modal.vue'
 import Atlas from '~/components/shared/Atlas.vue'
 import TweenLite from 'gsap'
 import DB from '~/helpers/db'
+import socketIOClient from 'socket.io-client'
 
 export default {
   layout: 'client',
@@ -101,6 +102,10 @@ export default {
   },
   data() {
     return {
+      endpoint:
+        process.env.NODE_ENV == 'development'
+          ? process.env.DEV_URL
+          : process.env.PROD_URL,
       legendaItems: [
         'Wordt aan gewerkt',
         'Beschikbaar',
@@ -278,6 +283,8 @@ export default {
         address: this.loadingstation.address,
         stakeholderId: this.stakeholder
       }
+      const socket = socketIOClient(this.endpoint)
+
       console.log('creating ticket... ', ticket)
       DB.execute(
         `mutation { createIssue(issueInput:{
@@ -290,9 +297,9 @@ export default {
           polenumber: 123,
           confirmed: 0,
           location: "${ticket.address}"
-        }) { title stakeholders { title } loadingstation { longitude latitude address status }} }`,
+        }) { title location status stakeholders { title } loadingstation { longitude latitude address status }} }`,
         this.$store.getters.GET_TOKEN
-      ).then(res => console.log(res))
+      ).then(res => socket.emit('issue created', res.createIssue))
     }
   }
 }
