@@ -4,14 +4,17 @@
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
+  width: 100%;
   &--center {
     align-items: center;
     text-align: center;
   }
   &-label {
     text-align: inherit;
+    max-width: 100%;
   }
   &-input {
+    max-width: 100%;
     text-align: inherit;
     border: 1px solid $color-grey-medium;
     border-radius: $rounding-s;

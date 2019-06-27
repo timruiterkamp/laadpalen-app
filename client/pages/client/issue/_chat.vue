@@ -102,10 +102,10 @@ export default {
   data() {
     return {
       legendaItems: [
-        'Huidige locatie',
-        'Laadpalen',
+        'Wordt aan gewerkt',
+        'Beschikbaar',
         'Niet beschikbaar',
-        'Aangeraden plan'
+        'Problemen verholpen'
       ],
       ticket: {
         title: this.$route.params.chat.split('-').join(' ')

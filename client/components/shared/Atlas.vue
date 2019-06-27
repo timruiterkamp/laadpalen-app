@@ -269,12 +269,12 @@ export default {
               'match',
               ['get', 'status'],
               'open',
-              7,
+              8,
               'working',
-              7,
+              8,
               'closed',
-              7,
-              5
+              8,
+              7
             ]
           }
         })
@@ -342,39 +342,14 @@ export default {
     // opacity: 0;
     // pointer-events: none;
   }
-  .mapboxgl-user-location-dot::before {
-    @include linear-gradient($color-secondary);
-  }
   .mapboxgl-user-location-dot {
     @include linear-gradient($color-secondary);
     cursor: pointer;
-  }
-  .marker {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    cursor: pointer;
-    @include linear-gradient($color-grey-dark);
-    transform-origin: center;
-    width: 10px;
-    height: 10px;
-    transition: width 0.3s, height 0.3s;
-    &--open {
-      width: 15px;
-      height: 15px;
-      @include linear-gradient($color-tertiary);
-    }
-    &--working {
-      width: 15px;
-      height: 15px;
+    &::before {
       @include linear-gradient($color-secondary);
     }
-    &--closed {
-      width: 15px;
-      height: 15px;
-      @include linear-gradient($color-primary);
-    }
   }
+
 }
 .station-details {
   &__issues {

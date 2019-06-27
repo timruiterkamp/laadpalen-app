@@ -54,7 +54,7 @@ $widthHeight: 2.5rem;
   left: 0;
   height: 100vh;
   width: 100vw;
-  z-index: 2;
+  z-index: 10;
 
   &__background {
     top: 0;

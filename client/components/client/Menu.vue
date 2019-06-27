@@ -2,7 +2,7 @@
   <nav>
     <ul class="menu">
       <div class="menu__holder">
-        <nuxt-link class="menu__item" :to="{ path: '/client'}">
+        <nuxt-link exact class="menu__item" :to="{ path: '/client'}">
           <svg class="menu__item-icon">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="12" y1="8" x2="12" y2="16"></line>
@@ -97,6 +97,7 @@ $widthHeight: 24px;
   padding: 0;
   @include linear-gradient($color-primary);
   transition: all 0.3s;
+  z-index: 9;
 
   &__holder {
     width: 40rem;
@@ -154,7 +155,7 @@ $widthHeight: 24px;
     }
   }
 }
-.nuxt-link-exact-active {
+.nuxt-link-active {
   background-color: rgba($color-white, 0.2);
   .menu {
     &__item {

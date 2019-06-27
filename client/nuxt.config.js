@@ -14,7 +14,8 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { hid: 'description', name: 'description', content: pkg.description },
+      { theme_color: '#27b5a2'}
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -39,7 +40,7 @@ module.exports = {
    ** Customize the progress-bar color
    */
   loading: {
-    color: 'blue',
+    color: '#27b5a2',
     height: '5px'
   },
 
@@ -69,21 +70,13 @@ module.exports = {
   workbox: {
     // offlinePage: '/offline'
   },
-
-  // workbox: {
-  //   runtimeCaching: [
-  //     {
-  //       urlPattern: `'https://${
-  //         process.env.NODE_ENV == 'development'
-  //           ? process.env.DEV_URL
-  //           : process.env.PROD_URL
-  //       }/.*'`,
-  //       handler: 'cacheFirst',
-  //       method: 'GET',
-  //       cacheableResponse: { statuses: [0, 200] }
-  //     }
-  //   ]
-  // },
+  manifest: {
+    name: 'Recharge',
+    lang: 'nl',
+    short_name: 'Recharge',
+    display: 'standalone',
+    background_color: '#27b5a2',
+  },
 
   /*
    ** Build configuration
